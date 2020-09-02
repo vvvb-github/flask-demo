@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="3643dad4-0778-4e47-9383-a59375a95194" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/CLLab.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+    <list default="true" id="3643dad4-0778-4e47-9383-a59375a95194" name="Default Changelist" comment="flask demo">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,6 +40,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
@@ -98,12 +99,42 @@
       <workItem from="1598863833731" duration="884000" />
       <workItem from="1598921304703" duration="8688000" />
       <workItem from="1598932677548" duration="1133000" />
-      <workItem from="1599013250822" duration="22348000" />
+      <workItem from="1599013250822" duration="22659000" />
     </task>
+    <task id="LOCAL-00001" summary="flask demo">
+      <created>1599042464871</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1599042464871</updated>
+    </task>
+    <task id="LOCAL-00002" summary="flask demo">
+      <created>1599042666504</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1599042666504</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="flask demo" />
+    <option name="LAST_COMMIT_MESSAGE" value="flask demo" />
   </component>
   <component name="WindowStateProjectService">
     <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599034128432">
@@ -114,6 +145,10 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="499" y="178" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1536.864@0.0.1536.864" timestamp="1598927729065" />
+    <state x="93" y="93" width="1350" height="678" key="DiffContextDialog" timestamp="1599042759069">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="93" y="93" width="1350" height="678" key="DiffContextDialog/0.0.1536.864@0.0.1536.864" timestamp="1599042759069" />
     <state x="549" y="173" key="FileChooserDialogImpl" timestamp="1599042343001">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -134,6 +169,14 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state width="1493" height="223" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1599037517803" />
+    <state x="361" y="165" key="Vcs.Push.Dialog.v2" timestamp="1599042676102">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="361" y="165" key="Vcs.Push.Dialog.v2/0.0.1536.864@0.0.1536.864" timestamp="1599042676102" />
+    <state x="570" y="338" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1599042610024">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="570" y="338" key="git4idea.remote.GitConfigureRemotesDialog/0.0.1536.864@0.0.1536.864" timestamp="1599042610024" />
     <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1599018843984">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
