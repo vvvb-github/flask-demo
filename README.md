@@ -1,4 +1,4 @@
-# 大气波导项目FLASK后端
+# FLASK后端
 
 ### 开发环境
 - [PyCharm](https://www.jetbrains.com/pycharm/download/#section=windows) 比较推荐的IDE，插件多，项目配置等自动搭建，非常省事。专业版需要付费，但可以用edu邮箱注册可免费使用好几年。
