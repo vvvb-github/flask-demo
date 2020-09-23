@@ -1,7 +1,6 @@
 -- ---------------------User----------------------
 -- --------------------用户表---------------------
--- ID: int  -- 用户ID **主键**
--- account: varchar(255)  -- 账号
+-- account: varchar(255)  -- 账号 **主键**
 -- password: varchar(255)   -- 密码
 -- permission: int   -- 权限
 -- registerTime: datetime   -- 注册时间
@@ -13,54 +12,53 @@ drop table if exists Data;
 drop table if exists Diary;
 drop table if exists User;
 create table User (
-    ID int not null auto_increment,
     account varchar(255) not null,
     password varchar(255) not null,
     permission int not null default 0,
     registerTime datetime not null,
     nickname varchar(255) not null,
     identity varchar(255) not null,
-    primary key (ID)
+    primary key (account)
 );
 
 
 -- ----------------------Diary----------------------
 -- ------------------用户操作日志------------------
--- ID: int  -- 操作ID **主键**
+-- ID: varchar  -- 操作ID **主键**
 -- operationTime: datetime  -- 操作时间
--- operatorID: int  -- 操作人ID，外键关联User:ID
+-- operatorAccount: varchar  -- 操作人帐号，外键关联User:account
 -- operationRecord: text  -- 操作记录
 -- -----------------------------------------------
 
 create table Diary (
-    ID int not null auto_increment,
+    ID varchar(255) not null,
     operationTime datetime not null,
-    operatorID int not null,
+    operatorAccount varchar(255) not null,
     operationRecord text not null,
     primary key (ID),
-    foreign key (operatorID) references User(ID)
+    foreign key (operatorAccount) references User(account)
 );
 
 
 -- --------------------Data------------------------
 -- -----------------数据申报记录--------------------
--- ID: int  -- 申报ID **主键**
+-- ID: varchar  -- 申报ID **主键**
 -- declareTime: datetime   -- 申报时间
 -- examTime: datetime   -- 审批时间
--- declareID: int   -- 申报人ID，外键关联User:ID
--- examID: int  -- 审批人ID
+-- declareAccount: varchar   -- 申报人帐号，外键关联User:account
+-- examAccount: varchar  -- 审批人帐号
 -- declareContent: text   -- 申报内容
 -- ------------------------------------------------
 
 create table Data (
-    ID int not null auto_increment,
+    ID varchar(255) not null,
     declareTime datetime not null,
     examTime datetime not null,
-    declareID int not null,
-    examID int not null,
+    declareAccount varchar(255) not null,
+    examAccount varchar(255) not null,
     declareContent text not null,
     primary key (ID),
-    foreign key (declareID) references User(ID)
+    foreign key (declareAccount) references User(account)
 );
 
 

@@ -11,9 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3643dad4-0778-4e47-9383-a59375a95194" name="Default Changelist" comment="flask demo">
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cllab.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cllab.sql" beforeDir="false" afterPath="$PROJECT_DIR$/cllab.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +105,7 @@
       <workItem from="1600614740144" duration="4000" />
       <workItem from="1600614806897" duration="10000" />
       <workItem from="1600649898053" duration="1315000" />
-      <workItem from="1600839824593" duration="315000" />
+      <workItem from="1600839824593" duration="1064000" />
     </task>
     <task id="LOCAL-00001" summary="flask demo">
       <created>1599042464871</created>
@@ -130,7 +128,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599042861647</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="数据库建库脚本">
+      <created>1600840312543</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1600840312544</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,7 +156,8 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="flask demo" />
-    <option name="LAST_COMMIT_MESSAGE" value="flask demo" />
+    <MESSAGE value="数据库建库脚本" />
+    <option name="LAST_COMMIT_MESSAGE" value="数据库建库脚本" />
   </component>
   <component name="WindowStateProjectService">
     <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600839885699">
@@ -186,10 +192,10 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state width="1493" height="223" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1599042990260" />
-    <state x="361" y="165" key="Vcs.Push.Dialog.v2" timestamp="1599042938659">
+    <state x="361" y="165" key="Vcs.Push.Dialog.v2" timestamp="1600840325498">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="361" y="165" key="Vcs.Push.Dialog.v2/0.0.1536.864@0.0.1536.864" timestamp="1599042938659" />
+    <state x="361" y="165" key="Vcs.Push.Dialog.v2/0.0.1536.864@0.0.1536.864" timestamp="1600840325498" />
     <state x="570" y="338" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1599042933322">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
