@@ -104,16 +104,16 @@ create table SW (
 -- height: float    -- 高度
 -- longitude: float -- 经度
 -- latitude: float  -- 纬度
--- predictEps: float    -- 预测差
+-- predictHeight: float    -- 预测高度
 -- ---------------------------------------------------
 
-drop table if exists SW;
-create table SW (
+drop table if exists EW;
+create table EW (
     time datetime not null,
     height float not null,
     longitude float not null,
     latitude float not null,
-    predictEps float not null,
+    predictHeight float not null,
     primary key (time)
 );
 
