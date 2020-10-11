@@ -8,15 +8,22 @@
 ### 学习资料
 - [Flask教程](https://www.w3cschool.cn/flask/flask_overview.html) w3Cschool教程，感觉还可。
 - [SQLAlchemy](http://www.pythondoc.com/flask-sqlalchemy/quickstart.html) 一个flask对mysql数据库进行ORM封装的库，可以比较便捷得进行数据库操作。
+- [Flask-SocketIO](https://flask-socketio.readthedocs.io/en/latest/) 基于flask的websocket通信库
 
 ### 开始
 - **请执行以下命令安装相应模块**\
 `pip install flask-sqlalchemy`\
 `pip install flask-cors`\
-`pip install pymysql`
+`pip install pymysql`\
+`pip install flask-socketio`\
+`pip install gevent`\
+`pip install gevent-websocket`
 - **项目结构说明**
 ```
 -src
+    - data      数据采集模拟
+    - algorithm 算法模块
+    - websocket_client_demo 一个websocket网页客户端实例
     - static    静态文件，通常用于存放网页文件，本项目作为纯后端不需要关注
     - template  模板文件，用于存放网页渲染模板，同样无需关注
     - venv      venv环境文件，无需关注

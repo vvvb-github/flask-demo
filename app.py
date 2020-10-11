@@ -2,6 +2,10 @@ from flask import Flask, request
 from flask_cors import *
 from flask_sqlalchemy import SQLAlchemy
 from config import *
+from datetime import *
+from algorithm import api
+from flask_socketio import *
+
 
 app = Flask(__name__)
 
@@ -17,115 +21,292 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app=app)
 db.create_all()
 
+# 初始化socketIO
+app.config['SECRET_KEY'] = 'secret!'
+socket_io = SocketIO(app, cors_allowed_origins='*')
+
 # --------------------------------------------------- Entities ---------------------------------------------------------
 
 
 class User(db.Model):
-    # 表名
-    __tablename__ = 'User'
-    # 列对象
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(255))
+    __tablename__ = 'User'  # 用户
+
+    account = db.Column(db.String(255), primary_key=True)
     password = db.Column(db.String(255))
+    permission = db.Column(db.Integer)
+    registerTime = db.Column(db.DateTime)
+    nickname = db.Column(db.String(255))
+    identity = db.Column(db.String(255))
 
-    # 构造函数
-    def __init__(self, username, password):
-        self.username = username
+    def __init__(self, account, password, permission, register_time, nickname, identity):
+        self.account = account
         self.password = password
+        self.permission = permission
+        self.registerTime = register_time
+        self.nickname = nickname
+        self.identity = identity
 
-    # 规定输出格式，debug用
     def __repr__(self):
-        return '<User %r %r %r>' % (self.id, self.username, self.password)
+        return '<User %r %r %r %r %r %r>' % \
+               (self.account, self.password, self.permission, self.registerTime, self.nickname, self.identity)
+
+
+class Diary(db.Model):
+    __tablename__ = 'Diary'  # 用户操作日志
+
+    ID = db.Column(db.String(255), primary_key=True)
+    operationTime = db.Column(db.DateTime)
+    operatorAccount = db.Column(db.String(255), db.ForeignKey('User.account'))
+    operationRecord = db.Column(db.Text)
+
+    def __init__(self, id, operation_time, operator_account, operation_record):
+        self.ID = id
+        self.operationTime = operation_time
+        self.operatorAccount = operator_account
+        self.operationRecord = operation_record
+
+    def __repr__(self):
+        return '<Diary %r %r %r %r>' % \
+               (self.ID, self.operationTime, self.operatorAccount, self.operationRecord)
+
+
+class Data(db.Model):
+    __tablename__ = 'Data'  # 数据申报记录
+
+    ID = db.Column(db.String(255), primary_key=True)
+    declareTime = db.Column(db.DateTime)
+    examTime = db.Column(db.DateTime)
+    declareAccount = db.Column(db.String(255), db.ForeignKey('User.account'))
+    examAccount = db.Column(db.String(255))
+    declareContent = db.Column(db.Text)
+
+    def __init__(self, id, declare_time, exam_time, declare_account, exam_account, declare_content):
+        self.ID = id
+        self.declareTime = declare_time
+        self.examTime = exam_time
+        self.declareAccount = declare_account
+        self.examAccount = exam_account
+        self.declareContent = declare_content
+
+    def __repr__(self):
+        return '<Data %r %r %r %r %r %r>' % \
+               (self.ID, self.declareTime, self.examTime, self.declareAccount, self.examAccount, self.declareContent)
+
+
+class DW(db.Model):
+    __tablename__ = 'DW'  # 悬空波导
+
+    time = db.Column(db.DateTime, primary_key=True)
+    height = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+
+    def __init__(self, time, height, longitude, latitude):
+        self.time = time
+        self.height = height
+        self.longitude = longitude
+        self.latitude = latitude
+
+    def __repr__(self):
+        return '<DW %r %r %r %r>' % (self.time, self.height, self.longitude, self.latitude)
+
+
+class SW(db.Model):
+    __tablename__ = 'SW'  # 表面波导
+
+    time = db.Column(db.DateTime, primary_key=True)
+    height = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+
+    def __init__(self, time, height, longitude, latitude):
+        self.time = time
+        self.height = height
+        self.longitude = longitude
+        self.latitude = latitude
+
+    def __repr__(self):
+        return '<SW %r %r %r %r>' % (self.time, self.height, self.longitude, self.latitude)
+
+
+class EW(db.Model):
+    __tablename__ = 'EW'  # 蒸发波导
+
+    time = db.Column(db.DateTime, primary_key=True)
+    height = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+    predictHeight = db.Column(db.Float)
+
+    def __init__(self, time, height, longitude, latitude, predict_height):
+        self.time = time
+        self.height = height
+        self.longitude = longitude
+        self.latitude = latitude
+        self.predictHeight = predict_height
+
+    def __repr__(self):
+        return '<EW %r %r %r %r %r>' % (self.time, self.height, self.longitude, self.latitude, self.predictHeight)
+
+
+class AWS(db.Model):
+    __tablename__ = 'AWS'  # 自动气象站数据
+
+    time = db.Column(db.DateTime, primary_key=True)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+    temperature = db.Column(db.Float)
+    humidity = db.Column(db.Float)
+    pressure = db.Column(db.Float)
+    windSpeed = db.Column(db.Float)
+
+    def __init__(self, time, longitude, latitude, temperature, humidity, pressure, wind_speed):
+        self.time = time
+        self.longitude = longitude
+        self.latitude = latitude
+        self.temperature = temperature
+        self.humidity = humidity
+        self.pressure = pressure
+        self.windSpeed = wind_speed
+
+    def __repr__(self):
+        return '<AWS %r %r %r %r %r %r %r>' % \
+               (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure, self.windSpeed)
+
+
+class SB(db.Model):
+    __tablename__ = 'SB'  # 探空气球
+
+    time = db.Column(db.DateTime, primary_key=True)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+    temperature = db.Column(db.Float)
+    humidity = db.Column(db.Float)
+    pressure = db.Column(db.Float)
+    windSpeed = db.Column(db.Float)
+
+    def __init__(self, time, longitude, latitude, temperature, humidity, pressure, wind_speed):
+        self.time = time
+        self.longitude = longitude
+        self.latitude = latitude
+        self.temperature = temperature
+        self.humidity = humidity
+        self.pressure = pressure
+        self.windSpeed = wind_speed
+
+    def __repr__(self):
+        return '<SB %r %r %r %r %r %r %r>' % \
+               (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure, self.windSpeed)
+
+
+class MR(db.Model):
+    __tablename__ = 'MR'  # 微波辐射器
+
+    time = db.Column(db.DateTime, primary_key=True)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+    temperature = db.Column(db.Float)
+    humidity = db.Column(db.Float)
+    pressure = db.Column(db.Float)
+
+    def __init__(self, time, longitude, latitude, temperature, humidity, pressure):
+        self.time = time
+        self.longitude = longitude
+        self.latitude = latitude
+        self.temperature = temperature
+        self.humidity = humidity
+        self.pressure = pressure
+
+    def __repr__(self):
+        return '<MR %r %r %r %r %r %r>' % \
+               (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 
-# --------------------------------------------------- API --------------------------------------------------------------
+# --------------------------------------------- FUNCTIONS & VARIABLES --------------------------------------------------
 
 
-# GET请求demo
-@app.route('/getdemo', methods=['GET'])
-def get_demo():
-    # 业务处理
-    # get请求参数获取稍繁琐，不建议get请求携带参数，需要发送参数建议使用post请求
-    # 返回json数据，在python中json对应dict
-    json = {
-        'status': True,
-        'info': 'get请求成功！'
-    }
-    return json
+client_num = 0  # 客户端socket连接数量
 
 
-# POST请求demo
-@app.route('/postdemo', methods=['POST'])
-def post_demo():
-    # 业务处理
-    print(request.form)
-    # 返回json数据，在python中json对应dict
-    json = {
-        'info': '成功收到：' + request.form['info']
-    }
-    return json
+# 清空给定数据表
+def clearTable(table):
+    record_list = table.query
+    for record in record_list:
+        db.session.delete(record)
 
 
-# 测试数据库共一张表，表名为User，字段名分别为id, username, password
+# ----------------------------------------------------------------------------------------------------------------------
 
-# 数据库增
-@app.route('/newuser', methods=['POST'])
-def new_user():
-    username = request.form['username']
-    password = request.form['password']
-    user = User(username, password)
-    db.session.add(user)
+
+# ------------------------------------------------------ API -----------------------------------------------------------
+
+
+# 清空数据库
+@app.route('/clearDB', methods=['GET'])
+def clearDB():
+    # 清空全部数据表
+    clearTable(Diary)
+    clearTable(Data)
+    clearTable(User)
+    clearTable(DW)
+    clearTable(SW)
+    clearTable(EW)
+    clearTable(AWS)
+    clearTable(SB)
+    clearTable(MR)
     db.session.commit()
+
     json = {
-        'info': '添加用户' + username + '成功！'
+        'message': '成功清空数据库！'
     }
     return json
 
 
-# 数据库删
-@app.route('/deleteuser', methods=['POST'])
-def delete_user():
-    username = request.form['username']
-    user = User.query.filter_by(username=username).first()
-    db.session.delete(user)
-    db.session.commit()
+# 接收新的观测数据
+@app.route('/newData', methods=['POST'])
+def newData():
+    # 算法加工采集到的数据
+    res = api.dealData(request.form)
+
+    # 数据库存取
+
+    # 广播数据，使客户端实时更新
+    socket_io.emit('new data', request.form)
+
     json = {
-        'info': '删除用户' + username + '成功'
+        'message': '已处理新数据！'
     }
     return json
 
 
-# 数据库查
-@app.route('/selectuser', methods=['POST'])
-def select_user():
-    username = request.form['username']
-    user = User.query.filter_by(username=username).first()
-    json = {
-        'username': user.username,
-        'password': user.password
-    }
-    return json
+# 接收新的客户端连接
+@socket_io.on('connect')
+def connect():
+    global client_num
+    client_num += 1
+    print('新的连接：' + str(client_num))
 
 
-# 数据库改
-@app.route('/updateuser', methods=['POST'])
-def update_user():
-    username = request.form['username']
-    newpass = request.form['password']
-    user = User.query.filter_by(username=username).first()
-    user.password = newpass
-    db.session.commit()
-    json = {
-        'info': '修改用户' + username + '密码成功'
-    }
-    return json
+# 客户端断开连接
+@socket_io.on('disconnect')
+def disconnect():
+    global client_num
+    client_num -= 1
+    print('断开连接：' + str(client_num))
+
+
+# socket异常处理
+@socket_io.on_error_default
+def default_error_handler(e):
+    print(request.event['message'])
+    print(request.event['args'])
 
 
 # ----------------------------------------------------------------------------------------------------------------------
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    socket_io.run(app, debug=True, host='localhost', port=8085)
