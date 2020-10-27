@@ -222,6 +222,31 @@ class MR(db.Model):
                (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure)
 
 
+class Page(db.Model):
+    __tablename__ = 'Page'  # 探空气球
+
+    time = db.Column(db.DateTime, primary_key=True)
+    longitude = db.Column(db.Float)
+    latitude = db.Column(db.Float)
+    temperature = db.Column(db.Float)
+    humidity = db.Column(db.Float)
+    pressure = db.Column(db.Float)
+    windSpeed = db.Column(db.Float)
+
+    def __init__(self, time, longitude, latitude, temperature, humidity, pressure, wind_speed):
+        self.time = time
+        self.longitude = longitude
+        self.latitude = latitude
+        self.temperature = temperature
+        self.humidity = humidity
+        self.pressure = pressure
+        self.windSpeed = wind_speed
+
+    def __repr__(self):
+        return '<Page %r %r %r %r %r %r %r>' % \
+               (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure, self.windSpeed)
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -229,6 +254,15 @@ class MR(db.Model):
 
 
 client_num = 0  # 客户端socket连接数量
+page_data = {
+    'longitude': 0,
+    'latitude': 0,
+    'temperature': 0,
+    'pressure': 0,
+    'humidity': 0,
+    'wind_speed': 0,
+    'time': datetime.now()
+}  # Page表数据
 
 
 # 清空给定数据表
@@ -236,6 +270,27 @@ def clearTable(table):
     record_list = table.query
     for record in record_list:
         db.session.delete(record)
+
+
+# 更新Page表
+def updatePage(data: dict):
+    global page_data
+    keys = data.keys()
+    # 大坑，这里keys必须按顺序，否则迭代对象会把遍历过的舍弃
+    if 'temperature' in keys:
+        page_data['temperature'] = data['temperature']
+    if 'pressure' in keys:
+        page_data['pressure'] = data['pressure']
+    if 'humidity' in keys:
+        page_data['humidity'] = data['humidity']
+    if 'wind_speed' in keys:
+        page_data['wind_speed'] = data['wind_speed']
+    page_data['time'] = data['time']
+    page_data['longitude'] = data['longitude']
+    page_data['latitude'] = data['latitude']
+    db.session.add(Page(page_data['time'], page_data['longitude'], page_data['latitude'], page_data['temperature']
+                        , page_data['humidity'], page_data['pressure'], page_data['wind_speed']))
+    return page_data
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -257,6 +312,7 @@ def clearDB():
     clearTable(AWS)
     clearTable(SB)
     clearTable(MR)
+    clearTable(Page)
     db.session.commit()
 
     json = {
@@ -265,16 +321,74 @@ def clearDB():
     return json
 
 
-# 接收新的观测数据
-@app.route('/newData', methods=['POST'])
-def newData():
-    # 算法加工采集到的数据
-    res = api.dealData(request.form)
+# 接收新的自动气象站数据
+@app.route('/aws', methods=['POST'])
+def awsData():
+    data = request.form
+
+    # 更新Page并算法加工采集到的数据
+    res = api.dealData(updatePage(data))
+    api.atmModify()
+    api.elecLoss()
+    api.radarLoss()
 
     # 数据库存取
+    db.session.add(AWS(data['time'], data['longitude'], data['latitude'], data['temperature'], data['humidity'],
+                       data['pressure'], data['wind_speed']))
+    db.session.add(EW(res['time'], res['height'], res['longitude'], res['latitude'], res['predict_height']))
+    db.session.commit()
 
-    # 广播数据，使客户端实时更新
-    socket_io.emit('new data', request.form)
+    # 传输数据
+
+    json = {
+        'message': '已处理新数据！'
+    }
+    return json
+
+
+# 接收新的探空气球数据
+@app.route('/sb', methods=['POST'])
+def sbData():
+    data = request.form
+
+    # 更新Page并算法加工采集到的数据
+    res = api.dealData(updatePage(data))
+    api.atmModify()
+    api.elecLoss()
+    api.radarLoss()
+
+    # 数据库存取
+    db.session.add(AWS(data['time'], data['longitude'], data['latitude'], data['temperature'], data['humidity'],
+                       data['pressure'], data['wind_speed']))
+    db.session.add(EW(res['time'], res['height'], res['longitude'], res['latitude'], res['predict_height']))
+    db.session.commit()
+
+    # 传输数据
+
+    json = {
+        'message': '已处理新数据！'
+    }
+    return json
+
+
+# 接收新的微波辐射器数据
+@app.route('/mr', methods=['POST'])
+def mrData():
+    data = request.form
+
+    # 更新Page并算法加工采集到的数据
+    res = api.dealData(updatePage(data))
+    api.atmModify()
+    api.elecLoss()
+    api.radarLoss()
+
+    # 数据库存取
+    db.session.add(AWS(data['time'], data['longitude'], data['latitude'], data['temperature'], data['humidity'],
+                       data['pressure'], data['wind_speed']))
+    db.session.add(EW(res['time'], res['height'], res['longitude'], res['latitude'], res['predict_height']))
+    db.session.commit()
+
+    # 传输数据
 
     json = {
         'message': '已处理新数据！'
@@ -309,4 +423,5 @@ def default_error_handler(e):
 
 
 if __name__ == '__main__':
+    api.rootPath(app)
     socket_io.run(app, debug=True, host='localhost', port=8085)

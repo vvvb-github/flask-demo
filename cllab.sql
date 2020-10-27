@@ -186,3 +186,27 @@ create table MR (
     pressure float not null,
     primary key (time)
 );
+
+
+-- ---------------------Page--------------------------
+-- ------------------页面数据--------------------------
+-- time: datetime   -- 时间 **主键**
+-- longitude: float -- 经度
+-- latitude: float  -- 纬度
+-- temperature: float   -- 温度
+-- humidity: float  -- 湿度
+-- pressure: float  -- 压强
+-- windSpeed: float -- 风速
+-- ----------------------------------------------------
+
+drop table if exists Page;
+create table Page (
+    time datetime not null,
+    longitude float not null,
+    latitude float not null,
+    temperature float not null,
+    humidity float not null,
+    pressure float not null,
+    windSpeed float not null,
+    primary key (time)
+);

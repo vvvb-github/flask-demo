@@ -10,16 +10,15 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3643dad4-0778-4e47-9383-a59375a95194" name="Default Changelist" comment="建库脚本">
-      <change afterPath="$PROJECT_DIR$/algorithm/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/algorithm/api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/websocket_client_demo/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/websocket_client_demo/index.js" afterDir="false" />
+    <list default="true" id="3643dad4-0778-4e47-9383-a59375a95194" name="Default Changelist" comment="数据传输demo">
+      <change afterPath="$PROJECT_DIR$/atm.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/MR.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/SB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/algorithm/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/algorithm/api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cllab.sql" beforeDir="false" afterPath="$PROJECT_DIR$/cllab.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/data/AWS.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,9 +29,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Flask Main" />
-        <option value="Python Script" />
         <option value="HTML File" />
         <option value="JavaScript File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -61,7 +60,51 @@
       <recent name="E:\PyCharm\CLLab\static\js" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.MR">
+    <configuration name="AWS (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="CLLab" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/AWS.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="AWS" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="CLLab" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="E:\PyCharm\CLLab\data\AWS.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="CLLab" type="PythonConfigurationType" factoryName="Python">
       <module name="CLLab" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -84,7 +127,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="MR" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="CLLab" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -97,7 +140,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/main.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/data/MR.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -140,11 +183,15 @@
       <item itemvalue="Flask server.CLLab" />
       <item itemvalue="Flask server.Flask (app.py)" />
       <item itemvalue="Python.CLLab" />
-      <item itemvalue="Python.main" />
+      <item itemvalue="Python.AWS" />
+      <item itemvalue="Python.AWS (1)" />
+      <item itemvalue="Python.MR" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
+        <item itemvalue="Python.MR" />
+        <item itemvalue="Python.AWS (1)" />
+        <item itemvalue="Python.AWS" />
       </list>
     </recent_temporary>
   </component>
@@ -167,7 +214,12 @@
       <workItem from="1600649898053" duration="1315000" />
       <workItem from="1600839824593" duration="1341000" />
       <workItem from="1602385436305" duration="1322000" />
-      <workItem from="1602396579944" duration="21473000" />
+      <workItem from="1602396579944" duration="22188000" />
+      <workItem from="1603181618710" duration="3895000" />
+      <workItem from="1603185790284" duration="2020000" />
+      <workItem from="1603627876683" duration="1115000" />
+      <workItem from="1603629521827" duration="1412000" />
+      <workItem from="1603791300845" duration="4425000" />
     </task>
     <task id="LOCAL-00001" summary="flask demo">
       <created>1599042464871</created>
@@ -211,7 +263,14 @@
       <option name="project" value="LOCAL" />
       <updated>1602412045148</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="数据传输demo">
+      <created>1602427499520</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1602427499520</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -234,7 +293,8 @@
     <MESSAGE value="flask demo" />
     <MESSAGE value="数据库建库脚本" />
     <MESSAGE value="建库脚本" />
-    <option name="LAST_COMMIT_MESSAGE" value="建库脚本" />
+    <MESSAGE value="数据传输demo" />
+    <option name="LAST_COMMIT_MESSAGE" value="数据传输demo" />
   </component>
   <component name="WindowStateProjectService">
     <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602420250652">
@@ -253,22 +313,22 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="549" y="173" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1602420214377" />
-    <state width="1493" height="223" key="GridCell.Tab.0.bottom" timestamp="1602427212844">
+    <state width="1493" height="223" key="GridCell.Tab.0.bottom" timestamp="1603795718608">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="223" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1602427212844" />
-    <state width="1493" height="223" key="GridCell.Tab.0.center" timestamp="1602427212844">
+    <state width="1493" height="223" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1603795718608" />
+    <state width="1493" height="223" key="GridCell.Tab.0.center" timestamp="1603795718608">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="223" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1602427212844" />
-    <state width="1493" height="223" key="GridCell.Tab.0.left" timestamp="1602427212844">
+    <state width="1493" height="223" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1603795718608" />
+    <state width="1493" height="223" key="GridCell.Tab.0.left" timestamp="1603795718607">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="223" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1602427212844" />
-    <state width="1493" height="223" key="GridCell.Tab.0.right" timestamp="1602427212844">
+    <state width="1493" height="223" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1603795718607" />
+    <state width="1493" height="223" key="GridCell.Tab.0.right" timestamp="1603795718608">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state width="1493" height="223" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1602427212844" />
+    <state width="1493" height="223" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1603795718608" />
     <state width="1493" height="277" key="GridCell.Tab.1.bottom" timestamp="1602400943519">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -289,22 +349,24 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="270" y="76" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1602419860324" />
-    <state x="361" y="165" key="Vcs.Push.Dialog.v2" timestamp="1602412050885">
+    <state x="361" y="165" key="Vcs.Push.Dialog.v2" timestamp="1602427507262">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="361" y="165" key="Vcs.Push.Dialog.v2/0.0.1536.864@0.0.1536.864" timestamp="1602412050885" />
+    <state x="361" y="165" key="Vcs.Push.Dialog.v2/0.0.1536.864@0.0.1536.864" timestamp="1602427507262" />
     <state x="570" y="338" key="git4idea.remote.GitConfigureRemotesDialog" timestamp="1599042933322">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="570" y="338" key="git4idea.remote.GitConfigureRemotesDialog/0.0.1536.864@0.0.1536.864" timestamp="1599042933322" />
-    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1599018843984">
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup" timestamp="1603182461680">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1599018843984" />
+    <state x="431" y="181" width="672" height="678" key="search.everywhere.popup/0.0.1536.864@0.0.1536.864" timestamp="1603182461680" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/CLLab$AWS__1_.coverage" NAME="AWS (1) Coverage Results" MODIFIED="1603795733732" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data" />
     <SUITE FILE_PATH="coverage/CLLab$main.coverage" NAME="main Coverage Results" MODIFIED="1602427187372" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data" />
-    <SUITE FILE_PATH="coverage/CLLab$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1602420082116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/CLLab$CLLab.coverage" NAME="CLLab Coverage Results" MODIFIED="1602427079451" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CLLab$MR.coverage" NAME="MR Coverage Results" MODIFIED="1603795890479" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data" />
+    <SUITE FILE_PATH="coverage/CLLab$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1603793723135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/CLLab$CLLab.coverage" NAME="CLLab Coverage Results" MODIFIED="1603795864606" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

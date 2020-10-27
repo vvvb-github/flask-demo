@@ -48,14 +48,14 @@ def generate_data():
 
 if __name__=='__main__':
     # 清空数据库
-    res = requests.get(url=url+'clearDB')
-    data = res.json()
-    print(data['message'])
+    # res = requests.get(url=url+'clearDB')
+    # data = res.json()
+    # print(data['message'])
 
     while True:
         # 模拟间隔一段时间，这里为1——5 s
         time.sleep(random.randint(1, 5))
 
         # post请求发送数据
-        data = requests.post(url=url+'newData', data=generate_data()).json()
+        data = requests.post(url=url+'sb', data=generate_data()).json()
         print(data['message'])
