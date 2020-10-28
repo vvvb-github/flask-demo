@@ -18,6 +18,9 @@
 `pip install flask-socketio`\
 `pip install gevent`\
 `pip install gevent-websocket`
+`pip install flask_login`
+`pip install flask_wtf`
+`pip install wtforms
 - **项目结构说明**
 ```
 -src
@@ -35,3 +38,10 @@
     开发主要工作在app.py中，分为两部分。一部分为在Entities区域中编写实体类，每个实体类对应一张数据库表；另一部分为在API区域中编写视图函数，用于响应前端各请求。
     
     开发具体细节请学习参考Flask教程和SQLALchemy文档
+    
+
+
+- **edit by wxy**
+
+    现完成对登录模块以及前后端通信的测试，socketio的使用问题已经解决，但是数据库与前端图表更新仍需要实验与开发
+

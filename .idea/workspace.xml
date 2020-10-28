@@ -11,15 +11,93 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3643dad4-0778-4e47-9383-a59375a95194" name="Default Changelist" comment="建库脚本">
-      <change afterPath="$PROJECT_DIR$/algorithm/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/algorithm/api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/websocket_client_demo/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/websocket_client_demo/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/css/feathericon.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/css/font-awesome.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/css/select2.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/css/settings.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/fonts/feathericon.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/fonts/fontawesome-webfont.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/bg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/blog/blog-01.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/blog/blog-02.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/blog/blog-03.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/img-01.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/logo-small.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/logo-white.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/profiles/avatar-01.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/profiles/avatar-06.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/profiles/avatar-07.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/profiles/avatar-08.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/profiles/avatar-12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/profiles/avatar-122.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/profiles/avatar-13.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/profiles/avatar-14.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/profiles/avatar-17.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/profiles/avatar-18.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/timg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user13.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/user9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/img/user/歼灭.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/js/bootstrap.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/js/chart.morris.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/js/form-validation.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/js/jquery-3.2.1.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/js/jquery-3.2.1.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/js/jquery.maskedinput.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/js/mask.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/js/popper.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/js/script.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/js/select2.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/datatables/datatables.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/datatables/datatables.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/datatables/jquery.dataTables.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/fontawesome/css/all.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/fontawesome/css/fontawesome.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/fontawesome/webfonts/fa-brands-400.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/fontawesome/webfonts/fa-regular-400.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/fontawesome/webfonts/fa-solid-900.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/morris/morris.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/morris/morris.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/raphael/raphael.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/select2/css/select2.min.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/select2/js/select2.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/assets/plugins/slimscroll/jquery.slimscroll.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/electromagenetic/chart-left.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/electromagenetic/chart-right.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/evaporation/chart-left.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/future-height/chart1.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/future-height/chart2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/index/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/radar-valid-distance/chart-left.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/radar-valid-distance/chart-right.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/suface-evaporation/chart1.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/suface-evaporation/chart2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/chart/suface-evaporation/chart3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/index1.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/echarts-gl.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/echarts.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/jquery.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/jquery.nicescroll.min.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CLLab.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CLLab.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +117,7 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="JupyterTrust" id="55393d0b-b461-4199-9c25-9c9ad75441b6" />
   <component name="ProjectId" id="1grDUCwDriwxDtu7GMDltTXKzz6" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -50,6 +129,7 @@
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app.py" />
@@ -61,7 +141,7 @@
       <recent name="E:\PyCharm\CLLab\static\js" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Flask server.Flask (app.py)">
     <configuration name="CLLab" type="PythonConfigurationType" factoryName="Python">
       <module name="CLLab" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -148,6 +228,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -168,6 +249,11 @@
       <workItem from="1600839824593" duration="1341000" />
       <workItem from="1602385436305" duration="1322000" />
       <workItem from="1602396579944" duration="21473000" />
+      <workItem from="1603689535947" duration="1395000" />
+      <workItem from="1603691090906" duration="2634000" />
+      <workItem from="1603694159078" duration="9655000" />
+      <workItem from="1603765156830" duration="8496000" />
+      <workItem from="1603866347397" duration="12092000" />
     </task>
     <task id="LOCAL-00001" summary="flask demo">
       <created>1599042464871</created>
@@ -215,7 +301,7 @@
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -237,10 +323,11 @@
     <option name="LAST_COMMIT_MESSAGE" value="建库脚本" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1602420250652">
-      <screen x="0" y="0" width="1536" height="864" />
+    <state x="372" y="141" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1603689612111">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.864@0.0.1536.864" timestamp="1602420250652" />
+    <state x="372" y="141" width="1092" height="715" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1603689612111" />
     <state x="499" y="178" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598927729065">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -249,42 +336,51 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="93" y="93" width="1350" height="678" key="DiffContextDialog/0.0.1536.864@0.0.1536.864" timestamp="1599042759069" />
-    <state x="549" y="173" key="FileChooserDialogImpl" timestamp="1602420214377">
-      <screen x="0" y="0" width="1536" height="864" />
+    <state x="915" y="280" key="FileChooserDialogImpl" timestamp="1603699562135">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="549" y="173" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1602420214377" />
-    <state width="1493" height="223" key="GridCell.Tab.0.bottom" timestamp="1602427212844">
-      <screen x="0" y="0" width="1536" height="864" />
+    <state x="915" y="280" key="FileChooserDialogImpl/0.0.2560.1400@0.0.2560.1400" timestamp="1603699562135" />
+    <state width="2517" height="372" key="GridCell.Tab.0.bottom" timestamp="1603879114837">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1493" height="223" key="GridCell.Tab.0.bottom/0.0.1536.864@0.0.1536.864" timestamp="1602427212844" />
-    <state width="1493" height="223" key="GridCell.Tab.0.center" timestamp="1602427212844">
-      <screen x="0" y="0" width="1536" height="864" />
+    <state width="2517" height="372" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1603879114837" />
+    <state width="2517" height="372" key="GridCell.Tab.0.center" timestamp="1603879114837">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1493" height="223" key="GridCell.Tab.0.center/0.0.1536.864@0.0.1536.864" timestamp="1602427212844" />
-    <state width="1493" height="223" key="GridCell.Tab.0.left" timestamp="1602427212844">
-      <screen x="0" y="0" width="1536" height="864" />
+    <state width="2517" height="372" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1603879114837" />
+    <state width="2517" height="372" key="GridCell.Tab.0.left" timestamp="1603879114837">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1493" height="223" key="GridCell.Tab.0.left/0.0.1536.864@0.0.1536.864" timestamp="1602427212844" />
-    <state width="1493" height="223" key="GridCell.Tab.0.right" timestamp="1602427212844">
-      <screen x="0" y="0" width="1536" height="864" />
+    <state width="2517" height="372" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1603879114837" />
+    <state width="2517" height="372" key="GridCell.Tab.0.right" timestamp="1603879114837">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1493" height="223" key="GridCell.Tab.0.right/0.0.1536.864@0.0.1536.864" timestamp="1602427212844" />
-    <state width="1493" height="277" key="GridCell.Tab.1.bottom" timestamp="1602400943519">
-      <screen x="0" y="0" width="1536" height="864" />
+    <state width="2517" height="372" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1603879114837" />
+    <state width="2517" height="410" key="GridCell.Tab.1.bottom" timestamp="1603878028848">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1493" height="277" key="GridCell.Tab.1.bottom/0.0.1536.864@0.0.1536.864" timestamp="1602400943519" />
-    <state width="1493" height="277" key="GridCell.Tab.1.center" timestamp="1602400943519">
-      <screen x="0" y="0" width="1536" height="864" />
+    <state width="2517" height="410" key="GridCell.Tab.1.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1603878028848" />
+    <state width="2517" height="410" key="GridCell.Tab.1.center" timestamp="1603878028848">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1493" height="277" key="GridCell.Tab.1.center/0.0.1536.864@0.0.1536.864" timestamp="1602400943519" />
-    <state width="1493" height="277" key="GridCell.Tab.1.left" timestamp="1602400943519">
-      <screen x="0" y="0" width="1536" height="864" />
+    <state width="2517" height="410" key="GridCell.Tab.1.center/0.0.2560.1400@0.0.2560.1400" timestamp="1603878028848" />
+    <state width="2517" height="410" key="GridCell.Tab.1.left" timestamp="1603878028848">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1493" height="277" key="GridCell.Tab.1.left/0.0.1536.864@0.0.1536.864" timestamp="1602400943519" />
-    <state width="1493" height="277" key="GridCell.Tab.1.right" timestamp="1602400943519">
-      <screen x="0" y="0" width="1536" height="864" />
+    <state width="2517" height="410" key="GridCell.Tab.1.left/0.0.2560.1400@0.0.2560.1400" timestamp="1603878028848" />
+    <state width="2517" height="410" key="GridCell.Tab.1.right" timestamp="1603878028848">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1493" height="277" key="GridCell.Tab.1.right/0.0.1536.864@0.0.1536.864" timestamp="1602400943519" />
+    <state width="2517" height="410" key="GridCell.Tab.1.right/0.0.2560.1400@0.0.2560.1400" timestamp="1603878028848" />
     <state x="270" y="76" key="SettingsEditor" timestamp="1602419860324">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -304,7 +400,9 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CLLab$main.coverage" NAME="main Coverage Results" MODIFIED="1602427187372" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data" />
+    <SUITE FILE_PATH="coverage/server$main.coverage" NAME="main Coverage Results" MODIFIED="1603694188082" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data" />
     <SUITE FILE_PATH="coverage/CLLab$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1602420082116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/CLLab$CLLab.coverage" NAME="CLLab Coverage Results" MODIFIED="1602427079451" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/server$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1603879003448" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

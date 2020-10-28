@@ -1,11 +1,16 @@
-from flask import Flask, request
+from time import sleep
+from flask import Flask, request, url_for
 from flask_cors import *
 from flask_sqlalchemy import SQLAlchemy
 from config import *
 from datetime import *
 from algorithm import api
 from flask_socketio import *
-
+from flask import render_template, redirect
+from flask_login import LoginManager, login_required, login_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField
+from wtforms.validators import DataRequired, EqualTo
 
 app = Flask(__name__)
 
@@ -14,7 +19,8 @@ CORS(app, supports_credentials=True)
 
 # 设置数据库
 app.config['SQLALCHEMY_DATABASE_URI'] = \
-    'mysql+pymysql://'+mysql_user+':'+mysql_pass+'@'+mysql_host+':'+str(mysql_port)+'/'+mysql_name+'?charset=utf8'
+    'mysql+pymysql://' + mysql_user + ':' + mysql_pass + '@' + mysql_host + ':' + str(
+        mysql_port) + '/' + mysql_name + '?charset=utf8'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 # 创建数据库对象
@@ -24,6 +30,7 @@ db.create_all()
 # 初始化socketIO
 app.config['SECRET_KEY'] = 'secret!'
 socket_io = SocketIO(app, cors_allowed_origins='*')
+
 
 # --------------------------------------------------- Entities ---------------------------------------------------------
 
@@ -49,6 +56,26 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r %r %r %r %r %r>' % \
                (self.account, self.password, self.permission, self.registerTime, self.nickname, self.identity)
+
+    # flask_login 需要的方法与接口
+
+    # 用户是否通过验证
+    def is_authenticated(self, password):
+        if password == self.password:
+            return True
+        else:
+            return False
+
+    # 用户是否有权限
+    def if_has_permission(self):
+        if self.permission == 1:
+            return True
+        else:
+            return False
+
+    # 获得用户id
+    def get_id(self):
+        return self.identity
 
 
 class Diary(db.Model):
@@ -171,7 +198,9 @@ class AWS(db.Model):
 
     def __repr__(self):
         return '<AWS %r %r %r %r %r %r %r>' % \
-               (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure, self.windSpeed)
+               (
+                   self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure,
+                   self.windSpeed)
 
 
 class SB(db.Model):
@@ -196,7 +225,9 @@ class SB(db.Model):
 
     def __repr__(self):
         return '<SB %r %r %r %r %r %r %r>' % \
-               (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure, self.windSpeed)
+               (
+                   self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure,
+                   self.windSpeed)
 
 
 class MR(db.Model):
@@ -236,6 +267,68 @@ def clearTable(table):
     record_list = table.query
     for record in record_list:
         db.session.delete(record)
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------ PAGE & LOGIN --------------------------------------------------
+
+# 创建一个模拟表
+USERS = [
+    {
+
+    }
+]
+
+
+# 对表单进行定义
+class LoginForm(FlaskForm):
+    username = StringField('用户名', validators=[DataRequired()])
+    password = PasswordField('密码', validators=[DataRequired()])
+
+
+# 对登录管理对象的实例化
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'  # 若未登录将会重定向至login页面\
+
+
+@login_manager.user_loader
+def load_user(user_account):
+    return [{
+        "account": "remilia",
+        "password": "123",
+        "permission": 1,
+    }]
+
+
+# 登录页面
+@app.route('/')
+# @login_required
+def index():
+    return render_template('index.html')
+
+
+# 登录逻辑
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    form = LoginForm()
+    message = None
+    if form.validate_on_submit():
+        user_name = form.username.data
+        pass_word = form.password.data
+        print(user_name)
+        print(pass_word)
+        if user_name == 'remilia':
+            if pass_word == '123':
+                login_user(User('remilia', '123', 1, None, None, None))
+                return redirect(url_for('index'))
+            else:
+                message = "密码错误"
+        else:
+            message = "用户不存在"
+    return render_template("login.html", message=message, form=form)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -296,6 +389,54 @@ def disconnect():
     global client_num
     client_num -= 1
     print('断开连接：' + str(client_num))
+
+
+# event test
+@socket_io.on('event1')
+def myEvent1(json):
+    print('new data:' + str(json))
+    emit('event1', json)
+
+
+# index information
+@socket_io.on('index')
+def index_init():
+    print('this is index, will send some information')
+    this_data = [
+        {
+            'date': '2009/8/1 0:00',
+            'tem': 20,
+            'hum': 25,
+            'wind': 26,
+            'press': 27
+        },
+        {
+            'date': '2009/8/1 1:00',
+            'tem': 20,
+            'hum': 25,
+            'wind': 26,
+            'press': 27
+        },
+        {
+            'date': '2009/8/1 2:00',
+            'tem': 20,
+            'hum': 25,
+            'wind': 26,
+            'press': 27
+        }
+    ]
+    emit('historical_data', this_data)
+    while True:
+        new_data = {
+                'date': '2009/8/1 3:00',
+                'tem': 20,
+                'hum': 25,
+                'wind': 26,
+                'press': 27
+         }
+        print("---------------------new data--------------------")
+        sleep(5)
+        emit('new_data', new_data)
 
 
 # socket异常处理
