@@ -1,4 +1,5 @@
-from time import sleep
+import random
+import datetime
 from flask import Flask, request, url_for
 from flask_cors import *
 from flask_sqlalchemy import SQLAlchemy
@@ -43,39 +44,51 @@ class User(db.Model):
     permission = db.Column(db.Integer)
     registerTime = db.Column(db.DateTime)
     nickname = db.Column(db.String(255))
-    identity = db.Column(db.String(255))
+    authority_level = db.Column(db.String(255))
 
-    def __init__(self, account, password, permission, register_time, nickname, identity):
+    def __init__(self, account, password, permission, register_time, nickname, authority_level):
         self.account = account
         self.password = password
         self.permission = permission
         self.registerTime = register_time
         self.nickname = nickname
-        self.identity = identity
+        self.authority_level = authority_level
 
     def __repr__(self):
         return '<User %r %r %r %r %r %r>' % \
-               (self.account, self.password, self.permission, self.registerTime, self.nickname, self.identity)
+               (self.account, self.password, self.permission, self.registerTime, self.nickname, self.authority_level)
 
-    # flask_login 需要的方法与接口
+    # flask-login 需要的方法，获得用户的主键
+    def get_id(self):
+        return self.account
 
-    # 用户是否通过验证
-    def is_authenticated(self, password):
-        if password == self.password:
-            return True
-        else:
-            return False
-
-    # 用户是否有权限
-    def if_has_permission(self):
+    # flask-login 需要的方法，查看用户是否有权限
+    def is_authenticated(self):
         if self.permission == 1:
             return True
         else:
             return False
 
-    # 获得用户id
-    def get_id(self):
-        return self.identity
+    # flask-login 需要的方法，查看用户是否激活
+    def is_active(self):
+        return True
+
+    # 登录需要的方法，校验密码
+    def verify_password(self, password):
+        if self.password != password:
+            return False
+        else:
+            return True
+
+    # 静态方法，flask-login需要的方法，从表中查找当前session中所在的用户（如果session为空则将此用户注册到session中）
+    @staticmethod
+    def get(user_account):
+        if not user_account:
+            return None
+        query_result = User.query.filter_by(account=user_account).first()
+        print(query_result)
+        if query_result is not None:
+            return query_result
 
 
 class Diary(db.Model):
@@ -275,7 +288,8 @@ class Page(db.Model):
 
     def __repr__(self):
         return '<Page %r %r %r %r %r %r %r>' % \
-               (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure, self.windSpeed)
+               (
+               self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure, self.windSpeed)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -329,13 +343,6 @@ def updatePage(data: dict):
 
 # ------------------------------------------------------ PAGE & LOGIN --------------------------------------------------
 
-# 创建一个模拟表
-USERS = [
-    {
-
-    }
-]
-
 
 # 对表单进行定义
 class LoginForm(FlaskForm):
@@ -346,22 +353,18 @@ class LoginForm(FlaskForm):
 # 对登录管理对象的实例化
 login_manager = LoginManager()
 login_manager.init_app(app)
-login_manager.login_view = 'login'  # 若未登录将会重定向至login页面\
+login_manager.login_view = 'login'  # 若未登录将会重定向至login页面
 
 
 @login_manager.user_loader
 def load_user(user_account):
-    return [{
-        "account": "remilia",
-        "password": "123",
-        "permission": 1,
-    }]
+    return User.get(user_account)
 
 
 # 登录页面
 @app.route('/')
-# @login_required
-def index():
+@login_required
+def direct_index():
     return render_template('index.html')
 
 
@@ -375,15 +378,23 @@ def login():
         pass_word = form.password.data
         print(user_name)
         print(pass_word)
-        if user_name == 'remilia':
-            if pass_word == '123':
-                login_user(User('remilia', '123', 1, None, None, None))
+        current_user = User.query.filter_by(account=user_name).first()
+        if current_user is not None:
+            if current_user.verify_password(pass_word) is True:
+                print(login_user(current_user))
                 return redirect(url_for('index'))
             else:
                 message = "密码错误"
         else:
             message = "用户不存在"
     return render_template("login.html", message=message, form=form)
+
+
+# 主页逻辑
+@app.route('/index')
+@login_required
+def index():
+    return render_template('index.html')
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -505,52 +516,51 @@ def disconnect():
     print('断开连接：' + str(client_num))
 
 
-# event test
-@socket_io.on('event1')
-def myEvent1(json):
-    print('new data:' + str(json))
-    emit('event1', json)
-
-
 # index information
 @socket_io.on('index')
 def index_init():
     print('this is index, will send some information')
     this_data = [
         {
-            'date': '2009/8/1 0:00',
+            'date': datetime.now().strftime("%Y/%m/%d %H:%M"),
             'tem': 20,
             'hum': 25,
             'wind': 26,
-            'press': 27
+            'press': 27,
+            'direction': random.randint(10, 100)
         },
         {
-            'date': '2009/8/1 1:00',
+            'date': datetime.now().strftime("%Y/%m/%d %H:%M"),
             'tem': 20,
             'hum': 25,
             'wind': 26,
-            'press': 27
+            'press': 27,
+            'direction': random.randint(10, 100)
         },
         {
-            'date': '2009/8/1 2:00',
+            'date': datetime.now().strftime("%Y/%m/%d %H:%M"),
             'tem': 20,
             'hum': 25,
             'wind': 26,
-            'press': 27
+            'press': 27,
+            'direction': random.randint(10, 100)
         }
     ]
     emit('historical_data', this_data)
-    while True:
-        new_data = {
-                'date': '2009/8/1 3:00',
-                'tem': 20,
-                'hum': 25,
-                'wind': 26,
-                'press': 27
-         }
-        print("---------------------new data--------------------")
-        sleep(5)
-        emit('new_data', new_data)
+
+
+@socket_io.on('request_index_data')
+def send_new_index_data():
+    new_data = {
+        'date': datetime.now().strftime("%Y/%m/%d %H:%M"),
+        'tem': random.randint(130, 300),
+        'hum': random.uniform(0, 1),
+        'wind': random.randint(0, 500),
+        'press': random.randint(0, 1100),
+        'direction': random.randint(0, 100)
+    }
+    print("send index data to one client!^^")
+    emit('new_data', new_data)
 
 
 # socket异常处理
@@ -565,4 +575,4 @@ def default_error_handler(e):
 
 if __name__ == '__main__':
     api.rootPath(app)
-    socket_io.run(app, debug=True, host='localhost', port=8085)
+    socket_io.run(app, debug=False, host='10.201.143.92', port=8085)
