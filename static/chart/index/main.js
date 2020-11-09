@@ -7,9 +7,11 @@ let TEM = document.getElementById("tem");
 let HUM = document.getElementById("hum");
 let WIND = document.getElementById("wind");
 let PRESS = document.getElementById("press");
-let TEXT = document.getElementById("datatext")
+let TEXT = document.getElementById("datatext");
 
-let timeData = [];
+let upper_time = null; //用来判断从服务端传递来数据是否是更新过的
+
+let timeData = []
 let tem = []
 let hum = []
 let wind = []
@@ -27,11 +29,11 @@ let url = "http://" + document.domain + ":" + location.port
 socket = io.connect(url)
 socket.emit('index')
 
-//socket io 监听事件
-socket.on('historical_data', his_data=>{
+// socket io 监听事件
+socket.on('historical_index_data', his_data=>{
     let i = 0;
     while(i<his_data.length){
-        timeData.push(his_data[i].date)
+        timeData.push(his_data[i].time)
         tem.push(his_data[i].tem)
         hum.push(his_data[i].hum)
         wind.push(his_data[i].wind)
@@ -39,12 +41,12 @@ socket.on('historical_data', his_data=>{
         direction.push(his_data[i].direction)
         i++
     }
-    console.log(tem)
     current_index = his_data.length - 1;
+    upper_time = timeData[current_index]
     update_header()
 })
 
-socket.on('new_data', new_data=>{
+socket.on('new_index_data', new_data=>{
     if(current_index >= max_save_count) {
         timeData.shift()
         tem.shift()
@@ -54,22 +56,26 @@ socket.on('new_data', new_data=>{
         direction.shift()
         current_index --;
     }
-    timeData.push(new_data.date)
-    tem.push(new_data.tem)
-    hum.push(new_data.hum)
-    wind.push(new_data.wind)
-    press.push(new_data.press)
-    direction.push(new_data.direction)
-    current_index ++;
-    console.log(timeData)
-    update_header()
+    if(upper_time === new_data.time){
+        console.log("时间相等，数据冗余，将舍弃")
+        return
+    }else {
+        upper_time = new_data.time
+        timeData.push(new_data.time)
+        tem.push(new_data.tem)
+        hum.push(new_data.hum)
+        wind.push(new_data.wind)
+        press.push(new_data.press)
+        direction.push(new_data.direction)
+        current_index ++;
+        update_header()
+    }
 })
 
 //socket io 定时发送请求信息
 setInterval(request_data,1000)
 
 function request_data(){
-    console.log("request")
     socket.emit('request_index_data')
 }
 

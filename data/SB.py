@@ -20,7 +20,7 @@ class Param:
         return self.value
 
 
-url = 'http://localhost:8085/'
+url = 'http://10.201.143.92:8085/'
 
 longitude = Param(119, 0.5, 115, 125)  # 经度
 latitude = Param(31, 0.5, 25, 35)  # 纬度

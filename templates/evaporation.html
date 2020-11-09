@@ -6,7 +6,7 @@
         <title>Mentoring - Dashboard</title>
 		
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
 		
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://www.jq22.com/jquery/bootstrap-4.2.1.css">
@@ -27,25 +27,23 @@
 			<script src="static/assets/js/respond.min.js"></script>
 		<![endif]-->
 
-        <script src="static/js/jquery.min.js"></script>
-        <script src="static/js/jquery.nicescroll.min.js"></script>
-        <script src="static/js/echarts.js"></script>
-        <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
-            integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/jquery.nicescroll.min.js"></script>
+<script src="static/js/echarts.js"></script>
 
-        <script>
-            $(document).ready(function() {
+<script>
+  $(document).ready(function() {
   
-	            var nice = $("html").niceScroll();  // The document page (body)
+	var nice = $("html").niceScroll();  // The document page (body)
 	
-	            $("#div1").html($("#div1").html()+' '+nice.version);
-
-                $("#boxscroll").niceScroll({cursorborder:"",cursorcolor:"#00F",boxzoom:true}); // First scrollable DIV
-
-                $("#boxscroll2").niceScroll("#contentscroll2",{cursorcolor:"#F00",cursoropacitymax:0.7,boxzoom:true,touchbehavior:true});  // Second scrollable DIV
+	$("#div1").html($("#div1").html()+' '+nice.version);
     
-            });
-        </script>
+    $("#boxscroll").niceScroll({cursorborder:"",cursorcolor:"#00F",boxzoom:true}); // First scrollable DIV
+
+    $("#boxscroll2").niceScroll("#contentscroll2",{cursorcolor:"#F00",cursoropacitymax:0.7,boxzoom:true,touchbehavior:true});  // Second scrollable DIV
+    
+  });
+</script>
     </head>
     <body>
 	
@@ -99,7 +97,7 @@
 										<a href="#">
 											<div class="media">
 												<span class="avatar avatar-sm">
-													<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/user/user13.jpg">
+													<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/user/user13.jpg">
 												</span>
 												<div class="media-body">
 													<p class="noti-details"><span class="noti-title">云云云</span> 发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
@@ -112,7 +110,7 @@
 										<a href="#">
 											<div class="media">
 												<span class="avatar avatar-sm">
-													<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/user/歼灭.jpg">
+													<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/user/歼灭.jpg">
 												</span>
 												<div class="media-body">
 													<p class="noti-details"><span class="noti-title">飞飞飞</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
@@ -125,7 +123,7 @@
 										<a href="#">
 											<div class="media">
 												<span class="avatar avatar-sm">
-													<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/profiles/avatar-122.jpg">
+													<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-122.jpg">
 												</span>
 												<div class="media-body">
 												<p class="noti-details"><span class="noti-title">白白白</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
@@ -137,7 +135,7 @@
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
-								<a href="#">View all Notifications</a>
+								<a href="#">查看所有消息</a>
 							</div>
 						</div>
 					</li>
@@ -149,7 +147,7 @@
 						</a>
 					</li>
 					<!-- /download>
-					<!-- upload -->
+					!-- upload -->
 					<li class="nav-item dropdown noti-dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导入">
 							<i class="fe fe-upload"></i>
@@ -159,21 +157,21 @@
 					<!-- User Menu -->
 					<li class="nav-item dropdown has-arrow">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
+							<span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
 						</a>
 						<div class="dropdown-menu">
 							<div class="user-header">
 								<div class="avatar avatar-sm">
-									<img src="static/assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
+									<img src="assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
 								</div>
 								<div class="user-text">
 									<h6>汪宇晖</h6>
 									<p class="text-muted mb-0">Administrator</p>
 								</div>
 							</div>
-							<a class="dropdown-item" href="profile.html">配置文件</a>
-							<a class="dropdown-item" href="settings.html">设置</a>
-							<a class="dropdown-item" href="login.html"><font color="#E63C3C">退出</font></a>
+							<a class="dropdown-item" href="profile.html">My Profile</a>
+							<a class="dropdown-item" href="settings.html">Settings</a>
+							<a class="dropdown-item" href="login.html">Logout</a>
 						</div>
 					</li>
 					<!-- /User Menu -->
@@ -189,15 +187,15 @@
                 <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
 						<ul>
-							<li style="background:#9ca8b8"> 
-								<a href="profile.html"><span><font color="#293c55">首页</font></span></a>
+							<li> 
+								<a href="index.html"><span><font color="#CCCCCC">首页</font></span></a>
 							</li>
-							<li class="submenu">
-								<a href="#"><span><font color="#CCCCCC"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
+							<li class="submenu" >
+								<a href="#" style="background:#9ca8b8"><span><font color="#293c55"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="evaporation"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
+									<li ><a class="active" href="evaporation.html"><font color="#1e88e5">蒸发波导诊断</font></a></li>
 									<li><a href="surface-evaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
-									<li><a href="future-height"><font color="#CCCCCC">未来波导高度预测</font></a></li>
+									<li><a href="future-height.html"><font color="#CCCCCC">未来波导高度预测</font></a></li>
 								</ul>
 							</li>
 
@@ -222,13 +220,29 @@
 									<li><a href="invoice-report"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
 									<li><a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a></li>
 								</ul>
-							
-							</li>
 						</ul>
 					</div>
                 </div>
             </div>
 			<!-- /Sidebar -->
+
+
+			<!-- jQuery -->
+			<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+		
+			<!-- Bootstrap Core JS -->
+			<script src="static/assets/js/popper.min.js"></script>
+			<script src="static/assets/js/bootstrap.min.js"></script>
+			
+			<!-- Slimscroll JS -->
+			<script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+			
+			<script src="static/assets/plugins/raphael/raphael.min.js"></script>
+			<script src="static/assets/plugins/morris/morris.min.js"></script>
+			<script src="static/assets/js/chart.morris.js"></script>
+			
+			<!-- Custom JS -->
+			<script  src="static/assets/js/script.js"></script>
 			
 			<!-- Page Wrapper -->
             <div class="page-wrapper">
@@ -239,7 +253,7 @@
 					<div class="page-header">
 						<div class="row">
 							<div class="col-sm-12">
-								<h3 class="page-title">欢迎来到大气波导分析页面!</h3>
+								<h3 class="page-title">蒸发波导诊断页面</h3>
 								<ul class="breadcrumb">
 									<li class="breadcrumb-item active">当前所在地理位置：31.65°N, 122.27°E </li>
 								</ul>
@@ -257,7 +271,7 @@
 											<i class="fa fa-thermometer"></i>
 										</span>
 										<div class="dash-count" id="whitefont">
-											<h3 id="tem">278K</h3>
+											<h3 id='tem'>278K</h3>
 										</div>
 									</div>
 									<div class="dash-widget-info">
@@ -284,7 +298,7 @@
 										
 										<h6 class="text-muted">大气湿度</h6>
 										<div class="progress progress-sm">
-											<div class="progress-bar bg-success w-100" style="background-color: #FDC839 !important;"></div>
+											<div class="progress-bar bg-success w-100" style="background-color: #FDC839 !important"></div>
 										</div>
 									</div>
 								</div>
@@ -341,56 +355,103 @@
 							<!-- Sales Chart -->
 							<div class="card card-chart" >
 								<div class="card-header" >
-									<h4 class="card-title">历史温度信息</h4>
+									<h4 class="card-title">蒸发波导诊断信息</h4>
 								</div>
-								<div class="card-body" id='echarts'>
-									
+								<div id="chart-left" style="height: 500px;">	
 								</div>
+								<script type="text/javascript" src="static/chart/evaporation/chart-left.js"></script>
+								
 							</div>
 						</div>
-						<div class="col-md-12 col-lg-6" >
-						
-							<!-- Sales Chart -->
+
+						<div class="col-md-12 col-lg-6">
 							<div class="card card-chart" >
 								<div class="card-header" >
-									<h4 class="card-title">历史气压信息</h4>
+									<h4 class="card-title">蒸发波导诊断操作</h4>
 								</div>
-								<div class="card-body" id='echarts2'>
-									
+								<div class="card-body">
+									<form action="#">
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+    max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置选择</label>
+											<div class="col-md-10" style="flex: 0 0 75.333333%;
+    max-width: 75.333333%;">
+												<select class="form-control" style="width: 80%;float: right;">
+													<option>-- Select --</option>
+													<option>Option 1</option>
+													<option>Option 2</option>
+													<option>Option 3</option>
+													<option>Option 4</option>
+													<option>Option 5</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">时间选择</label>
+											<div class="col-md-10" style="flex: 0 0 75.333333%;
+										max-width: 75.333333%;">
+											<select class="form-control" style="width: 80%;float: right;">
+												<option>-- Select --</option>
+												<option>Option 1</option>
+												<option>Option 2</option>
+												<option>Option 3</option>
+												<option>Option 4</option>
+												<option>Option 5</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">参数选择(λ)</label>
+											<div class="col-md-10"  style="flex: 0 0 75.333333%;
+										max-width: 75.333333%;">
+												<input type="text" class="form-control" placeholder="1.5" style="width: 80%;float: right;">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">参数选择(μ)</label>
+											<div class="col-md-10"  style="flex: 0 0 75.333333%;
+										max-width: 75.333333%;">
+												<input type="text" class="form-control" placeholder="2.59" style="width: 80%;float: right;">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">参数选择(v)</label>
+											<div class="col-md-10"  style="flex: 0 0 75.333333%;
+										max-width: 75.333333%;">
+												<input type="text" class="form-control" placeholder="0.5" style="width: 80%;float: right;">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">参数选择(R)</label>
+											<div class="col-md-10"  style="flex: 0 0 75.333333%;
+										max-width: 75.333333%;">
+												<input type="text" class="form-control" placeholder="1" style="width: 80%;float: right;">
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">参数选择(ε)</label>
+											<div class="col-md-10"  style="flex: 0 0 75.333333%;
+										max-width: 75.333333%;">
+												<input type="text" class="form-control" placeholder="0.622" style="width: 80%;float: right;">
+											</div>
+										</div>
+										<div class="input-group-append" style="float: right;">
+											<button class="btn btn-primary" type="button" >确认</button>
+										</div>
+									</form>
 								</div>
 							</div>
-						</div>
-					</div>
-					<div class="row" >
-						<div class="col-md-12 col-lg-6" >
-						
-							<!-- Sales Chart -->
-							<div class="card card-chart" >
-								<div class="card-header" >
-									<h4 class="card-title">历史湿度信息</h4>
-								</div>
-								<div class="card-body" id='echarts3'>
-									
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 col-lg-6" >
-						
-							<!-- Sales Chart -->
-							<div class="card card-chart" >
-								<div class="card-header" >
-									<h4 class="card-title">历史风速信息</h4>
-								</div>
-								<div class="card-body" id='echarts4'>
-									
-								</div>
-							</div>
-						</div>
+						</div>	
 					</div>
 					<div class="row">
+						</div>
 						<div class="col-md-12 col-lg-6">
-						
-							<!-- Sales Chart -->
 							<div class="card card-chart">
 								<div class="card-header">
 									<h4 class="card-title">操作记录</h4>
@@ -398,61 +459,30 @@
 								<div class="card-body">
 								
 									<div id="boxscroll2">
-  <div id="contentscroll2">
-    <p>已成功连接服务器，时间: 2020.8.8，20:45！</p>
-  </div>
-</div>
-
-								</div>
-							</div>
-							<!-- /Sales Chart -->
-							
-						</div>
-						<div class="col-md-12 col-lg-6">
-						
-							<!-- Invoice Chart -->
-							<div class="card card-chart">
-								<div class="card-header">
-									<h4 class="card-title">数据信息</h4>
-								</div>
-								<div class="card-body">
-									<div id="boxscroll2">
-									  <div id="contentscroll2">
-										  <p id='datatext'></p>
-									   </div>
+										  <div id="contentscroll2">
+											<p>已成功连接服务器，时间: 2020.8.8，20:45！</p>
+										  </div>
 									</div>
+	
 								</div>
 							</div>
-							<!-- /Invoice Chart -->
-							
-						</div>	
+						</div>
+						
+						
 					</div>	
 				</div>			
 			</div>
 			<!-- /Page Wrapper -->
-		
         </div>
 		
 		<!-- /Main Wrapper -->
 		
-		<!-- jQuery -->
-        <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
 		
-		<!-- Bootstrap Core JS -->
-        <script src="static/assets/js/popper.min.js"></script>
-        <script src="static/assets/js/bootstrap.min.js"></script>
 		
-		<!-- Slimscroll JS -->
-        <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 		
-		<script src="static/assets/plugins/raphael/raphael.min.js"></script>
-		<script src="static/assets/plugins/morris/morris.min.js"></script>
-		<script src="static/assets/js/chart.morris.js"></script>
 		
-		<!-- Custom JS -->
-		<script  src="static/assets/js/script.js"></script>
-				
-		<script type="text/javascript" src="static/chart/index/main.js?3"></script>
+		
+		
 		
     </body>
 </html>

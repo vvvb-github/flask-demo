@@ -289,7 +289,8 @@ class Page(db.Model):
     def __repr__(self):
         return '<Page %r %r %r %r %r %r %r>' % \
                (
-               self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure, self.windSpeed)
+                   self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure,
+                   self.windSpeed)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -397,6 +398,24 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/evaporation')
+@login_required
+def evaporation_page():
+    return render_template('evaporation.html')
+
+
+@app.route('/future-height')
+@login_required
+def futureheight_page():
+    return render_template('futureheight.html')
+
+
+@app.route('/surface-evaporation')
+@login_required
+def sufaceevaporation_page():
+    return render_template('surfaceevaporation.html')
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -462,8 +481,8 @@ def sbData():
     api.radarLoss()
 
     # 数据库存取
-    db.session.add(AWS(data['time'], data['longitude'], data['latitude'], data['temperature'], data['humidity'],
-                       data['pressure'], data['wind_speed']))
+    db.session.add(SB(data['time'], data['longitude'], data['latitude'], data['temperature'], data['humidity'],
+                      data['pressure'], data['wind_speed']))
     db.session.add(EW(res['time'], res['height'], res['longitude'], res['latitude'], res['predict_height']))
     db.session.commit()
 
@@ -487,8 +506,8 @@ def mrData():
     api.radarLoss()
 
     # 数据库存取
-    db.session.add(AWS(data['time'], data['longitude'], data['latitude'], data['temperature'], data['humidity'],
-                       data['pressure'], data['wind_speed']))
+    db.session.add(MR(data['time'], data['longitude'], data['latitude'], data['temperature'], data['humidity'],
+                      data['pressure']))
     db.session.add(EW(res['time'], res['height'], res['longitude'], res['latitude'], res['predict_height']))
     db.session.commit()
 
@@ -516,51 +535,111 @@ def disconnect():
     print('断开连接：' + str(client_num))
 
 
-# index information
+# socket事件：新的客户端切换页面至主页
+# socket响应：建立连接并发送主表历史数据至客户端
+# 参数：历史数据的多少 historical_index_data_count
 @socket_io.on('index')
 def index_init():
-    print('this is index, will send some information')
-    this_data = [
-        {
-            'date': datetime.now().strftime("%Y/%m/%d %H:%M"),
-            'tem': 20,
-            'hum': 25,
-            'wind': 26,
-            'press': 27,
-            'direction': random.randint(10, 100)
-        },
-        {
-            'date': datetime.now().strftime("%Y/%m/%d %H:%M"),
-            'tem': 20,
-            'hum': 25,
-            'wind': 26,
-            'press': 27,
-            'direction': random.randint(10, 100)
-        },
-        {
-            'date': datetime.now().strftime("%Y/%m/%d %H:%M"),
-            'tem': 20,
-            'hum': 25,
-            'wind': 26,
-            'press': 27,
-            'direction': random.randint(10, 100)
-        }
-    ]
-    emit('historical_data', this_data)
+    historical_index_data_count = 80
+    global upper_page_data
+    # 按照时间先后排序，选择最近的 count 个数据
+    temp_data = Page.query.order_by(Page.time.desc()).limit(historical_index_data_count).all()
+    this_data = []
+    i = 1
+    while i <= historical_index_data_count:  # 按照时间递增顺序传递数据（倒序赋值）
+        this_data.append({
+            'time': temp_data[historical_index_data_count - i].time.strftime("%Y/%m/%d %H:%M:%S"),
+            'tem': temp_data[historical_index_data_count - i].temperature,
+            'hum': temp_data[historical_index_data_count - i].humidity,
+            'wind': temp_data[historical_index_data_count - i].windSpeed,
+            'press': temp_data[historical_index_data_count - i].pressure,
+            'direction': random.randint(100, 300)
+        })
+        i = i + 1
+    emit('historical_index_data', this_data)
 
 
+# socket事件：客户端请求新"主页"数据
+# socket响应：发送最新的一条数据至客户端，无论数据库是否更新
 @socket_io.on('request_index_data')
 def send_new_index_data():
+    current = Page.query.order_by(Page.time.desc()).first()  # 选择最新的一条数据
+    # 此处将判断数据库最新数据是否更新的逻辑转移到了客户端，服务端只需拿到数据库最新的一条数据发过去即可
     new_data = {
-        'date': datetime.now().strftime("%Y/%m/%d %H:%M"),
-        'tem': random.randint(130, 300),
-        'hum': random.uniform(0, 1),
-        'wind': random.randint(0, 500),
-        'press': random.randint(0, 1100),
-        'direction': random.randint(0, 100)
+        'time': current.time.strftime("%Y/%m/%d %H:%M:%S"),
+        'tem': current.temperature,
+        'hum': current.humidity,
+        'wind': current.windSpeed,
+        'press': current.pressure,
+        'direction': random.randint(100, 300)
     }
-    print("send index data to one client!^^")
-    emit('new_data', new_data)
+    print("page table has an update,will send new data to client")
+    emit('new_index_data', new_data)
+
+
+# socket事件：客户端切换页面至"蒸发波导诊断(evaporation)"
+# socket响应：发送最新的一则主表数据至客户端，并同时发送蒸发波导的历史数据至客户端
+# 参数：历史数据的多少 historical_evp_data_count
+# 对应DB表格：EW
+@socket_io.on('evaporation')
+def evaporation_init():
+    historical_evp_data_count = 50
+
+
+# socket事件：客户端请求新"蒸发波导诊断"数据
+# socket响应：发送最新的一条蒸发波导高度数据至客户端，同时附带有最新的Page表数据，至于是否更新视图，交给客户端判断
+# 对应DB表格：EW（仅发送实际值）
+@socket_io.on('request_evp_data')
+def send_new_evp_data():
+    # 填充
+    a = 20
+
+
+# socket事件：客户端切换页面至"表面波导与悬空波导诊断(surface-evaporation)"
+# socket响应：发送最新的一则主表数据至客户端，并同时发送表面波导与悬空波导的历史数据至客户端
+# 参数：历史数据量 historical_sfe_data_count
+# 对应DB表格：DW与SW
+@socket_io.on('surface_evaporation')
+def surface_evp_init():
+    historical_sfe_data_count = 50
+
+
+# socket事件：客户端请求新"表面波导与悬空波导诊断"数据
+# socket响应：发送最新的一条表面波导数据至客户端，同时附带有最新的Page表数据，至于是否更新视图，交给客户端判断
+# 对应DB表格:DW与SW
+@socket_io.on('request_sfe_data')
+def send_new_sfe_data():
+    # 填充
+    a = 20
+
+
+# socket事件：客户端切换页面至"未来波导高度预测(future-height-prediction)"
+# socket响应：发送最新的一则主表数据至客户端，并同时发送"蒸发波导"的预测信息
+# 参数：历史数据量 historical_fhp_data_count
+# 对应DB表格：EW（发送实际值与预测值）
+@socket_io.on('future_height_prediction')
+def fhp_init():
+    historical_fhp_data_count = 50
+
+
+# socket事件：客户端请求新"蒸发波导"预测数据
+# socket响应：发送最新的一条蒸发波导预测数据与实际数据至客户端，同时附带有最新的Page表数据，至于是否更新视图，交给客户端判断
+# 对应DB表格:EW（发送实际值与预测值）
+@socket_io.on('request_fhp_data')
+def send_new_fhp_data():
+    # 填充
+    a = 20
+
+
+# socket事件：客户端切换页面至"电磁波传播损耗计算(electromagnetic)"
+# socket响应：发送存储在js文件内的一组数据至客户端，客户端负责更新表格
+# 此处有一个问题：事件模型最好使用轮询的方式，但是socket无法维护具体某一个客户端，无法知道某个客户端拥有的是旧数据还是新数据
+# 设想的解决方案：客户端每次轮询时会顺便将自己所拥有信息的时间戳发送过来，服务端判断客户端时间戳就知道是否应该回复此条信息
+# 对应js文件：elec.json
+@socket_io.on('request_ele_data')
+def send_new_ele_data(client_time):
+    # 填充
+    print(client_time)
 
 
 # socket异常处理
