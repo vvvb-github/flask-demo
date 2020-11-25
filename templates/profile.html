@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Mentoring - Profile</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://www.jq22.com/jquery/bootstrap-4.2.1.css">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="static/assets/css/feathericon.min.css">
+		
+		<!-- Main CSS -->
+		<link rel="stylesheet" href="static/assets/css/style.css">
+		<script src="static/js/dialog.js"></script>
+		
+		<!--[if lt IE 9]>
+			<script src="static/assets/js/html5shiv.min.js"></script>
+			<script src="static/assets/js/respond.min.js"></script>
+		<![endif]-->
+    </head>
+    <body>
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		<!-- Header -->
+		<div class="header">
+			
+			<!-- Logo -->
+			<div class="header-left">
+				<a href="index.html" class="logo">
+					<img src="static/assets/img/logo.png" alt="Logo">
+				</a>
+				<a href="index.html" class="logo logo-small">
+					<img src="static/assets/img/logo-small.png" alt="Logo" width="30" height="30">
+				</a>
+			</div>
+			<!-- /Logo -->
+			
+			<a href="javascript:void(0);" id="toggle_btn">
+				<i class="fe fe-text-align-left"></i>
+			</a>
+			
+			<div class="top-nav-search">
+
+			</div>
+			
+			<!-- Mobile Menu Toggle -->
+			<a class="mobile_btn" id="mobile_btn">
+				<i class="fa fa-bars"></i>
+			</a>
+			<!-- /Mobile Menu Toggle -->
+			
+			<!-- Header Right Menu -->
+			<ul class="nav user-menu">
+				
+				<!-- Notifications -->
+				<li class="nav-item dropdown noti-dropdown">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+						<i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
+					</a>
+					<div class="dropdown-menu notifications">
+						<div class="topnav-dropdown-header">
+							<span class="notification-title">Notifications</span>
+							<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+						</div>
+						<div class="noti-content">
+							<ul class="notification-list">
+								<li class="notification-message">
+									<a href="#">
+										<div class="media">
+											<span class="avatar avatar-sm">
+												<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/user/user13.jpg">
+											</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">云云云</span> 发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
+												<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+											</div>
+										</div>
+									</a>
+								</li>
+								<li class="notification-message">
+									<a href="#">
+										<div class="media">
+											<span class="avatar avatar-sm">
+												<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/user/歼灭.jpg">
+											</span>
+											<div class="media-body">
+												<p class="noti-details"><span class="noti-title">飞飞飞</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
+												<p class="noti-time"><span class="notification-time">1 days ago</span></p>
+											</div>
+										</div>
+									</a>
+								</li>
+								<li class="notification-message">
+									<a href="#">
+										<div class="media">
+											<span class="avatar avatar-sm">
+												<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/profiles/avatar-122.jpg">
+											</span>
+											<div class="media-body">
+											<p class="noti-details"><span class="noti-title">白白白</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
+											<p class="noti-time"><span class="notification-time">2 days ago</span></p>
+											</div>
+										</div>
+									</a>
+								</li>
+							</ul>
+						</div>
+						<div class="topnav-dropdown-footer">
+							<a href="report">查看所有报告信息</a>
+						</div>
+					</div>
+				</li>
+				<!-- Notifications -->
+				<!-- Write -->
+				<li >
+					<a data-toggle="modal" href="#text_inputs" title="信息上报">
+						<i class="fe fe-file"></i>
+					</a>
+				</li>
+				<!-- Write -->
+				<!-- download-->
+				<li >
+					<a href="#" title="数据导出">
+						<i class="fe fe-download" onclick="dianwo()"></i>
+					</a>
+					<div class="dropdown-menu" style="padding: 5px;">
+						
+						<script type="text/javascript">
+							document.getElementById('zhezhao').style.display="none";
+							function mez(){
+								document.getElementById('zhezhao').style.display="";
+							}
+							function hidder(){
+								document.getElementById('zhezhao').style.display="none";
+							}
+						</script>
+		
+					</div>
+				</li>
+				<!-- /download -->
+				<!-- upload -->
+				<li class="nav-item dropdown noti-dropdown">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导入">
+						<i class="fe fe-upload"></i>
+					</a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item"><input type="file" ></a>
+						<a class="dropdown-item"><input type="file" ></a>
+						<a class="dropdown-item"><input type="file" ></a>
+						<a class="dropdown-item"><input type="file" ></a>
+						<a class="dropdown-item"><input type="file" ></a>
+							<button type="button" class="btn btn-primary" onclick="dianwo1()" style="color:#F8F9FA;float: right;">确认上传</button>
+					</div>
+						
+				</li>
+				<!-- /upload -->
+				<!-- User Menu -->
+				<li class="nav-item dropdown has-arrow">
+					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+						<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
+					</a>
+					<div class="dropdown-menu">
+						<div class="user-header">
+							<div class="avatar avatar-sm">
+								<img src="static/assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
+							</div>
+							<div class="user-text">
+								<h6>汪宇晖</h6>
+								<p class="text-muted mb-0">Administrator</p>
+							</div>
+						</div>
+						<a class="dropdown-item" href="profile.html">配置文件</a>
+						<a class="dropdown-item" href="login.html"><font color="#E63C3C">退出</font></a>
+					</div>
+				</li>
+				<!-- /User Menu -->
+			</ul>
+			<!-- /Header Right Menu -->
+			
+		</div>
+		<!-- /Header -->
+		
+		<!-- Sidebar -->
+		<div class="sidebar" id="sidebar">
+			<div class="sidebar-inner slimscroll">
+				<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
+					<ul>
+						<li> 
+							<a href="index.html"><span><font color="#CCCCCC">首页</font></span></a>
+						</li>
+						<li class="submenu">
+							<a href="#"><span><font color="#CCCCCC"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="evaporation"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
+								<li><a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
+								<li><a href="futureheight"><font color="#CCCCCC">未来波导高度预测</font></a></li>
+							</ul>
+						</li>
+
+						<li class="submenu"> 
+							<a href="#"><span><font color="#CCCCCC">电磁损耗计算</font></span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="electromagenetic"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
+								
+							</ul>
+						</li>
+						<li class="submenu">
+							<a href="#"><span><font color="#CCCCCC"> 雷达有效距离探测 </font></span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="radar-valid-distance"><font color="CCCCCC">雷达有效探测性能</font> </a></li>
+								
+							</ul>
+						</li>
+						<li class="submenu">
+							<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
+							<ul style="display: none;">
+								<li><a href="login"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+								<li><a href="invoice-report"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
+								<li><a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a></li>
+							</ul>
+						
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!-- /Sidebar -->
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+					
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col">
+								<h3 class="page-title">基本设置</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index.html">首页</a></li>
+									<li class="breadcrumb-item active">基本设置</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+					<div class="row">
+						<div class="col-md-12">
+							<div class="profile-header">
+								<div class="row align-items-center">
+									<div class="col-auto profile-image">
+										<a href="#">
+											<img class="rounded-circle" alt="User Image" src="static/assets/img/profiles/avatar-12.jpg">
+										</a>
+									</div>
+									<div class="col ml-md-n2 profile-user-info">
+										<h4 class="user-name mb-0">{{ user.name }}</h4>
+										<h6>{{ user.email }}</h6>
+										<div class="about-text">{{ user.level }}</div>
+									</div>
+									<div class="col-auto profile-btn">
+									</div>
+								</div>
+							</div>
+							<div class="profile-menu">
+								<ul class="nav nav-tabs nav-tabs-solid">
+									<li class="nav-item">
+										<a class="nav-link active" href="#per_details_tab" data-toggle="tab">个人信息</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#password_tab" data-toggle="tab">修改密码</a>
+									</li>
+								</ul>
+							</div>	
+							<div class="tab-content profile-tab-cont">
+							<div class="tab-content profile-tab-cont">
+
+								<!-- Personal Details Tab -->
+								<div class="tab-pane fade show active" id="per_details_tab">
+								
+									<!-- Personal Details -->
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="card">
+												<div class="card-body">
+													<h5 class="card-title d-flex justify-content-between" style="margin-bottom: 2%;">
+														<span>详细信息</span> 
+														<a class="edit-link" data-toggle="modal" href="#edit_personal_details"><i class="fa fa-edit mr-1"></i>编辑</a>
+													</h5>
+													<div class="row">
+														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">姓名</p>
+														<p class="col-sm-10">{{ user.name }}</p>
+													</div>
+													<div class="row">
+														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">邮箱</p>
+														<p class="col-sm-10">{{ user.emailAddress }}</p>
+													</div>
+													<div class="row">
+														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">电话</p>
+														<p class="col-sm-10">{{ user.phoneNumber }}</p>
+													</div>
+													<div class="row">
+														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">隶属</p>
+														<p class="col-sm-10">{{ user.department }}</p>
+													</div>
+													<div class="row">
+														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">级别</p>
+														<p class="col-sm-10">{{ user.level }}</p>
+													</div>
+                                                    {% if message %}
+                                                        {{ message }}
+                                                    {% endif %}
+                                                    {%  if profile_form.errors %}
+                                                        {{ profile_form.errors }}
+                                                    {% endif %}
+												</div>
+											</div>
+										
+											
+										</div>
+
+									
+									</div>
+									<!-- /Personal Details -->
+
+								</div>
+								<!-- /Personal Details Tab -->
+								
+								<!-- Change Password Tab -->
+								<div id="password_tab" class="tab-pane fade">
+								
+									<div class="card">
+										<div class="card-body">
+											<h5 class="card-title">修改密码</h5>
+											<div class="row">
+												<div class="col-md-10 col-lg-6">
+													<form>
+														<div class="form-group">
+															<label>旧密码</label>
+															<input type="password" class="form-control">
+														</div>
+														<div class="form-group">
+															<label>新密码</label>
+															<input type="password" class="form-control">
+														</div>
+														<div class="form-group">
+															<label>确认新密码</label>
+															<input type="password" class="form-control">
+														</div>
+														<button class="btn btn-primary" type="submit">保存</button>
+													</form>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- /Change Password Tab -->
+								
+							</div>
+						</div>
+					</div>
+				
+				</div>			
+			</div>
+			<!-- /Page Wrapper -->
+		
+        </div>
+		<!-- /Main Wrapper -->
+
+		<!-- Edit Details Modal -->
+		<div class="modal fade" id="edit_personal_details" aria-hidden="true" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">个人信息</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+                            {{ profile_form.csrf_token }}
+                            {{ profile_form.hidden_tag() }}
+							<div class="row form-row">
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>姓名</label>
+										{{ profile_form.name(class_="form-control",value = user.name) }}
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>邮箱地址</label>
+										{{ profile_form.emailAddress(class_="form-control",value = user.emailAddress) }}
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>电话</label>
+										{{ profile_form.phoneNumber(class_="form-control",value = user.phoneNumber) }}
+									</div>
+								</div>
+								<div class="col-12">
+									<h5 class="form-title"><span>单位</span></h5>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>当前级别</label>
+										{{ profile_form.level(class_="form-control", value = user.level, readonly = "readonly") }}
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>隶属部门</label>
+										{{ profile_form.department(class_="form-control", value = user.department, readonly = "readonly") }}
+									</div>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Edit Details Modal -->
+		
+		<!-- jQuery -->
+        <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="static/assets/js/popper.min.js"></script>
+        <script src="static/assets/js/bootstrap.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+        <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- Custom JS -->
+		<script  src="static/assets/js/script.js"></script>
+		
+    </body>
+</html>

@@ -1,6 +1,6 @@
 import random
 import datetime
-from flask import Flask, request, url_for
+from flask import Flask, request, url_for, flash
 from flask_cors import *
 from flask_sqlalchemy import SQLAlchemy
 from config import *
@@ -8,10 +8,10 @@ from datetime import *
 from algorithm import api
 from flask_socketio import *
 from flask import render_template, redirect
-from flask_login import LoginManager, login_required, login_user
+from flask_login import LoginManager, login_required, login_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
-from wtforms.validators import DataRequired, EqualTo
+from wtforms.validators import DataRequired, EqualTo, InputRequired, Email
 
 app = Flask(__name__)
 
@@ -40,23 +40,31 @@ class User(db.Model):
     __tablename__ = 'User'  # 用户
 
     account = db.Column(db.String(255), primary_key=True)
+    name = db.Column(db.String(255))
+    phoneNumber = db.Column(db.String(255))
+    emailAddress = db.Column(db.String(255))
+    department = db.Column(db.String(255))
     password = db.Column(db.String(255))
     permission = db.Column(db.Integer)
-    registerTime = db.Column(db.DateTime)
-    nickname = db.Column(db.String(255))
-    authority_level = db.Column(db.String(255))
+    authorityLevel = db.Column(db.Integer)
+    state = db.Column(db.Integer)
 
-    def __init__(self, account, password, permission, register_time, nickname, authority_level):
+    def __init__(self, account, name, phone_number, email_address, department, password, permission, authority_level,
+                 state):
         self.account = account
+        self.name = name
+        self.phoneNumber = phone_number
+        self.emailAddress = email_address
+        self.department = department
         self.password = password
         self.permission = permission
-        self.registerTime = register_time
-        self.nickname = nickname
-        self.authority_level = authority_level
+        self.authorityLevel = authority_level
+        self.state = state
 
     def __repr__(self):
-        return '<User %r %r %r %r %r %r>' % \
-               (self.account, self.password, self.permission, self.registerTime, self.nickname, self.authority_level)
+        return '<User %r %r %r %r %r %r %r %r %r>' % \
+               (self.account, self.name, self.phoneNumber, self.emailAddress, self.department, self.password,
+                self.permission, self.authorityLevel, self.state)
 
     # flask-login 需要的方法，获得用户的主键
     def get_id(self):
@@ -346,9 +354,19 @@ def updatePage(data: dict):
 
 
 # 对表单进行定义
+# 登录所用表单
 class LoginForm(FlaskForm):
     username = StringField('用户名', validators=[DataRequired()])
     password = PasswordField('密码', validators=[DataRequired()])
+
+
+# 修改个人信息所用表单
+class EditProfileForm(FlaskForm):
+    name = StringField('姓名', validators=[InputRequired()])
+    emailAddress = StringField('邮件地址', validators=[Email()])
+    phoneNumber = StringField('电话号码', validators=[InputRequired()])
+    level = StringField('权限级别')
+    department = StringField('隶属部门')
 
 
 # 对登录管理对象的实例化
@@ -377,12 +395,12 @@ def login():
     if form.validate_on_submit():
         user_name = form.username.data
         pass_word = form.password.data
-        print(user_name)
-        print(pass_word)
-        current_user = User.query.filter_by(account=user_name).first()
-        if current_user is not None:
-            if current_user.verify_password(pass_word) is True:
-                print(login_user(current_user))
+        temp_user = User.query.filter_by(account=user_name).first()
+        if temp_user is not None:
+            if temp_user.verify_password(pass_word) is True:
+                temp_user.state = 1
+                login_user(temp_user)
+                print(current_user)
                 return redirect(url_for('index'))
             else:
                 message = "密码错误"
@@ -414,6 +432,46 @@ def futureheight_page():
 @login_required
 def sufaceevaporation_page():
     return render_template('surfaceevaporation.html')
+
+
+@app.route('/profile', methods=['POST', 'GET'])
+@login_required
+def profile_page():
+    temp_level = None
+    if current_user.authorityLevel == 0:
+        temp_level = "超级管理员"
+    elif current_user.authorityLevel == 1:
+        temp_level = "管理员"
+    elif current_user.authorityLevel == 2:
+        temp_level = "普通用户"
+    user = {
+        "name": current_user.name,
+        "emailAddress": current_user.emailAddress,
+        "phoneNumber": current_user.phoneNumber,
+        "department": current_user.department,
+        "level": temp_level
+    }
+
+    message = None
+    profile_form = EditProfileForm()
+    if profile_form.validate_on_submit():
+        print(profile_form)
+        current_user.name = profile_form.name.data
+        current_user.emailAddress = profile_form.emailAddress.data
+        current_user.phoneNumber = profile_form.phoneNumber.data
+        temp = User.query.filter_by(account=current_user.account).first()
+        temp.name = profile_form.name.data
+        temp.emailAddress = profile_form.emailAddress.data
+        temp.phoneNumber = profile_form.phoneNumber.data
+        User.commit()
+        print(User.query.filter_by(account=current_user.account).first())
+        message = "修改成功"
+    else:
+        message = "姓名/邮箱地址/电话格式有误"
+        flash('You were successfully logged in')
+        flash(profile_form.errors)
+
+    return render_template('profile.html', user=user, profile_form=profile_form, message=message)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -635,6 +693,7 @@ def send_new_fhp_data():
 # socket响应：发送存储在js文件内的一组数据至客户端，客户端负责更新表格
 # 此处有一个问题：事件模型最好使用轮询的方式，但是socket无法维护具体某一个客户端，无法知道某个客户端拥有的是旧数据还是新数据
 # 设想的解决方案：客户端每次轮询时会顺便将自己所拥有信息的时间戳发送过来，服务端判断客户端时间戳就知道是否应该回复此条信息
+# 使用此方法可以防止每次都要传输完整的一组数据，节省流量
 # 对应js文件：elec.json
 @socket_io.on('request_ele_data')
 def send_new_ele_data(client_time):
