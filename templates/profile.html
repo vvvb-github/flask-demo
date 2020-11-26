@@ -315,11 +315,8 @@
 														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">级别</p>
 														<p class="col-sm-10">{{ user.level }}</p>
 													</div>
-                                                    {% if message %}
-                                                        {{ message }}
-                                                    {% endif %}
-                                                    {%  if profile_form.errors %}
-                                                        {{ profile_form.errors }}
+                                                    {% if profile_message %}
+                                                        {{ profile_message }}
                                                     {% endif %}
 												</div>
 											</div>
@@ -342,21 +339,26 @@
 											<h5 class="card-title">修改密码</h5>
 											<div class="row">
 												<div class="col-md-10 col-lg-6">
-													<form>
+													<form method="POST">
+                                                        {{ password_form.csrf_token }}
+                                                        {{ password_form.hidden_tag() }}
 														<div class="form-group">
 															<label>旧密码</label>
-															<input type="password" class="form-control">
+                                                            {{ password_form.old_password(class_="form-control") }}
 														</div>
 														<div class="form-group">
 															<label>新密码</label>
-															<input type="password" class="form-control">
+															{{ password_form.new_password(class_="form-control") }}
 														</div>
 														<div class="form-group">
 															<label>确认新密码</label>
-															<input type="password" class="form-control">
+															{{ password_form.repeat(class_="form-control") }}
 														</div>
 														<button class="btn btn-primary" type="submit">保存</button>
 													</form>
+                                                    {% if password_message %}
+                                                        {{ password_message }}
+                                                    {% endif %}
 												</div>
 											</div>
 										</div>
@@ -386,7 +388,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
-						<form>
+						<form method="post">
                             {{ profile_form.csrf_token }}
                             {{ profile_form.hidden_tag() }}
 							<div class="row form-row">

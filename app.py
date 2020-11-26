@@ -10,7 +10,7 @@ from flask_socketio import *
 from flask import render_template, redirect
 from flask_login import LoginManager, login_required, login_user, current_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
+from wtforms import StringField, PasswordField, validators
 from wtforms.validators import DataRequired, EqualTo, InputRequired, Email
 
 app = Flask(__name__)
@@ -97,6 +97,34 @@ class User(db.Model):
         print(query_result)
         if query_result is not None:
             return query_result
+
+
+class Info(db.Model):
+    __tablename__ = 'Info'  # 信息报表
+
+    keyID = db.Column(db.String(255), primary_key=True)
+    senderID = db.Column(db.String(255))
+    receiverID = db.Column(db.String(255))
+    sendDate = db.Column(db.DateTime)
+    result = db.Column(db.Integer)
+    content = db.Column(db.String(1023))
+    subject = db.Column(db.String(255))
+    remark = db.Column(db.String(1023))
+
+    def __init__(self, key_id, sender_id, receiver_id, send_date, result_parm, content_parm, subject_parm, remark_parm):
+        self.keyID = key_id
+        self.senderID = sender_id
+        self.receiverID = receiver_id
+        self.sendDate = send_date
+        self.result = result_parm
+        self.content = content_parm
+        self.subject = subject_parm
+        self.remark = remark_parm
+
+    def __repr__(self):
+        return '<Info %r %r %r %r %r %r %r %r' % \
+               (self.keyID, self.senderID, self.receiverID, self.sendDate, self.result, self.content,
+                self.subject, self.remark)
 
 
 class Diary(db.Model):
@@ -369,6 +397,13 @@ class EditProfileForm(FlaskForm):
     department = StringField('隶属部门')
 
 
+# 修改密码所用表单
+class EditPasswordForm(FlaskForm):
+    old_password = PasswordField('旧密码', validators=[InputRequired()])
+    new_password = PasswordField('新密码', validators=[InputRequired()])
+    repeat = PasswordField('重复密码', [validators.EqualTo('new_password', message="两次输入的密码不一致")])
+
+
 # 对登录管理对象的实例化
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -452,10 +487,11 @@ def profile_page():
         "level": temp_level
     }
 
-    message = None
+    profile_message = None
+    password_message = None
     profile_form = EditProfileForm()
+    password_form = EditPasswordForm()
     if profile_form.validate_on_submit():
-        print(profile_form)
         current_user.name = profile_form.name.data
         current_user.emailAddress = profile_form.emailAddress.data
         current_user.phoneNumber = profile_form.phoneNumber.data
@@ -463,15 +499,29 @@ def profile_page():
         temp.name = profile_form.name.data
         temp.emailAddress = profile_form.emailAddress.data
         temp.phoneNumber = profile_form.phoneNumber.data
-        User.commit()
+        db.session.commit()
         print(User.query.filter_by(account=current_user.account).first())
-        message = "修改成功"
+        return redirect(url_for('profile_page'))
     else:
-        message = "姓名/邮箱地址/电话格式有误"
-        flash('You were successfully logged in')
-        flash(profile_form.errors)
+        if profile_form.errors is not None:
+            profile_message = profile_form.errors
 
-    return render_template('profile.html', user=user, profile_form=profile_form, message=message)
+    if password_form.validate_on_submit():
+        if current_user.verify_password(password_form.new_password.data) is True:
+            current_user.password = password_form.new_password
+            temp = User.query.filter_by(account=current_user.account).first()
+            temp.password = password_form.new_password
+            db.session.commit()
+            print(User.query.filter_by(account=current_user.account).first())
+            return redirect(url_for('profile_page'))
+        else:
+            password_message = "密码不正确"
+    else:
+        if password_form.errors is not None:
+            password_message = password_form.errors
+
+    return render_template('profile.html', user=user, profile_form=profile_form, profile_message=profile_message,
+                           password_form=password_form, password_message=password_message)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
