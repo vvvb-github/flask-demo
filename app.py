@@ -12,6 +12,7 @@ from flask_login import LoginManager, login_required, login_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, validators
 from wtforms.validators import DataRequired, EqualTo, InputRequired, Email
+import json
 
 app = Flask(__name__)
 
@@ -23,6 +24,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
     'mysql+pymysql://' + mysql_user + ':' + mysql_pass + '@' + mysql_host + ':' + str(
         mysql_port) + '/' + mysql_name + '?charset=utf8'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+
+# 缓存1秒，用来解决静态文件不刷新
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=1)
 
 # 创建数据库对象
 db = SQLAlchemy(app=app)
@@ -463,10 +467,14 @@ def login():
 @login_required
 def report_page():
     search_form = ManageSearchForm()
-    Infor_Search = []
+    Search = []
     if search_form.validate_on_submit():
         attribution = search_form.attribution.data
         content = search_form.content.data
+        basic_infor = {
+            'content': content,
+
+        }
         content = '.*'+content + '.*'
         # content = content
         if attribution == 'account':
@@ -477,6 +485,7 @@ def report_page():
         else:
             temp_user = User.query.filter(User.department.op('regexp')(content)).all()
         print(temp_user)
+
         for temp in temp_user:
             j = {
                 'account': temp.account,
@@ -488,11 +497,14 @@ def report_page():
                 'permission': temp.permission,
                 'authorityLevel': temp.authorityLevel,
                 'status': temp.status,
-                'date': temp.date
+                'date': temp.date.strftime("%Y-%m-%d %H:%M:%S")
             }
             if temp.permission <= current_user.permission:
-                Infor_Search.append(j)
-    return render_template('invoice-report.html', search_form=search_form, Infor_Search=Infor_Search)
+                Search.append(j)
+        print('search:', Search)
+        Search = json.dumps(Search, ensure_ascii=False)
+        print('search:', Search)
+    return render_template('invoice-report.html', search_form=search_form, Search=Search)
 
 
 
@@ -816,4 +828,4 @@ def default_error_handler(e):
 
 if __name__ == '__main__':
     api.rootPath(app)
-    socket_io.run(app, debug=False, host='10.201.239.0', port=8085)
+    socket_io.run(app, debug=True, host='10.201.239.0', port=8085)

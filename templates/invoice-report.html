@@ -32,7 +32,7 @@
 		<script src="static/js/management/information(user).js"></script>
 		<script src="static/js/management/information(searched).js"></script>
 		<script src="static/js/management/table.js"></script>
-	
+
 
 		<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
@@ -359,17 +359,17 @@
 															{{ search_form.attribution(class_="form-control",style='display:none',value='account') }}
 <!--															<input type="text" id="members" class="form-control" placeholder="请输入账号...">-->
 <!--															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>-->
-															<button class="btn btn-primary" type="submit" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+															<button class="btn btn-primary" type="submit" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
 														</div>
 														<div class="tab-pane" id="solid-tab2">
 															{{ search_form.content(class_="form-control", placeholder='请输入姓名...') }}
 															{{ search_form.attribution(class_="form-control",style='display:none',value='name') }}
-															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+															<button class="btn btn-primary" type="submit" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
 														</div>
 														<div class="tab-pane" id="solid-tab3">
-															{{ search_form.content(class_="form-control", placeholder='请输入部门...') }}
+															{{ search_form.content(class_="form-control", placeholder='请输入部门...')}}
 															{{ search_form.attribution(class_="form-control",style='display:none',value='department') }}
-															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid  #0794f3ab;">搜索用户</button>
+															<button class="btn btn-primary" type="submit" style="float:right;background-color: #0794f3ab;border: 1px solid  #0794f3ab;">搜索用户</button>
 														</div>
 													</div>
 													
@@ -378,7 +378,11 @@
 										</div>
 										
 									</div>
-									
+									<script>
+										Search = {{Search|tojson}}
+										console.log('search: ', Search)
+										search_mumber()
+									</script>
 								</div>
 							</form>
 						</div>
@@ -584,7 +588,8 @@
 			</div>
 		</div>
 		<!-- /Delete Modal -->
-		<script src="static/js/management/operation.js"></script>
+
+
 		<!-- jQuery -->
         <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
 		
@@ -594,7 +599,9 @@
 		
 		<!-- Slimscroll JS -->
         <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-		
+
+		<!-- 操作 -->
+		<script src="static/js/management/operation.js"></script>
 		<!-- Datatables JS -->
 		<script src="static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
 		<script src="static/assets/plugins/datatables/datatables.min.js"></script>
