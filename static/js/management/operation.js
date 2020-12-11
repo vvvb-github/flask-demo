@@ -36,9 +36,10 @@ function sedit(num){
     document.getElementById("confirmpasswd").value = obj[num].password
 }
 function search_member(){
+    //console.log(1234)
     obj = eval(Infor_Search)
-    member_number = document.getElementById("members").value
-    document.getElementById("searched_head").innerHTML="“"+member_number+"”"
+    //member_number = document.getElementById("members").value
+    //document.getElementById("searched_head").innerHTML="“"+member_number+"”"
     console.log(1)
     snumber = '#000001'
     sname = '汪宇晖'
