@@ -51,8 +51,6 @@ class User(db.Model):
     status = db.Column(db.Integer)
     date = db.Column(db.DateTime)
 
-
-
     def __init__(self, account, name, phone_number, email_address, department, password, permission, authority_level,
                  status, date):
         self.account = account
@@ -65,7 +63,6 @@ class User(db.Model):
         self.authorityLevel = authority_level
         self.status = status
         self.date = date
-
 
     def __repr__(self):
         return '<User %r %r %r %r %r %r %r %r %r>' % \
