@@ -1,5 +1,6 @@
 import random
 import datetime
+import threa
 from flask import Flask, request, url_for, flash
 from flask_cors import *
 from flask_sqlalchemy import SQLAlchemy
@@ -55,6 +56,7 @@ class User(db.Model):
     date = db.Column(db.DateTime)
 
 
+
     def __init__(self, account, name, phone_number, email_address, department, password, permission, authority_level,
                  status, date):
         self.account = account
@@ -67,6 +69,7 @@ class User(db.Model):
         self.authorityLevel = authority_level
         self.status = status
         self.date = date
+
 
     def __repr__(self):
         return '<User %r %r %r %r %r %r %r %r %r>' % \
@@ -571,15 +574,17 @@ def profile_page():
             profile_message = profile_form.errors
 
     if password_form.validate_on_submit():
-        if current_user.verify_password(password_form.new_password.data) is True:
-            current_user.password = password_form.new_password
+        if current_user.verify_password(password_form.old_password.data) is True:
+            current_user.password = password_form.new_password.data
             temp = User.query.filter_by(account=current_user.account).first()
-            temp.password = password_form.new_password
+            temp.password = password_form.new_password.data
             db.session.commit()
             print(User.query.filter_by(account=current_user.account).first())
             return redirect(url_for('profile_page'))
         else:
             password_message = "密码不正确"
+            return render_template('profile.html', user=user, profile_form=profile_form, profile_message=None,
+                                   password_form=password_form, password_message=password_message)
     else:
         if password_form.errors is not None:
             password_message = password_form.errors
@@ -587,6 +592,27 @@ def profile_page():
     return render_template('profile.html', user=user, profile_form=profile_form, profile_message=profile_message,
                            password_form=password_form, password_message=password_message)
 
+
+
+@app.route('/invoice-report')
+@login_required
+def invoice_page():
+    all_users = User.query.order_by(User.account).all()
+    users = []
+    count = 1
+    for i in all_users:
+        j = {
+            "account": i.account,
+            "count": count,
+            "name": i.name,
+            "level": i.authorityLevel,
+            "createTime": "xxxx",
+            "status": i.status
+        }
+        count = count + 1
+        users.append(j)
+    print(users)
+    return render_template('invoice-report.html', users=users)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -706,6 +732,14 @@ def disconnect():
     global client_num
     client_num -= 1
     print('断开连接：' + str(client_num))
+
+
+# 客户端用户通告自己在线
+# socket事件：客户端通告在线，并请求报表信息
+# socket响应：获取当前于用户信息，并更新用户状态，并发送报表信息
+@socket_io.on('info')
+def user_status_update():
+    current_user.status = 1
 
 
 # socket事件：新的客户端切换页面至主页

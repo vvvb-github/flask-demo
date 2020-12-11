@@ -20,6 +20,10 @@
 		<!-- Datatables CSS -->
 		<link rel="stylesheet" href="static/assets/plugins/datatables/datatables.min.css">
 		
+<<<<<<< HEAD
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="static/assets/css/style.css">
+=======
 		<!-- Select2 CSS -->
 		<link rel="stylesheet" href="static/assets/css/select2.min.css">
 		
@@ -32,7 +36,8 @@
 		<script src="static/js/management/information(user).js"></script>
 		<script src="static/js/management/information(searched).js"></script>
 		<script src="static/js/management/table.js"></script>
-
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
+	
 
 		<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
@@ -77,6 +82,64 @@
             		
             		<!-- Notifications -->
             		<li class="nav-item dropdown noti-dropdown">
+<<<<<<< HEAD
+            			<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+            				<i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
+            			</a>
+            			<div class="dropdown-menu notifications">
+            				<div class="topnav-dropdown-header">
+            					<span class="notification-title">Notifications</span>
+            					<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+            				</div>
+            				<div class="noti-content">
+            					<ul class="notification-list">
+            						<li class="notification-message">
+            							<a href="#">
+            								<div class="media">
+            									<span class="avatar avatar-sm">
+            										<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/profiles/avatar-122.jpg">
+            									</span>
+            									<div class="media-body">
+            										<p class="noti-details"><span class="noti-title">云云云</span> 发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
+            										<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+            									</div>
+            								</div>
+            							</a>
+            						</li>
+            						<li class="notification-message">
+            							<a href="#">
+            								<div class="media">
+            									<span class="avatar avatar-sm">
+            										<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/user/user13.jpg">
+            									</span>
+            									<div class="media-body">
+            										<p class="noti-details"><span class="noti-title">云云云</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
+            										<p class="noti-time"><span class="notification-time">1 days ago</span></p>
+            									</div>
+            								</div>
+            							</a>
+            						</li>
+            						<li class="notification-message">
+            							<a href="#">
+            								<div class="media">
+            									<span class="avatar avatar-sm">
+            										<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/user/歼灭.jpg">
+            									</span>
+            									<div class="media-body">
+            									<p class="noti-details"><span class="noti-title">云云云</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
+            									<p class="noti-time"><span class="notification-time">2 days ago</span></p>
+            									</div>
+            								</div>
+            							</a>
+            						</li>
+            					</ul>
+            				</div>
+            				<div class="topnav-dropdown-footer">
+            					<a href="report.html">查看所有报告信息</a>
+            				</div>
+            			</div>
+            		</li>
+=======
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
 						</a>
@@ -97,6 +160,7 @@
 							</div>
 						</div>
 					</li>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
             		<!-- /Notifications -->
             			<!-- download-->
 					<li >
@@ -340,7 +404,11 @@
 							<h4 class="card-title" id='detail_number' style="float:left; width:50%">用户查询</h4>		
 						</div>
 						<div class="card-body" style="padding-bottom: 0%;">
+<<<<<<< HEAD
+							<form action="#">
+=======
 							<form method="Post">
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 								
 								<div class="form-group" style="width: 90%;">
 									<div style="border-left: 1px solid #eaeaea;margin-bottom: 1%;padding-bottom: 1%;border-bottom: 1px solid #eaeaea;border-right: 1px solid #eaeaea;width: 40%;float:left;">
@@ -353,23 +421,37 @@
 														<li class="nav-item"><a class="nav-link" href="#solid-tab3" data-toggle="tab">部门查询</a></li>
 													</ul>
 													<div class="tab-content">
+<<<<<<< HEAD
+														<div class="tab-pane show active" id="solid-tab1">
+															<input type="text" id="members" class="form-control" placeholder="请输入账号...">
+															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+														</div>
+														<div class="tab-pane" id="solid-tab2">
+															<input type="text" id="names" class="form-control" placeholder="请输入姓名...">
+															<button class="btn btn-primary" type="button" onclick="search_name()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+														</div>
+														<div class="tab-pane" id="solid-tab3">
+															<input type="text" id="sections" class="form-control" placeholder="请输入部门...">
+															<button class="btn btn-primary" type="button" onclick="search_section()" style="float:right;background-color: #0794f3ab;border: 1px solid  #0794f3ab;">搜索用户</button>
+=======
 														{{ search_form.csrf_token }}
 														<div class="tab-pane show active" id="solid-tab1">
 															{{ search_form.content(class_="form-control", placeholder='请输入账号...') }}
 															{{ search_form.attribution(class_="form-control",style='display:none',value='account') }}
 <!--															<input type="text" id="members" class="form-control" placeholder="请输入账号...">-->
 <!--															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>-->
-															<button class="btn btn-primary" type="submit" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+															<button class="btn btn-primary" type="submit" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
 														</div>
 														<div class="tab-pane" id="solid-tab2">
 															{{ search_form.content(class_="form-control", placeholder='请输入姓名...') }}
 															{{ search_form.attribution(class_="form-control",style='display:none',value='name') }}
-															<button class="btn btn-primary" type="submit" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
 														</div>
 														<div class="tab-pane" id="solid-tab3">
-															{{ search_form.content(class_="form-control", placeholder='请输入部门...')}}
+															{{ search_form.content(class_="form-control", placeholder='请输入部门...') }}
 															{{ search_form.attribution(class_="form-control",style='display:none',value='department') }}
-															<button class="btn btn-primary" type="submit" style="float:right;background-color: #0794f3ab;border: 1px solid  #0794f3ab;">搜索用户</button>
+															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid  #0794f3ab;">搜索用户</button>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 														</div>
 													</div>
 													
@@ -378,15 +460,18 @@
 										</div>
 										
 									</div>
-									<script>
-										Search = {{Search|tojson}}
-										console.log('search: ', Search)
-										search_mumber()
-									</script>
+									
 								</div>
 							</form>
 						</div>
 					</div>
+<<<<<<< HEAD
+                    <script>
+                        let j = {{ users|tojson }};
+					    console.log(j)  ;
+                    </script>
+=======
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 					<div id="all_members" class="row">
 						<div class="col-sm-12">
 							<div class="card">
@@ -408,9 +493,41 @@
 												</tr>
 											</thead>
 											<tbody>
+<<<<<<< HEAD
+												{% for item in users %}
+													<tr>
+														<td><a href="invoice.html" id="num_1">{{ item.account }}</a></td>
+														<td>#0{{ item.count|string }}</td>
+														<td>
+															<h2 class="table-avatar">
+																<a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/user/user0.jpg" alt="User Image"></a>
+																<a id="name_1" href="profile.html">{{ item.name }} </a>
+															</h2>
+														</td>
+														<td id="identity_1">{{ item.level }}</td>
+														<td id="time_1">{{ item.createTime }}</td>
+														<td class="text-center">
+															<span class="badge badge-pill bg-success inv-badge">{{ item.status }}</span>
+														</td>
+														<td class="text-right">
+															<div class="actions">
+
+																<a href="#edit_invoice_report" data-toggle="modal" onclick="edit(1)" class="btn btn-sm bg-success-light mr-2">
+																	<i class="fe fe-pencil"></i> 编辑
+																</a>
+																<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+																	<i class="fe fe-trash"></i> 删除
+																</a>
+															</div>
+														</td>
+													</tr>
+												{% endfor %}
+
+=======
 												<script>
 													showtable()
 												</script>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 											</tbody>
 										</table>
 									</div>
@@ -444,12 +561,25 @@
 													</tr>
 												</thead>
 												<tbody id="searched">
+<<<<<<< HEAD
+                                                {% for item in users %}
+=======
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 													<tr>
 														<td><a href="invoice.html" id="num_1">#IN0001</a></td>
 														<td>#01</td>
 														<td>
 															<h2 class="table-avatar">
 																<a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/user/user0.jpg" alt="User Image"></a>
+<<<<<<< HEAD
+																<a id="name_1" href="profile.html">{{ item.name }} </a>
+															</h2>
+														</td>
+														<td id="identity_1">{{ item.level }}</td>
+														<td id="time_1">{{ item.createTime }}</td>
+														<td class="text-center">
+															<span class="badge badge-pill bg-success inv-badge">{{ item.status }}</span>
+=======
 																<a id="name_1" href="profile.html">汪宇晖 </a>
 															</h2>
 														</td>
@@ -457,6 +587,7 @@
 														<td id="time_1">2019年9月9日</td>
 														<td class="text-center">
 															<span class="badge badge-pill bg-success inv-badge">在线</span>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 														</td>
 														<td class="text-right">
 															<div class="actions">
@@ -470,7 +601,11 @@
 															</div>
 														</td>
 													</tr>
+<<<<<<< HEAD
+												{% endfor %}
+=======
 													
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 												</tbody>
 											</table>
 										</div>
@@ -507,7 +642,11 @@
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>用户账号</label>
+<<<<<<< HEAD
+										<input id="Number" type="text" class="form-control" value="#INV-0001">
+=======
 										<input id="Number" type="text" class="form-control" value="#INV-0001" readonly="readonly">
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
@@ -519,24 +658,36 @@
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>用户密码</label>
+<<<<<<< HEAD
+										<input type="password" class="form-control" value="123">
+=======
 										<input id="userpasswd" type="password" class="form-control" value="123">
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>确认密码</label>
+<<<<<<< HEAD
+										<input type="password" class="form-control" value="123">
+=======
 										<input id="confirmpasswd" type="password" class="form-control" value="123">
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>用户身份</label>
+<<<<<<< HEAD
+										<input id="Identity" type="text" class="form-control" value="管理员">
+=======
 										<!-- 需要当前身份的权限去修改次一级的权限 -->
 										<select class="select">
 											<option id="Identity" value="0">值班用户</option>
 											<option value="1">管理员</option>
 											<option value="2">超级管理员</option>
 										</select>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
@@ -548,7 +699,11 @@
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>创建日期</label>
+<<<<<<< HEAD
+										<input id="Time" type="text"  class="form-control" value="9th Sep 2019">
+=======
 										<input id="Time" type="text"  class="form-control" value="9th Sep 2019" readonly="readonly">
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
@@ -557,6 +712,10 @@
 										<input type="text"  class="form-control" value="无">
 									</div>
 								</div>
+<<<<<<< HEAD
+								
+=======
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 							</div>
 							<button type="submit" class="btn btn-primary btn-block">保存</button>
 						</form>
@@ -588,8 +747,86 @@
 			</div>
 		</div>
 		<!-- /Delete Modal -->
-
-
+<<<<<<< HEAD
+		<script type="text/javascript">
+			function edit(num){
+				console.log(num)
+				name_="name_"+num
+				number_="num_"+num
+				identity_="identity_"+num
+				time_="time_"+num
+				console.log(name_)		
+				document.getElementById("Name").value=document.getElementById(name_).innerHTML
+				console.log(document.getElementById(number_).innerHTML)
+				document.getElementById("Number").value=document.getElementById(number_).innerHTML
+				console.log(document.getElementById(time_).innerHTML)
+				document.getElementById("Time").value=document.getElementById(time_).innerHTML
+				console.log(document.getElementById(identity_).innerHTML)
+				document.getElementById("Identity").value=document.getElementById(identity_).innerHTML
+			}
+			function sedit(num){
+				console.log(num)
+				name_="sname_"+num
+				number_="snum_"+num
+				identity_="sidentity_"+num
+				time_="stime_"+num
+				console.log(name_)		
+				document.getElementById("Name").value=document.getElementById(name_).innerHTML
+				console.log(document.getElementById(number_).innerHTML)
+				document.getElementById("Number").value=document.getElementById(number_).innerHTML
+				console.log(document.getElementById(time_).innerHTML)
+				document.getElementById("Time").value=document.getElementById(time_).innerHTML
+				console.log(document.getElementById(identity_).innerHTML)
+				document.getElementById("Identity").value=document.getElementById(identity_).innerHTML
+			}
+			function search_member(){
+				member_number = document.getElementById("members").value
+				document.getElementById("searched_head").innerHTML="“"+member_number+"”"
+				console.log(1)
+				snumber = '#000001'
+				sname = '汪宇晖'
+				sidentity = '管理员'
+				stime='2019年1月12日'
+				i=1
+				state='在线'
+				if(state=="在线"){
+					state_bg = "bg-success"
+				}
+				else{
+					state_bg = "bg-outline"
+				}
+				$("#searched").empty()
+				lens = 3
+				//查询结果这里加循环即可
+				for(i=1;i<lens;i++)
+				{
+					var searched_content ='<tr>'+'<td><a href="invoice.html" id="snum_'+i+'">'+ snumber + '</a></td>'+'<td>'+'#0'+i+'</td>'+
+					'<td><h2 class="table-avatar"><a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/user/user0.jpg" alt="User Image"></a><a id="sname_'+i+'" href="profile.html">'+sname+
+					'</a></h2></td><td id="sidentity_1">'+sidentity+'</td><td id="stime_'+i+'">'+stime+'</td><td class="text-center"><span class="badge '+state_bg+ ' badge-pill inv-badge">'+state+'</span></td><td class="text-right"><div class="actions">'+
+					'<a href="#edit_invoice_report" data-toggle="modal" onclick="sedit('+i+')" class="btn btn-sm bg-success-light mr-2"><i class="fe fe-pencil"></i> 编辑</a><a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">'+
+					'<i class="fe fe-trash"></i> 删除</a></div></td></tr>'
+					$("#searched").append(searched_content)
+				}
+				document.getElementById('searched_content').style.display="";
+				document.getElementById('all_members').style.display="none"
+			}
+			function search_name(){
+				member_name = document.getElementById("names").value
+				console.log(member_name)
+			}
+			function search_section(){
+				member_section = document.getElementById("sections").value
+				console.log(member_section)
+			}
+			function return_page(){
+				
+				document.getElementById('searched_content').style.display="none";
+				document.getElementById('all_members').style.display=""
+			}
+		</script>
+=======
+		<script src="static/js/management/operation.js"></script>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 		<!-- jQuery -->
         <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
 		
@@ -599,12 +836,15 @@
 		
 		<!-- Slimscroll JS -->
         <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-		<!-- 操作 -->
-		<script src="static/js/management/operation.js"></script>
+		
 		<!-- Datatables JS -->
 		<script src="static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
 		<script src="static/assets/plugins/datatables/datatables.min.js"></script>
+<<<<<<< HEAD
+		
+		<!-- Custom JS -->
+		<script  src="static/assets/js/script.js"></script>
+=======
 
 		<!-- Select2 JS -->
 		<script src="static/assets/js/select2.min.js"></script>
@@ -613,6 +853,7 @@
 		<script src="static/assets/js/script.js"></script>
 
 		
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 		
     </body>
 </html>
