@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Doccure - Invoice Report Page</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://www.jq22.com/jquery/bootstrap-4.2.1.css">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="static/assets/css/feathericon.min.css">
+		
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" href="static/assets/plugins/datatables/datatables.min.css">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="static/assets/css/style.css">
+	
+
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+    </head>
+    <body>
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			<!-- Header -->
+            <div class="header">
+            
+            	<!-- Logo -->
+                <div class="header-left">
+                    <a href="index.html" class="logo">
+            			<img src="static/assets/img/logo.png" alt="Logo">
+            		</a>
+            		<a href="index.html" class="logo logo-small">
+            			<img src="static/assets/img/logo-small.png" alt="Logo" width="30" height="30">
+            		</a>
+                </div>
+            	<!-- /Logo -->
+            	
+            	<a href="javascript:void(0);" id="toggle_btn">
+            		<i class="fe fe-text-align-left"></i>
+            	</a>
+            	
+            	<div class="top-nav-search">
+            
+            	</div>
+            	
+            	<!-- Mobile Menu Toggle -->
+            	<a class="mobile_btn" id="mobile_btn">
+            		<i class="fa fa-bars"></i>
+            	</a>
+            	<!-- /Mobile Menu Toggle -->
+            	
+            	<!-- Header Right Menu -->
+            	<ul class="nav user-menu">
+            		
+            		<!-- Notifications -->
+            		<li class="nav-item dropdown noti-dropdown">
+            			<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+            				<i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
+            			</a>
+            			<div class="dropdown-menu notifications">
+            				<div class="topnav-dropdown-header">
+            					<span class="notification-title">Notifications</span>
+            					<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+            				</div>
+            				<div class="noti-content">
+            					<ul class="notification-list">
+            						<li class="notification-message">
+            							<a href="#">
+            								<div class="media">
+            									<span class="avatar avatar-sm">
+            										<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/profiles/avatar-122.jpg">
+            									</span>
+            									<div class="media-body">
+            										<p class="noti-details"><span class="noti-title">云云云</span> 发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
+            										<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+            									</div>
+            								</div>
+            							</a>
+            						</li>
+            						<li class="notification-message">
+            							<a href="#">
+            								<div class="media">
+            									<span class="avatar avatar-sm">
+            										<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/user/user13.jpg">
+            									</span>
+            									<div class="media-body">
+            										<p class="noti-details"><span class="noti-title">云云云</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
+            										<p class="noti-time"><span class="notification-time">1 days ago</span></p>
+            									</div>
+            								</div>
+            							</a>
+            						</li>
+            						<li class="notification-message">
+            							<a href="#">
+            								<div class="media">
+            									<span class="avatar avatar-sm">
+            										<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/user/歼灭.jpg">
+            									</span>
+            									<div class="media-body">
+            									<p class="noti-details"><span class="noti-title">云云云</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
+            									<p class="noti-time"><span class="notification-time">2 days ago</span></p>
+            									</div>
+            								</div>
+            							</a>
+            						</li>
+            					</ul>
+            				</div>
+            				<div class="topnav-dropdown-footer">
+            					<a href="report.html">查看所有报告信息</a>
+            				</div>
+            			</div>
+            		</li>
+            		<!-- /Notifications -->
+            			<!-- download-->
+					<li >
+						<a href="#" title="数据导出">
+							<i class="fe fe-download" onclick="dianwo()"></i>
+						</a>
+						<div class="dropdown-menu" style="padding: 5px;">
+							
+							<script type="text/javascript">
+								document.getElementById('zhezhao').style.display="none";
+								function mez(){
+									document.getElementById('zhezhao').style.display="";
+								}
+								function hidder(){
+									document.getElementById('zhezhao').style.display="none";
+								}
+
+							</script>
+			
+						</div>
+					</li>
+					<!-- /download-->
+					<!-- upload -->
+					<li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导入">
+							<i class="fe fe-upload"></i>
+						</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+								<button type="button" class="btn btn-primary" onclick="dianwo1()" style="color:#F8F9FA;float: right;">确认上传</button>
+						</div>
+							
+					</li>
+					<!-- /upload -->
+            		<!-- User Menu -->
+            		<li class="nav-item dropdown has-arrow">
+            			<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+            				<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
+            			</a>
+            			<div class="dropdown-menu">
+            				<div class="user-header">
+            					<div class="avatar avatar-sm">
+            						<img src="static/assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
+            					</div>
+            					<div class="user-text">
+            						<h6>汪宇晖</h6>
+            						<p class="text-muted mb-0">Administrator</p>
+            					</div>
+            				</div>
+            				<a class="dropdown-item" href="profile.html">配置文件</a>
+            				<a class="dropdown-item" href="login.html"><font color="#E63C3C">退出</font></a>
+            			</div>
+            		</li>
+            		<!-- /User Menu -->
+            		
+            	</ul>
+            	<!-- /Header Right Menu -->
+            	
+            </div>
+            <!-- /Header -->
+			
+			<!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
+						<ul>
+							<li style="background:#9ca8b8"> 
+								<a href="index.html"><span><font color="#293c55">首页</font></span></a>
+							</li>
+							<li class="submenu">
+								<a href="#"><span><font color="#CCCCCC"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="evaporation.html"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
+									<li><a href="surfaceevaporation.html"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
+									<li><a href="futureheight.html"><font color="#CCCCCC">未来波导高度预测</font></a></li>
+								</ul>
+							</li>
+
+							<li class="submenu"> 
+								<a href="#"><span><font color="#CCCCCC">电磁损耗计算</font></span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="electromagenetic.html"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
+									
+								</ul>
+							</li>
+							<li class="submenu">
+								<a href="#"><span><font color="#CCCCCC"> 雷达有效距离探测 </font></span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="radar-valid-distance.html"><font color="CCCCCC">雷达有效探测性能</font> </a></li>
+									
+								</ul>
+							</li>
+							<li class="submenu">
+								<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="login.html"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+									<li><a href="invoice-report.html"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
+									<li><a href="forgot-password.html"><font color="#CCCCCC"> 修改密码 </font></a></li>
+								</ul>
+							
+							</li>
+						</ul>
+					</div>
+                </div>
+            </div>
+			<!-- /Sidebar -->
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+					<div class="zhezhao" id='zhezhao'  >
+						<div class="tankuang" style="padding: 10px;">
+							<div id="header">
+									<div>			
+										<form action="#">
+											<div class="form-group row">
+			
+											</div>
+											<div class="form-group row">
+														<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+													max-width: 24.666667%;padding-right: 5px;padding-left: 25px;font-weight: bolder;">近期数据打包</label>
+														<div class="col-md-10" style="flex: 0 0 75.333333%;
+													max-width:52.333333%;">
+														<select class="form-control" style="width: 80%;float: right;">
+															<option>-- Select --</option>
+															<option>波导分析计算</option>
+															<option>电磁损耗计算</option>
+															<option>雷达有效距离</option>
+															</select>
+														</div>
+														<button class="btn btn-primary"  >
+															<a class="fe fe-download" style="font-size: 15px;color: #fff;float: right;" href="/images/1.PNG" download="1.PNG">&nbsp;&nbsp;下载</a>
+														</button>	
+													</div>
+											<div class="form-group row">
+												<h5 style="padding-left:4%;color:#569CD6 ;font-weight: bolder;">精确下载选择👇</h5>
+													</div>	
+											<div class="form-group row">
+												<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+											max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-经度</label>
+												<div class="col-md-10"  style="flex: 0 0 75.333333%;
+											max-width: 75.333333%;">
+													<input type="text" class="form-control" placeholder="122.27°E" style="width: 80%;float: right;">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+											max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-纬度</label>
+												<div class="col-md-10"  style="flex: 0 0 75.333333%;
+											max-width: 75.333333%;">
+													<input type="text" class="form-control" placeholder="31.65°N" style="width: 80%;float: right;">
+												</div>
+											</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">起始时间</label>
+										
+											<div class="col-md-10" style="flex: 0  75.333333%;
+										max-width: 75.333333%;">
+											<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">结束时间</label>
+											<div class="col-md-10" style="flex: 0 0 75.333333%;
+										max-width: 75.333333%;">
+											<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
+											</div>
+										</div>
+										<div class="input-group-append" style="float: right;">
+											<a class="btn btn-primary"   href="/images/1.png" download="111" >确认选择并下载</a>
+										</div>
+									
+									</form>
+									
+									
+								</div>
+								
+								<div id="header-right" onclick="hidder()">x</div>
+							</div>
+						</div>
+					</div>
+					<script type="text/javascript">
+						document.getElementById('zhezhao').style.display="none";
+						function dianwo(){
+							document.getElementById('zhezhao').style.display="";
+						}
+						function hidder(){
+							document.getElementById('zhezhao').style.display="none";
+						}
+					</script>
+			
+			<div class="zhezhao1" id='zhezhao1'  >
+				<div class="tankuang1" style="padding: 10px;">
+					<div id="header">
+							<div>			
+								<form action="#">
+									
+									<center><h4 class="modal-title" style="padding-top: 5%;">确认上传</h4>
+										<p class="mb-4">确定上传所有选中的文件？</p></center>
+								<div class="input-group-append" style="float: left;padding-left:10%;padding-bottom: 2%; color: #fff;">
+									<a class="btn btn-primary"  onclick="hidder1()"  >确&nbsp;&nbsp;认</a>
+								</div>
+								<div class="input-group-append" style="float: right;padding-right:10%;padding-bottom: 2%; color: #fff;">
+									<a class="btn btn-danger"  onclick="hidder1()"  >取&nbsp;&nbsp;消</a>
+								</div>
+							
+							</form>
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<script type="text/javascript">
+				document.getElementById('zhezhao1').style.display="none";
+				function dianwo1(){
+					document.getElementById('zhezhao1').style.display="";
+				}
+				function hidder1(){
+					document.getElementById('zhezhao1').style.display="none";
+				}
+			</script>
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">用户管理</h3>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title" id='detail_number' style="float:left; width:50%">用户查询</h4>		
+						</div>
+						<div class="card-body" style="padding-bottom: 0%;">
+							<form action="#">
+								
+								<div class="form-group" style="width: 90%;">
+									<div style="border-left: 1px solid #eaeaea;margin-bottom: 1%;padding-bottom: 1%;border-bottom: 1px solid #eaeaea;border-right: 1px solid #eaeaea;width: 40%;float:left;">
+										<div class="btn-group" style="width: 100%;">
+											<div class="col-lg-10">
+												<div class="card-body">
+													<ul class="nav nav-tabs nav-tabs-solid">
+														<li class="nav-item"><a class="nav-link active" href="#solid-tab1" data-toggle="tab">账号搜索</a></li>
+														<li class="nav-item"><a class="nav-link" href="#solid-tab2" data-toggle="tab">姓名查询</a></li>
+														<li class="nav-item"><a class="nav-link" href="#solid-tab3" data-toggle="tab">部门查询</a></li>
+													</ul>
+													<div class="tab-content">
+														<div class="tab-pane show active" id="solid-tab1">
+															<input type="text" id="members" class="form-control" placeholder="请输入账号...">
+															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+														</div>
+														<div class="tab-pane" id="solid-tab2">
+															<input type="text" id="names" class="form-control" placeholder="请输入姓名...">
+															<button class="btn btn-primary" type="button" onclick="search_name()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+														</div>
+														<div class="tab-pane" id="solid-tab3">
+															<input type="text" id="sections" class="form-control" placeholder="请输入部门...">
+															<button class="btn btn-primary" type="button" onclick="search_section()" style="float:right;background-color: #0794f3ab;border: 1px solid  #0794f3ab;">搜索用户</button>
+														</div>
+													</div>
+													
+												</div>
+											</div>
+										</div>
+										
+									</div>
+									
+								</div>
+							</form>
+						</div>
+					</div>
+                    <script>
+                        let j = {{ users|tojson }};
+					    console.log(j)  ;
+                    </script>
+					<div id="all_members" class="row">
+						<div class="col-sm-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title" style="float:left; width:50%">所有用户</h4>		
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="datatable table table-hover table-center mb-0">
+											<thead>
+												<tr>
+													<th>用户账号</th>
+													<th>排列序号</th>
+													<th>用户名称</th>
+													<th>用户身份</th>
+													<th>创建日期</th>
+													<th class="text-center">状态</th>
+													<th class="text-center">操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												{% for item in users %}
+													<tr>
+														<td><a href="invoice.html" id="num_1">{{ item.account }}</a></td>
+														<td>#0{{ item.count|string }}</td>
+														<td>
+															<h2 class="table-avatar">
+																<a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/user/user0.jpg" alt="User Image"></a>
+																<a id="name_1" href="profile.html">{{ item.name }} </a>
+															</h2>
+														</td>
+														<td id="identity_1">{{ item.level }}</td>
+														<td id="time_1">{{ item.createTime }}</td>
+														<td class="text-center">
+															<span class="badge badge-pill bg-success inv-badge">{{ item.status }}</span>
+														</td>
+														<td class="text-right">
+															<div class="actions">
+
+																<a href="#edit_invoice_report" data-toggle="modal" onclick="edit(1)" class="btn btn-sm bg-success-light mr-2">
+																	<i class="fe fe-pencil"></i> 编辑
+																</a>
+																<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+																	<i class="fe fe-trash"></i> 删除
+																</a>
+															</div>
+														</td>
+													</tr>
+												{% endfor %}
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div style="width: 100%;float: right;padding-right: 1%;padding-bottom: 1%;padding-top: 1%;">
+							<a data-toggle="modal" href="#edit_invoice_report" style="float: right;">
+								<button class="btn btn-primary" type="button">新增用户</button>
+							</a>
+						</div>			
+					</div>
+					
+					
+						<div class="row" id="searched_content" style="display: none;">
+							<h5 style="color: cornflowerblue;margin-left: 2%;">搜索</h5><h5 id="searched_head" style="color:#FF7F50;"></h5><h5 style="color: cornflowerblue;">结果：</h5>
+							<div class="col-sm-12">
+								<div class="card">
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="datatable table table-hover table-center mb-0">
+												<thead>
+													<tr>
+														<th>用户账号</th>
+														<th>排列序号</th>
+														<th>用户名称</th>
+														<th>用户身份</th>
+														<th>创建日期</th>
+														<th class="text-center">状态</th>
+														<th class="text-center">操作</th>
+													</tr>
+												</thead>
+												<tbody id="searched">
+                                                {% for item in users %}
+													<tr>
+														<td><a href="invoice.html" id="num_1">#IN0001</a></td>
+														<td>#01</td>
+														<td>
+															<h2 class="table-avatar">
+																<a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/user/user0.jpg" alt="User Image"></a>
+																<a id="name_1" href="profile.html">{{ item.name }} </a>
+															</h2>
+														</td>
+														<td id="identity_1">{{ item.level }}</td>
+														<td id="time_1">{{ item.createTime }}</td>
+														<td class="text-center">
+															<span class="badge badge-pill bg-success inv-badge">{{ item.status }}</span>
+														</td>
+														<td class="text-right">
+															<div class="actions">
+																
+																<a href="#edit_invoice_report" data-toggle="modal" onclick="edit(1)" class="btn btn-sm bg-success-light mr-2">
+																	<i class="fe fe-pencil"></i> 编辑
+																</a>
+																<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+																	<i class="fe fe-trash"></i> 删除
+																</a>
+															</div>
+														</td>
+													</tr>
+												{% endfor %}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>		
+							<div style="width: 100%;float: right;padding-right: 1%;padding-bottom: 1%;padding-top: 1%;">
+								<button class="btn btn-primary" type="button" onclick="return_page()" style="background-color: mediumpurple;border: 1px solid #6610f2;float: right;margin-left: 1%;">返回主页</button>
+								<a data-toggle="modal" href="#edit_invoice_report" style="float: right;">
+									<button class="btn btn-primary" type="button">新增用户</button>
+								</a>
+							</div>		
+						</div>
+						
+					</div>
+					
+			<!-- /Page Wrapper -->
+			
+        
+		<!-- /Main Wrapper -->
+		<!-- Edit Details Modal -->
+		<div class="modal fade" id="edit_invoice_report" aria-hidden="true" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">用户信息编辑</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="row form-row">
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>用户账号</label>
+										<input id="Number" type="text" class="form-control" value="#INV-0001">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>用户名称</label>
+										<input id="Name" type="text" class="form-control" value="汪宇晖">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>用户密码</label>
+										<input type="password" class="form-control" value="123">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>确认密码</label>
+										<input type="password" class="form-control" value="123">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>用户身份</label>
+										<input id="Identity" type="text" class="form-control" value="管理员">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>用户照片</label>
+										<input type="file"  class="form-control">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>创建日期</label>
+										<input id="Time" type="text"  class="form-control" value="9th Sep 2019">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>备注</label>
+										<input type="text"  class="form-control" value="无">
+									</div>
+								</div>
+								
+							</div>
+							<button type="submit" class="btn btn-primary btn-block">保存</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Edit Details Modal -->
+	
+		<!-- Delete Modal -->
+		<div class="modal fade" id="delete_modal" aria-hidden="true" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+				<!--	<div class="modal-header">
+						<h5 class="modal-title">Delete</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>-->
+					<div class="modal-body">
+						<div class="form-content p-2">
+							<h4 class="modal-title">删除身份信息</h4>
+							<p class="mb-4">确定要删除该用户的身份信息？</p>
+							<button type="button" class="btn btn-primary">确认</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Delete Modal -->
+		<script type="text/javascript">
+			function edit(num){
+				console.log(num)
+				name_="name_"+num
+				number_="num_"+num
+				identity_="identity_"+num
+				time_="time_"+num
+				console.log(name_)		
+				document.getElementById("Name").value=document.getElementById(name_).innerHTML
+				console.log(document.getElementById(number_).innerHTML)
+				document.getElementById("Number").value=document.getElementById(number_).innerHTML
+				console.log(document.getElementById(time_).innerHTML)
+				document.getElementById("Time").value=document.getElementById(time_).innerHTML
+				console.log(document.getElementById(identity_).innerHTML)
+				document.getElementById("Identity").value=document.getElementById(identity_).innerHTML
+			}
+			function sedit(num){
+				console.log(num)
+				name_="sname_"+num
+				number_="snum_"+num
+				identity_="sidentity_"+num
+				time_="stime_"+num
+				console.log(name_)		
+				document.getElementById("Name").value=document.getElementById(name_).innerHTML
+				console.log(document.getElementById(number_).innerHTML)
+				document.getElementById("Number").value=document.getElementById(number_).innerHTML
+				console.log(document.getElementById(time_).innerHTML)
+				document.getElementById("Time").value=document.getElementById(time_).innerHTML
+				console.log(document.getElementById(identity_).innerHTML)
+				document.getElementById("Identity").value=document.getElementById(identity_).innerHTML
+			}
+			function search_member(){
+				member_number = document.getElementById("members").value
+				document.getElementById("searched_head").innerHTML="“"+member_number+"”"
+				console.log(1)
+				snumber = '#000001'
+				sname = '汪宇晖'
+				sidentity = '管理员'
+				stime='2019年1月12日'
+				i=1
+				state='在线'
+				if(state=="在线"){
+					state_bg = "bg-success"
+				}
+				else{
+					state_bg = "bg-outline"
+				}
+				$("#searched").empty()
+				lens = 3
+				//查询结果这里加循环即可
+				for(i=1;i<lens;i++)
+				{
+					var searched_content ='<tr>'+'<td><a href="invoice.html" id="snum_'+i+'">'+ snumber + '</a></td>'+'<td>'+'#0'+i+'</td>'+
+					'<td><h2 class="table-avatar"><a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/user/user0.jpg" alt="User Image"></a><a id="sname_'+i+'" href="profile.html">'+sname+
+					'</a></h2></td><td id="sidentity_1">'+sidentity+'</td><td id="stime_'+i+'">'+stime+'</td><td class="text-center"><span class="badge '+state_bg+ ' badge-pill inv-badge">'+state+'</span></td><td class="text-right"><div class="actions">'+
+					'<a href="#edit_invoice_report" data-toggle="modal" onclick="sedit('+i+')" class="btn btn-sm bg-success-light mr-2"><i class="fe fe-pencil"></i> 编辑</a><a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">'+
+					'<i class="fe fe-trash"></i> 删除</a></div></td></tr>'
+					$("#searched").append(searched_content)
+				}
+				document.getElementById('searched_content').style.display="";
+				document.getElementById('all_members').style.display="none"
+			}
+			function search_name(){
+				member_name = document.getElementById("names").value
+				console.log(member_name)
+			}
+			function search_section(){
+				member_section = document.getElementById("sections").value
+				console.log(member_section)
+			}
+			function return_page(){
+				
+				document.getElementById('searched_content').style.display="none";
+				document.getElementById('all_members').style.display=""
+			}
+		</script>
+		<!-- jQuery -->
+        <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="static/assets/js/popper.min.js"></script>
+        <script src="static/assets/js/bootstrap.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+        <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- Datatables JS -->
+		<script src="static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="static/assets/plugins/datatables/datatables.min.js"></script>
+		
+		<!-- Custom JS -->
+		<script  src="static/assets/js/script.js"></script>
+		
+    </body>
+</html>
