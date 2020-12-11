@@ -49,9 +49,12 @@ class User(db.Model):
     permission = db.Column(db.Integer)
     authorityLevel = db.Column(db.Integer)
     status = db.Column(db.Integer)
+    date = db.Column(db.DateTime)
+
+
 
     def __init__(self, account, name, phone_number, email_address, department, password, permission, authority_level,
-                 state):
+                 status, date):
         self.account = account
         self.name = name
         self.phoneNumber = phone_number
@@ -60,7 +63,9 @@ class User(db.Model):
         self.password = password
         self.permission = permission
         self.authorityLevel = authority_level
-        self.status = state
+        self.status = status
+        self.date = date
+
 
     def __repr__(self):
         return '<User %r %r %r %r %r %r %r %r %r>' % \
@@ -98,6 +103,16 @@ class User(db.Model):
         print(query_result)
         if query_result is not None:
             return query_result
+
+
+    @staticmethod
+    def get_user_byaccount(user_account):
+        if not user_account:
+            return None
+        user_account = ".*" + user_account + "*"
+        query_result = User.query.filter(User.account == user_account).all()
+        print(query_result)
+
 
 
 class Info(db.Model):
@@ -325,8 +340,7 @@ class Page(db.Model):
 
     def __repr__(self):
         return '<Page %r %r %r %r %r %r %r>' % \
-               (
-                   self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure,
+               (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure,
                    self.windSpeed)
 
 
@@ -404,6 +418,9 @@ class EditPasswordForm(FlaskForm):
     new_password = PasswordField('新密码', validators=[InputRequired()])
     repeat = PasswordField('重复密码', [validators.EqualTo('new_password', message="两次输入的密码不一致")])
 
+class ManageSearchForm(FlaskForm):
+    attribution = StringField('属性')
+    content = StringField('内容')
 
 # 对登录管理对象的实例化
 login_manager = LoginManager()
@@ -443,6 +460,43 @@ def login():
         else:
             message = "用户不存在"
     return render_template("login.html", message=message, form=form)
+
+# 用户查询
+@app.route('/invoice-report', methods=['POST', 'GET'])
+@login_required
+def report_page():
+    search_form = ManageSearchForm()
+    Infor_Search = []
+    if search_form.validate_on_submit():
+        attribution = search_form.attribution.data
+        content = search_form.content.data
+        content = '.*'+content + '.*'
+        # content = content
+        if attribution == 'account':
+            print(current_user.permission)
+            temp_user = User.query.filter(User.account.op('regexp')(content)).all()
+        elif attribution == 'name':
+            temp_user = User.query.filter(User.name.op('regexp')(content)).all()
+        else:
+            temp_user = User.query.filter(User.department.op('regexp')(content)).all()
+        print(temp_user)
+        for temp in temp_user:
+            j = {
+                'account': temp.account,
+                'name': temp.name,
+                'phoneNumber': temp.phoneNumber,
+                'emailAddress': temp.emailAddress,
+                'department': temp.department,
+                'password': temp.password,
+                'permission': temp.permission,
+                'authorityLevel': temp.authorityLevel,
+                'status': temp.status,
+                'date': temp.date
+            }
+            if temp.permission <= current_user.permission:
+                Infor_Search.append(j)
+    return render_template('invoice-report.html', search_form=search_form, Infor_Search=Infor_Search)
+
 
 
 # 主页逻辑
@@ -527,6 +581,7 @@ def profile_page():
                            password_form=password_form, password_message=password_message)
 
 
+
 @app.route('/invoice-report')
 @login_required
 def invoice_page():
@@ -546,6 +601,7 @@ def invoice_page():
         users.append(j)
     print(users)
     return render_template('invoice-report.html', users=users)
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 
@@ -794,4 +850,4 @@ def default_error_handler(e):
 
 if __name__ == '__main__':
     api.rootPath(app)
-    socket_io.run(app, debug=False, host='10.201.143.92', port=8085)
+    socket_io.run(app, debug=False, host='10.201.239.0', port=8085)

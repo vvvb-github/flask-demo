@@ -44,4 +44,11 @@
 - **edit by wxy**
 
     登录模块数据库连接已经通畅，请使用用户名与密码"remilia""123"来进行登录；index的图表更新也基本完成，剩余就是继续填充其余页面的更新函数即可
+  
+- ************Dataset*************
+    信息表（Info）
+    发信人（senderID）、收信人（receiverID）、编号（KeyID）、日期（sendData）、内容（content）、结果（result：{0：未审核；1：已通过；2未通过}）、备注（remark）、主题（subject）
+
+    用户表（User）
+    账号（account）、名称（name）、电话号码（phoneNumber）、邮箱（emailAddress）、部门（department）、密码（password）、身份（permission：{0：普通用户；1：部门管理员；2：超级管理       员}）、级别（authirityLevel）、状态（status：{0：离线；1：在线}）
 

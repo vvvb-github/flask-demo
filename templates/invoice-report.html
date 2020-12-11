@@ -20,8 +20,23 @@
 		<!-- Datatables CSS -->
 		<link rel="stylesheet" href="static/assets/plugins/datatables/datatables.min.css">
 		
+<<<<<<< HEAD
 		<!-- Main CSS -->
         <link rel="stylesheet" href="static/assets/css/style.css">
+=======
+		<!-- Select2 CSS -->
+		<link rel="stylesheet" href="static/assets/css/select2.min.css">
+		
+		<!-- Main CSS -->
+		<link rel="stylesheet" href="static/assets/css/style.css">
+		
+		
+		<script src="static/js/Information.js"></script>
+		<script src="static/js/notification.js"></script>
+		<script src="static/js/management/information(user).js"></script>
+		<script src="static/js/management/information(searched).js"></script>
+		<script src="static/js/management/table.js"></script>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 	
 
 		<!--[if lt IE 9]>
@@ -67,6 +82,7 @@
             		
             		<!-- Notifications -->
             		<li class="nav-item dropdown noti-dropdown">
+<<<<<<< HEAD
             			<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
             				<i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
             			</a>
@@ -123,6 +139,28 @@
             				</div>
             			</div>
             		</li>
+=======
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
+						</a>
+						<div class="dropdown-menu notifications">
+							<div class="topnav-dropdown-header">
+								<span class="notification-title">消息提醒</span>
+								<a href="javascript:void(0)" class="clear-noti"> 隐藏 </a>
+							</div>
+							<div class="noti-content">
+								<ul class="notification-list">
+									<script>
+										readJson()
+									</script>
+								</ul>
+							</div>
+							<div class="topnav-dropdown-footer">
+								<a href="report.html">查看所有报告信息</a>
+							</div>
+						</div>
+					</li>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
             		<!-- /Notifications -->
             			<!-- download-->
 					<li >
@@ -366,7 +404,11 @@
 							<h4 class="card-title" id='detail_number' style="float:left; width:50%">用户查询</h4>		
 						</div>
 						<div class="card-body" style="padding-bottom: 0%;">
+<<<<<<< HEAD
 							<form action="#">
+=======
+							<form method="Post">
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 								
 								<div class="form-group" style="width: 90%;">
 									<div style="border-left: 1px solid #eaeaea;margin-bottom: 1%;padding-bottom: 1%;border-bottom: 1px solid #eaeaea;border-right: 1px solid #eaeaea;width: 40%;float:left;">
@@ -379,6 +421,7 @@
 														<li class="nav-item"><a class="nav-link" href="#solid-tab3" data-toggle="tab">部门查询</a></li>
 													</ul>
 													<div class="tab-content">
+<<<<<<< HEAD
 														<div class="tab-pane show active" id="solid-tab1">
 															<input type="text" id="members" class="form-control" placeholder="请输入账号...">
 															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
@@ -390,6 +433,25 @@
 														<div class="tab-pane" id="solid-tab3">
 															<input type="text" id="sections" class="form-control" placeholder="请输入部门...">
 															<button class="btn btn-primary" type="button" onclick="search_section()" style="float:right;background-color: #0794f3ab;border: 1px solid  #0794f3ab;">搜索用户</button>
+=======
+														{{ search_form.csrf_token }}
+														<div class="tab-pane show active" id="solid-tab1">
+															{{ search_form.content(class_="form-control", placeholder='请输入账号...') }}
+															{{ search_form.attribution(class_="form-control",style='display:none',value='account') }}
+<!--															<input type="text" id="members" class="form-control" placeholder="请输入账号...">-->
+<!--															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>-->
+															<button class="btn btn-primary" type="submit" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+														</div>
+														<div class="tab-pane" id="solid-tab2">
+															{{ search_form.content(class_="form-control", placeholder='请输入姓名...') }}
+															{{ search_form.attribution(class_="form-control",style='display:none',value='name') }}
+															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+														</div>
+														<div class="tab-pane" id="solid-tab3">
+															{{ search_form.content(class_="form-control", placeholder='请输入部门...') }}
+															{{ search_form.attribution(class_="form-control",style='display:none',value='department') }}
+															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid  #0794f3ab;">搜索用户</button>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 														</div>
 													</div>
 													
@@ -403,10 +465,13 @@
 							</form>
 						</div>
 					</div>
+<<<<<<< HEAD
                     <script>
                         let j = {{ users|tojson }};
 					    console.log(j)  ;
                     </script>
+=======
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 					<div id="all_members" class="row">
 						<div class="col-sm-12">
 							<div class="card">
@@ -428,6 +493,7 @@
 												</tr>
 											</thead>
 											<tbody>
+<<<<<<< HEAD
 												{% for item in users %}
 													<tr>
 														<td><a href="invoice.html" id="num_1">{{ item.account }}</a></td>
@@ -457,6 +523,11 @@
 													</tr>
 												{% endfor %}
 
+=======
+												<script>
+													showtable()
+												</script>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 											</tbody>
 										</table>
 									</div>
@@ -490,13 +561,17 @@
 													</tr>
 												</thead>
 												<tbody id="searched">
+<<<<<<< HEAD
                                                 {% for item in users %}
+=======
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 													<tr>
 														<td><a href="invoice.html" id="num_1">#IN0001</a></td>
 														<td>#01</td>
 														<td>
 															<h2 class="table-avatar">
 																<a href="profile.html" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/user/user0.jpg" alt="User Image"></a>
+<<<<<<< HEAD
 																<a id="name_1" href="profile.html">{{ item.name }} </a>
 															</h2>
 														</td>
@@ -504,6 +579,15 @@
 														<td id="time_1">{{ item.createTime }}</td>
 														<td class="text-center">
 															<span class="badge badge-pill bg-success inv-badge">{{ item.status }}</span>
+=======
+																<a id="name_1" href="profile.html">汪宇晖 </a>
+															</h2>
+														</td>
+														<td id="identity_1">管理员</td>
+														<td id="time_1">2019年9月9日</td>
+														<td class="text-center">
+															<span class="badge badge-pill bg-success inv-badge">在线</span>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 														</td>
 														<td class="text-right">
 															<div class="actions">
@@ -517,7 +601,11 @@
 															</div>
 														</td>
 													</tr>
+<<<<<<< HEAD
 												{% endfor %}
+=======
+													
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 												</tbody>
 											</table>
 										</div>
@@ -554,7 +642,11 @@
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>用户账号</label>
+<<<<<<< HEAD
 										<input id="Number" type="text" class="form-control" value="#INV-0001">
+=======
+										<input id="Number" type="text" class="form-control" value="#INV-0001" readonly="readonly">
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
@@ -566,19 +658,36 @@
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>用户密码</label>
+<<<<<<< HEAD
 										<input type="password" class="form-control" value="123">
+=======
+										<input id="userpasswd" type="password" class="form-control" value="123">
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>确认密码</label>
+<<<<<<< HEAD
 										<input type="password" class="form-control" value="123">
+=======
+										<input id="confirmpasswd" type="password" class="form-control" value="123">
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>用户身份</label>
+<<<<<<< HEAD
 										<input id="Identity" type="text" class="form-control" value="管理员">
+=======
+										<!-- 需要当前身份的权限去修改次一级的权限 -->
+										<select class="select">
+											<option id="Identity" value="0">值班用户</option>
+											<option value="1">管理员</option>
+											<option value="2">超级管理员</option>
+										</select>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
@@ -590,7 +699,11 @@
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>创建日期</label>
+<<<<<<< HEAD
 										<input id="Time" type="text"  class="form-control" value="9th Sep 2019">
+=======
+										<input id="Time" type="text"  class="form-control" value="9th Sep 2019" readonly="readonly">
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
@@ -599,7 +712,10 @@
 										<input type="text"  class="form-control" value="无">
 									</div>
 								</div>
+<<<<<<< HEAD
 								
+=======
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 							</div>
 							<button type="submit" class="btn btn-primary btn-block">保存</button>
 						</form>
@@ -631,6 +747,7 @@
 			</div>
 		</div>
 		<!-- /Delete Modal -->
+<<<<<<< HEAD
 		<script type="text/javascript">
 			function edit(num){
 				console.log(num)
@@ -707,6 +824,9 @@
 				document.getElementById('all_members').style.display=""
 			}
 		</script>
+=======
+		<script src="static/js/management/operation.js"></script>
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 		<!-- jQuery -->
         <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
 		
@@ -720,9 +840,20 @@
 		<!-- Datatables JS -->
 		<script src="static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
 		<script src="static/assets/plugins/datatables/datatables.min.js"></script>
+<<<<<<< HEAD
 		
 		<!-- Custom JS -->
 		<script  src="static/assets/js/script.js"></script>
+=======
+
+		<!-- Select2 JS -->
+		<script src="static/assets/js/select2.min.js"></script>
+		
+		<!-- Custom JS -->
+		<script src="static/assets/js/script.js"></script>
+
+		
+>>>>>>> fc3ad8c5d666c8c099c18b239ac2e865593566f2
 		
     </body>
 </html>
