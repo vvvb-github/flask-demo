@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Mentoring - Transactions List Page</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://www.jq22.com/jquery/bootstrap-4.2.1.css">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="static/assets/css/feathericon.min.css">
+		
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" href="static/assets/plugins/datatables/datatables.min.css">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="static/assets/css/style.css">
+		
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+        <script>
+            let Infor = {{ Infor|tojson }}
+        </script>
+		<script src="static/js/jquery.min.js"></script>
+		<script src="static/js/jquery.nicescroll.min.js"></script>
+		<script src="static/js/report(html)/table.js"></script>
+		<script src="static/js/notification.js"></script>
+		<script>
+			$(document).ready(function() {
+			
+			  var nice = $("html").niceScroll();  // The document page (body)
+			  
+			  $("#div1").html($("#div1").html()+' '+nice.version);
+			  
+			  $("#boxscroll").niceScroll({cursorborder:"",cursorcolor:"#00F",boxzoom:true}); // First scrollable DIV
+		  
+			  $("#boxscroll2").niceScroll("#contentscroll2",{cursorcolor:"#F00",cursoropacitymax:0.7,boxzoom:true,touchbehavior:true});  // Second scrollable DIV
+			  
+			});
+		  </script>
+    </head>
+    <body>
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			<!-- Header -->
+            <div class="header">
+			
+				<!-- Logo -->
+                <div class="header-left">
+                    <a href="index" class="logo">
+						<img src="static/assets/img/logo.png" alt="Logo">
+					</a>
+					<a href="index" class="logo logo-small">
+						<img src="static/assets/img/logo-small.png" alt="Logo" width="30" height="30">
+					</a>
+                </div>
+				<!-- /Logo -->
+				
+				<a href="javascript:void(0);" id="toggle_btn">
+					<i class="fe fe-text-align-left"></i>
+				</a>
+				
+				<div class="top-nav-search">
+
+				</div>
+				
+				<!-- Mobile Menu Toggle -->
+				<a class="mobile_btn" id="mobile_btn">
+					<i class="fa fa-bars"></i>
+				</a>
+				<!-- /Mobile Menu Toggle -->
+				
+				<!-- Header Right Menu -->
+				<ul class="nav user-menu">
+					
+					<!-- Notifications -->
+					<li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
+						</a>
+						<div class="dropdown-menu notifications">
+							<div class="topnav-dropdown-header">
+								<span class="notification-title">信息提醒</span>
+								<a href="javascript:void(0)" class="clear-noti"> 隐藏 </a>
+							</div>
+							<div class="noti-content">
+								<ul class="notification-list">
+									<script>
+										readJson()
+									</script>
+								</ul>
+							</div>
+							<div class="topnav-dropdown-footer">
+								<a href="#">查看所有报告信息</a>
+							</div>
+						</div>
+					</li>
+					<!-- /Notifications -->
+					<li >
+						<a data-toggle="modal" href="#text_inputs" title="信息上报">
+							<i class="fe fe-file"></i>
+						</a>
+					</li>
+					<!-- download-->
+					<li >
+						<a href="#" title="数据导出">
+							<i class="fe fe-download" onclick="dianwo()"></i>
+						</a>
+						<div class="dropdown-menu" style="padding: 5px;">
+							
+							<script type="text/javascript">
+								document.getElementById('zhezhao').style.display="none";
+								function mez(){
+									document.getElementById('zhezhao').style.display="";
+								}
+								function hidder(){
+									document.getElementById('zhezhao').style.display="none";
+								}
+							</script>
+			
+						</div>
+					</li>
+					<!-- /download -->
+					<!-- upload -->
+					<li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导入">
+							<i class="fe fe-upload"></i>
+						</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+								<button type="button" class="btn btn-primary" onclick="dianwo1()" style="color:#F8F9FA;float: right;">确认上传</button>
+						</div>
+							
+					</li>
+					<!-- /upload -->
+					<!-- User Menu -->
+					<li class="nav-item dropdown has-arrow">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
+						</a>
+						<div class="dropdown-menu">
+							<div class="user-header">
+								<div class="avatar avatar-sm">
+									<img src="static/assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
+								</div>
+								<div class="user-text">
+									<h6>汪宇晖</h6>
+									<p class="text-muted mb-0">Administrator</p>
+								</div>
+							</div>
+							<a class="dropdown-item" href="profile">个人设置</a>
+							<a class="dropdown-item" href="settings">设置</a>
+							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
+						</div>
+					</li>
+					<!-- /User Menu -->
+				</ul>
+				<!-- /Header Right Menu -->
+				
+            </div>
+			<!-- /Header -->
+			
+			<!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
+						<ul>
+							<li> 
+								<a href="index"><span><font color="#CCCCCC">首页</font></span></a>
+							</li>
+							<li class="submenu">
+								<a href="#"><span><font color="#CCCCCC"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="evaporation"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
+									<li><a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
+									<li><a href="futureheight"><font color="#CCCCCC">未来波导高度预测</font></a></li>
+								</ul>
+							</li>
+
+							<li class="submenu"> 
+								<a href="#"><span><font color="#CCCCCC">电磁损耗计算</font></span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="electromagenetic"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
+									
+								</ul>
+							</li>
+							<li class="submenu">
+								<a href="#"><span><font color="#CCCCCC"> 雷达有效距离探测 </font></span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="radar-valid-distance"><font color="CCCCCC">雷达有效探测性能</font> </a></li>
+									
+								</ul>
+							</li>
+							<li class="submenu">
+								<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
+								<ul style="display: none;">
+									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+									<li><a href="user-management"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
+									<li><a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a></li>
+								</ul>
+							
+							</li>
+						</ul>
+					</div>
+                </div>
+            </div>
+			<!-- /Sidebar -->
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+				
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">信息报表</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index">首页</a></li>
+									<li class="breadcrumb-item active">信息报表</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="datatable table table-hover table-center mb-0">
+											<thead>
+												<tr>
+													<th>信息编号</th>
+													<th>时间</th>
+													<th>申报人</th>
+													<th>主题</th>
+													<th class="text-center">当前状态</th>
+													<th class="text-center">详情</th>
+												</tr>
+											</thead>
+											<tbody id="tbody">
+												<script>
+													showtable()
+												</script>
+											
+												<!-- <tr>
+													<td><a id='num_1' href="invoice">#IN0001</a></td>
+													<td id="time_1"> 2020年11月8日 11:00</td>
+													<td>
+														<h2 class="table-avatar">
+															<a href="profile" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/user/歼灭.jpg" alt="User Image"></a>
+															<a id='name_1' href="profile">飞飞飞 </a>
+														</h2>
+													</td>
+													<td id="topic_1">人员安排</td>
+													<td class="text-center">
+														<span id="state_1" class="badge badge-pill bg-success inv-badge">已审核</span>
+													</td>
+													<td class="text-right">
+														<div class="actions">
+															<a data-toggle="modal" onclick="detail(1)" class="btn btn-sm bg-success-light mr-2">
+																<i class="fe fe-pencil">详情</i>
+															</a>
+															<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+																<i class="fe fe-trash">删除</i>
+															</a>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td><a id='num_2' href="invoice">#IN0002</a></td>
+													<td id='time_2'>2020年11月8日 11:04</td>
+													<td>
+														<h2 class="table-avatar">
+															<a href="profile" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/profiles/avatar-122.jpg" alt="User Image"></a>
+															<a id='name_2' href="profile">白白白 </a>
+														</h2>
+													</td>
+													<td id="topic_2">波导信息汇报</td>
+													<td class="text-center">
+														<span id="state_2" class="badge badge-pill bg-danger inv-badge">未通过</span>
+													</td>
+													<td class="text-right">
+														<div class="actions">
+															<a data-toggle="modal" onclick="detail(2)" class="btn btn-sm bg-success-light mr-2">
+																<i class="fe fe-pencil" >详情</i>
+															</a>
+															<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+																<i class="fe fe-trash">删除</i>
+															</a>
+														</div>
+													</td>
+												</tr>
+												<tr>
+													<td><a id='num_3' href="invoice">#IN0003</a></td>
+													<td id='time_3'>2020年11月18日 12:00</td>
+													<td>
+														<h2 class="table-avatar">
+															<a href="profile" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/user/user13.jpg" alt="User Image"></a>
+															<a id='name_3' href="profile">云云云</a>
+														</h2>
+													</td>
+													<td id="topic_3">雷达信息汇报</td>
+													<td class="text-center">
+														<span id="state_3" class="badge badge-pill bg-warning inv-badge">未审核</span>
+													</td>
+													<td class="text-right">
+														<div class="actions">
+															<a data-toggle="modal" onclick="detail(3)" class="btn btn-sm bg-success-light mr-2">
+																<i class="fe fe-pencil">详情</i>
+															</a>
+															<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+																<i class="fe fe-trash">删除</i>
+															</a>
+														</div>
+													</td>
+												</tr> -->
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>			
+					</div>
+					<div class="detail" id='details_div'>
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title" id='detail_number' style="float:left; width:50%">#IN0003</h4>	
+								<span id="detail_state" class="badge badge-pill bg-warning inv-badge" style="float: right; height: auto !important; margin-left: 2%; font-size: 24px;background-color: yellow;">未审核</span>
+								<button class="btn btn-primary" type="button" style="float: right; background-color: #778899;border: 1px solid #778899;" onclick="hidder()">隐藏</button>
+								
+							</div>
+							<div class="card-body" style="padding-bottom: 0%;">
+								<form action="#">
+							
+									<div class="form-group">
+										<label style="font-weight: bold;">主题:</label>
+										<input id="detail_topic" type="text" readonly="readonly" class="form-control" value="asdasdsadadadadadsad">
+									</div>
+									<div class="form-group">
+										<label style="font-weight: bold;">申报人: </label>
+										<label id="detail_proposer">飞飞飞</label>
+									</div>
+									<div class="form-group">
+										<label style="font-weight: bold;">时间: </label>
+										<label id="detail_time">12</label>
+									</div>
+									<div class="form-group" style="border-bottom: 1px solid #ccc;">
+										<label style="font-weight: bold;">内容：</label>
+										<div class="card-body">
+											<div id="boxscroll2" style="border: 2px solid #ccc">
+												<div id="contentscroll2">
+													<p id='datatext'></p>
+												</div>
+											</div>
+										</div>
+									</div>	
+									<div id="reject_div" class="form-group" style="display: none;">
+										<label style="font-weight: bold;color: crimson;">驳回原因: </label>
+										<label id="reject_reasons"></label>
+									</div>
+								</form>
+								
+							</div>
+							<div class="card-body" style="padding-top: 0%;">
+								<a id="Reject" data-toggle="modal" href="#edit_invoice_report">
+									<button class="btn btn-primary" type="button" style="float: right; margin-left: 2%;margin-right: 2%;background-color: #dc3545;border: 1px solid #dc3545;">驳回</button>
+								</a>
+								
+								<a id="Access" data-toggle="modal" href="#Ok">
+									<button class="btn btn-primary"type="button" style="float: right; background-color: #28a745;border: 1px solid #28a745;">通过</button>
+								</a>
+
+                                <a id="delete" data-toggle="modal" href="#delete_modal">
+                                    <button class="btn btn-sm bg-danger-light" type="button"  style="float: right; margin-left: 2%;margin-right: 2%;background-color: #db828a;border: 1px solid #ad5e65;">删除</button>
+                                </a>
+								
+							</div>
+						</div>
+					</div>
+				</div>			
+			</div>
+
+			<!-- /Page Wrapper -->
+		
+		<!-- /Main Wrapper -->
+		<!-- Edit Details Modal -->
+		<div class="modal fade" id="edit_invoice_report" aria-hidden="true" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">驳回请求</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="{{ url_for('reject_report') }}" method="post">
+							<div class="row form-row">
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label style="font-weight: bold;">请求编号</label>
+										<input id="report_id" type="text" class="form-control" name="reportID">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label style="font-weight: bold;">申报人</label>
+										<input id="report_name" type="text" class="form-control" value="">
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="form-group">
+										<label style="font-weight: bold;">驳回原因</label>
+										<div style="border: 2px solid #ccc">
+											<textarea style="width: 100%;" name="rejectReason"></textarea>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							<button type="submit" class="btn btn-primary btn-block">确定</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Edit Details Modal -->
+
+		<!-- Ok Modal -->
+		<div class="modal fade" id="Ok" aria-hidden="true" role="dialog" style="text-align: center;">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+				<!--	<div class="modal-header">
+						<h5 class="modal-title">Delete</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>-->
+					<div class="modal-body">
+						<div class="form-content p-2">
+							<h4 class="modal-title">确认</h4>
+							<p class="mb-4">确定当前申报审批通过？</p>
+							<button type="button" class="btn btn-primary" onclick="location.href='report/pass/'+document.getElementById('detail_number').innerHTML">确认 </button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Delete Modal -->
+		<div class="modal fade" id="delete_modal" aria-hidden="true" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+				<!--	<div class="modal-header">
+						<h5 class="modal-title">Delete</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>-->
+					<div class="modal-body">
+						<div class="form-content p-2">
+							<h4 class="modal-title">删除</h4>
+							<p class="mb-4">确定删除当前记录么？</p>
+							<button type="button" class="btn btn-primary" onclick="location.href='report/delete/'+document.getElementById('detail_number').innerHTML">删除 </button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+		<!-- jQuery -->
+        <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="static/assets/js/popper.min.js"></script>
+        <script src="static/assets/js/bootstrap.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+        <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- Datatables JS -->
+		<script src="static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="static/assets/plugins/datatables/datatables.min.js"></script>
+		<script src="static/js/report(html)/operation.js"></script>
+		<!-- Custom JS -->
+		<script  src="static/assets/js/script.js"></script>
+	</body>
+	
+</html>

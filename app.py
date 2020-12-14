@@ -1,6 +1,6 @@
 import random
 import datetime
-from flask import Flask, request, url_for, flash
+from flask import Flask, request, url_for, flash, session
 from flask_cors import *
 from flask_sqlalchemy import SQLAlchemy
 from config import *
@@ -8,7 +8,7 @@ from datetime import *
 from algorithm import api
 from flask_socketio import *
 from flask import render_template, redirect
-from flask_login import LoginManager, login_required, login_user, current_user
+from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, validators
 from wtforms.validators import DataRequired, EqualTo, InputRequired, Email
@@ -461,8 +461,18 @@ def login():
             message = "用户不存在"
     return render_template("login.html", message=message, form=form)
 
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    if session.get('was_once_logged_in'):
+        del session['was_once_logged_in']
+    return redirect(url_for('login'))
+
+
 # 用户查询
-@app.route('/invoice-report', methods=['POST', 'GET'])
+@app.route('/user-management', methods=['POST', 'GET'])
 @login_required
 def report_page():
     search_form = ManageSearchForm()
@@ -503,8 +513,7 @@ def report_page():
         print('search:', Search)
         Search = json.dumps(Search, ensure_ascii=False)
         print('search:', Search)
-    return render_template('invoice-report.html', search_form=search_form, Search=Search)
-
+    return render_template('user-management.html', search_form=search_form, Search=Search)
 
 
 # 主页逻辑
@@ -589,28 +598,54 @@ def profile_page():
                            password_form=password_form, password_message=password_message)
 
 
-
-@app.route('/invoice-report')
+@app.route('/report')
 @login_required
 def invoice_page():
-    all_users = User.query.order_by(User.account).all()
-    users = []
-    count = 1
-    for i in all_users:
+    report = Info.query.filter_by(receiverID=current_user.account).order_by(Info.keyID.desc())
+    infos = []
+    for i in report:
         j = {
-            "account": i.account,
-            "count": count,
-            "name": i.name,
-            "level": i.authorityLevel,
-            "createTime": "xxxx",
-            "status": i.status
+            "name": i.senderID,
+            "KeyID": i.keyID,
+            "sendData": i.sendDate,
+            "subject": i.subject,
+            "content": i.content,
+            "result": i.result,
+            "remark": i.remark
         }
-        count = count + 1
-        users.append(j)
-    print(users)
-    return render_template('invoice-report.html', users=users)
+        infos.append(j)
+    print(infos)
+    return render_template('report.html', Infor=infos)
 
 
+@app.route('/report/pass/<reportID>')
+@login_required
+def pass_report(reportID):
+    current_report = Info.query.filter_by(keyID=reportID).first()
+    current_report.result = 1
+    db.session.commit()
+    return redirect(url_for('invoice_page'))
+
+
+@app.route('/report/reject', methods=['POST'])
+@login_required
+def reject_report():
+    rejectID = request.form['reportID']
+    rejectReason = request.form['rejectReason']
+    current_report = Info.query.filter_by(keyID=rejectID).first()
+    current_report.result = 2
+    current_report.remark = rejectReason
+    db.session.commit()
+    return redirect(url_for('invoice_page'))
+
+
+@app.route('/report/delete/<reportID>')
+@login_required
+def delete_report(reportID):
+    current_report = Info.query.filter_by(keyID=reportID).first()
+    db.session.delete(current_report)
+    db.session.commit()
+    return redirect(url_for('invoice_page'))
 # ----------------------------------------------------------------------------------------------------------------------
 
 
