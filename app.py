@@ -1,13 +1,14 @@
 import random
 import datetime
-from flask import Flask, request, url_for, flash, session
+from flask import Flask, request, url_for, flash, session, blueprints
 from flask_cors import *
+from sqlalchemy import or_
 from flask_sqlalchemy import SQLAlchemy
 from config import *
 from datetime import *
 from algorithm import api
 from flask_socketio import *
-from flask import render_template, redirect
+from flask import render_template, redirect, abort
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, validators
@@ -104,7 +105,6 @@ class User(db.Model):
         if query_result is not None:
             return query_result
 
-
     @staticmethod
     def get_user_byaccount(user_account):
         if not user_account:
@@ -112,7 +112,6 @@ class User(db.Model):
         user_account = ".*" + user_account + "*"
         query_result = User.query.filter(User.account == user_account).all()
         print(query_result)
-
 
 
 class Info(db.Model):
@@ -341,7 +340,7 @@ class Page(db.Model):
     def __repr__(self):
         return '<Page %r %r %r %r %r %r %r>' % \
                (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure,
-                   self.windSpeed)
+                self.windSpeed)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -418,9 +417,11 @@ class EditPasswordForm(FlaskForm):
     new_password = PasswordField('新密码', validators=[InputRequired()])
     repeat = PasswordField('重复密码', [validators.EqualTo('new_password', message="两次输入的密码不一致")])
 
+
 class ManageSearchForm(FlaskForm):
     attribution = StringField('属性')
     content = StringField('内容')
+
 
 # 对登录管理对象的实例化
 login_manager = LoginManager()
@@ -459,6 +460,8 @@ def login():
                 message = "密码错误"
         else:
             message = "用户不存在"
+    else:
+        message = "请登录"
     return render_template("login.html", message=message, form=form)
 
 
@@ -474,46 +477,74 @@ def logout():
 # 用户查询
 @app.route('/user-management', methods=['POST', 'GET'])
 @login_required
-def report_page():
-    search_form = ManageSearchForm()
-    Search = []
-    if search_form.validate_on_submit():
-        attribution = search_form.attribution.data
-        content = search_form.content.data
-        basic_infor = {
-            'content': content,
-
+def user_management_page():
+    all_user = User.query.order_by(User.account.desc()).all()
+    Infor = []
+    for i in all_user:
+        j = {
+            'account': i.account,
+            'name': i.name,
+            'phoneNumber': i.phoneNumber,
+            'emailAddress': i.emailAddress,
+            'department': i.department,
+            'password': i.password,
+            'permission': i.permission,
+            'authorityLevel': i.authorityLevel,
+            'status': i.status,
+            'date': i.date.strftime("%Y-%m-%d %H:%M:%S")
         }
-        content = '.*'+content + '.*'
-        # content = content
-        if attribution == 'account':
-            print(current_user.permission)
-            temp_user = User.query.filter(User.account.op('regexp')(content)).all()
-        elif attribution == 'name':
-            temp_user = User.query.filter(User.name.op('regexp')(content)).all()
-        else:
-            temp_user = User.query.filter(User.department.op('regexp')(content)).all()
-        print(temp_user)
+        Infor.append(j)
+    print(Infor)
+    return render_template('user-management.html', Infor=Infor)
 
-        for temp in temp_user:
-            j = {
-                'account': temp.account,
-                'name': temp.name,
-                'phoneNumber': temp.phoneNumber,
-                'emailAddress': temp.emailAddress,
-                'department': temp.department,
-                'password': temp.password,
-                'permission': temp.permission,
-                'authorityLevel': temp.authorityLevel,
-                'status': temp.status,
-                'date': temp.date.strftime("%Y-%m-%d %H:%M:%S")
-            }
-            if temp.permission <= current_user.permission:
-                Search.append(j)
-        print('search:', Search)
-        Search = json.dumps(Search, ensure_ascii=False)
-        print('search:', Search)
-    return render_template('user-management.html', search_form=search_form, Search=Search)
+
+# 删除用户
+@app.route('/user/delete/<userID>')
+@login_required
+def delete_user(userID):
+    temp_user = User.query.filter_by(account=userID).first()
+    if temp_user is None:
+        flash("用户未找到，请刷新重试")
+        return redirect(url_for('user_management_page'))
+    else:
+        if temp_user.authorityLevel >= current_user.authorityLevel:
+            flash("您的权限不够")
+            return redirect(url_for('user_management_page'))
+        else:
+            db.session.delete(temp_user)
+            db.session.commit()
+    flash("删除成功")
+    return redirect(url_for('user_management_page'))
+
+
+# 编辑用户
+@app.route('/user/edit', methods=['POST'])
+@login_required
+def edit_user():
+    account = request.form['account']
+    name = request.form['name']
+    password = request.form['password']
+    confirm = request.form['confirm']
+    level = request.form['level']
+    print(account)
+    print(level)
+    temp_user = User.query.filter_by(account=account).first()
+    if temp_user is None:
+        flash("用户未找到，请刷新重试")
+        return redirect(url_for('user_management_page'))
+    else:
+        if temp_user.authorityLevel >= current_user.authorityLevel:
+            flash("您的权限不够")
+            return redirect(url_for('user_management_page'))
+        else:
+            temp_user.name = name
+            temp_user.password = password
+            temp_user.authorityLevel = level
+            db.session.commit()
+    flash("修改成功")
+    return redirect(url_for('user_management_page'))
+
+
 
 
 # 主页逻辑
@@ -546,11 +577,11 @@ def sufaceevaporation_page():
 def profile_page():
     temp_level = None
     if current_user.authorityLevel == 0:
-        temp_level = "超级管理员"
+        temp_level = "普通用户"
     elif current_user.authorityLevel == 1:
         temp_level = "管理员"
     elif current_user.authorityLevel == 2:
-        temp_level = "普通用户"
+        temp_level = "超级管理员"
     user = {
         "name": current_user.name,
         "emailAddress": current_user.emailAddress,
@@ -559,8 +590,6 @@ def profile_page():
         "level": temp_level
     }
 
-    profile_message = None
-    password_message = None
     profile_form = EditProfileForm()
     password_form = EditPasswordForm()
     if profile_form.validate_on_submit():
@@ -573,10 +602,12 @@ def profile_page():
         temp.phoneNumber = profile_form.phoneNumber.data
         db.session.commit()
         print(User.query.filter_by(account=current_user.account).first())
+        flash("修改成功")
         return redirect(url_for('profile_page'))
     else:
-        if profile_form.errors is not None:
-            profile_message = profile_form.errors
+        if (bool(profile_form.errors)) and (len(profile_form.errors) != 3):
+            flash("修改失败，请检查输入信息（如邮箱）格式后重试")
+        print(profile_form.errors)
 
     if password_form.validate_on_submit():
         if current_user.verify_password(password_form.old_password.data) is True:
@@ -585,23 +616,50 @@ def profile_page():
             temp.password = password_form.new_password.data
             db.session.commit()
             print(User.query.filter_by(account=current_user.account).first())
-            return redirect(url_for('profile_page'))
+            logout_user()
+            return redirect(url_for('login', message="请重新登录"))
         else:
-            password_message = "密码不正确"
-            return render_template('profile.html', user=user, profile_form=profile_form, profile_message=None,
-                                   password_form=password_form, password_message=password_message)
+            flash("密码不正确")
+            return render_template('profile.html', user=user, profile_form=profile_form, password_form=password_form)
     else:
-        if password_form.errors is not None:
-            password_message = password_form.errors
+        if (bool(password_form.errors)) and (len(password_form.errors) != 2):
+            flash("请检查重复输入的两次密码是否一致")
+        print(password_form.errors)
 
-    return render_template('profile.html', user=user, profile_form=profile_form, profile_message=profile_message,
-                           password_form=password_form, password_message=password_message)
+    return render_template('profile.html', user=user, profile_form=profile_form, password_form=password_form)
+
+
+@app.route('/profile/<userID>')
+@login_required
+def other_profile_page(userID):
+    temp_level = None
+    temp_user = User.query.filter_by(account=userID).first()
+    if temp_user is None:
+        abort(404)
+    if temp_user.authorityLevel == 0:
+        temp_level = "普通用户"
+    elif temp_user.authorityLevel == 1:
+        temp_level = "管理员"
+    elif temp_user.authorityLevel == 2:
+        temp_level = "超级管理员"
+    user = {
+        "name": temp_user.name,
+        "emailAddress": temp_user.emailAddress,
+        "phoneNumber": temp_user.phoneNumber,
+        "department": temp_user.department,
+        "level": temp_level
+    }
+    if userID != current_user.account:
+        return render_template('profile-other.html', user=user)
+    else:
+        return redirect(url_for('profile_page'))
 
 
 @app.route('/report')
 @login_required
 def invoice_page():
-    report = Info.query.filter_by(receiverID=current_user.account).order_by(Info.keyID.desc())
+    report = Info.query.filter(
+        or_(Info.receiverID == current_user.account, Info.senderID == current_user.account)).order_by(Info.keyID.desc())
     infos = []
     for i in report:
         j = {
@@ -622,8 +680,11 @@ def invoice_page():
 @login_required
 def pass_report(reportID):
     current_report = Info.query.filter_by(keyID=reportID).first()
+    if current_report is None:
+        flash("请求对象不存在，请刷新后重试！")
     current_report.result = 1
     db.session.commit()
+    flash("操作成功")
     return redirect(url_for('invoice_page'))
 
 
@@ -633,9 +694,12 @@ def reject_report():
     rejectID = request.form['reportID']
     rejectReason = request.form['rejectReason']
     current_report = Info.query.filter_by(keyID=rejectID).first()
+    if current_report is None:
+        flash("请求对象不存在，请刷新后重试！")
     current_report.result = 2
     current_report.remark = rejectReason
     db.session.commit()
+    flash("操作成功")
     return redirect(url_for('invoice_page'))
 
 
@@ -643,9 +707,14 @@ def reject_report():
 @login_required
 def delete_report(reportID):
     current_report = Info.query.filter_by(keyID=reportID).first()
+    if current_report is None:
+        flash("请求对象不存在，请刷新后重试！")
     db.session.delete(current_report)
     db.session.commit()
+    flash("操作成功")
     return redirect(url_for('invoice_page'))
+
+
 # ----------------------------------------------------------------------------------------------------------------------
 
 

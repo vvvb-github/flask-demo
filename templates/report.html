@@ -259,79 +259,6 @@
 												<script>
 													showtable()
 												</script>
-											
-												<!-- <tr>
-													<td><a id='num_1' href="invoice">#IN0001</a></td>
-													<td id="time_1"> 2020年11月8日 11:00</td>
-													<td>
-														<h2 class="table-avatar">
-															<a href="profile" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/user/歼灭.jpg" alt="User Image"></a>
-															<a id='name_1' href="profile">飞飞飞 </a>
-														</h2>
-													</td>
-													<td id="topic_1">人员安排</td>
-													<td class="text-center">
-														<span id="state_1" class="badge badge-pill bg-success inv-badge">已审核</span>
-													</td>
-													<td class="text-right">
-														<div class="actions">
-															<a data-toggle="modal" onclick="detail(1)" class="btn btn-sm bg-success-light mr-2">
-																<i class="fe fe-pencil">详情</i>
-															</a>
-															<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
-																<i class="fe fe-trash">删除</i>
-															</a>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td><a id='num_2' href="invoice">#IN0002</a></td>
-													<td id='time_2'>2020年11月8日 11:04</td>
-													<td>
-														<h2 class="table-avatar">
-															<a href="profile" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/profiles/avatar-122.jpg" alt="User Image"></a>
-															<a id='name_2' href="profile">白白白 </a>
-														</h2>
-													</td>
-													<td id="topic_2">波导信息汇报</td>
-													<td class="text-center">
-														<span id="state_2" class="badge badge-pill bg-danger inv-badge">未通过</span>
-													</td>
-													<td class="text-right">
-														<div class="actions">
-															<a data-toggle="modal" onclick="detail(2)" class="btn btn-sm bg-success-light mr-2">
-																<i class="fe fe-pencil" >详情</i>
-															</a>
-															<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
-																<i class="fe fe-trash">删除</i>
-															</a>
-														</div>
-													</td>
-												</tr>
-												<tr>
-													<td><a id='num_3' href="invoice">#IN0003</a></td>
-													<td id='time_3'>2020年11月18日 12:00</td>
-													<td>
-														<h2 class="table-avatar">
-															<a href="profile" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/user/user13.jpg" alt="User Image"></a>
-															<a id='name_3' href="profile">云云云</a>
-														</h2>
-													</td>
-													<td id="topic_3">雷达信息汇报</td>
-													<td class="text-center">
-														<span id="state_3" class="badge badge-pill bg-warning inv-badge">未审核</span>
-													</td>
-													<td class="text-right">
-														<div class="actions">
-															<a data-toggle="modal" onclick="detail(3)" class="btn btn-sm bg-success-light mr-2">
-																<i class="fe fe-pencil">详情</i>
-															</a>
-															<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
-																<i class="fe fe-trash">删除</i>
-															</a>
-														</div>
-													</td>
-												</tr> -->
 											</tbody>
 										</table>
 									</div>
@@ -339,10 +266,22 @@
 							</div>
 						</div>			
 					</div>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul class=flashes>
+                            {% for message in messages %}
+                                    <li>{{ message }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+                    <script type="text/javascript">
+                        var Infor = {{ Infor |tojson }};
+                    </script>
 					<div class="detail" id='details_div'>
 						<div class="card">
 							<div class="card-header">
-								<h4 class="card-title" id='detail_number' style="float:left; width:50%">#IN0003</h4>	
+								<h4 class="card-title" id='detail_number' style="float:left; width:50%"></h4>
 								<span id="detail_state" class="badge badge-pill bg-warning inv-badge" style="float: right; height: auto !important; margin-left: 2%; font-size: 24px;background-color: yellow;">未审核</span>
 								<button class="btn btn-primary" type="button" style="float: right; background-color: #778899;border: 1px solid #778899;" onclick="hidder()">隐藏</button>
 								
@@ -398,10 +337,6 @@
 				</div>			
 			</div>
 
-			<!-- /Page Wrapper -->
-		
-		<!-- /Main Wrapper -->
-		<!-- Edit Details Modal -->
 		<div class="modal fade" id="edit_invoice_report" aria-hidden="true" role="dialog">
 			<div class="modal-dialog modal-dialog-centered" role="document" >
 				<div class="modal-content">
@@ -448,12 +383,6 @@
 		<div class="modal fade" id="Ok" aria-hidden="true" role="dialog" style="text-align: center;">
 			<div class="modal-dialog modal-dialog-centered" role="document" >
 				<div class="modal-content">
-				<!--	<div class="modal-header">
-						<h5 class="modal-title">Delete</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>-->
 					<div class="modal-body">
 						<div class="form-content p-2">
 							<h4 class="modal-title">确认</h4>
@@ -470,12 +399,6 @@
 		<div class="modal fade" id="delete_modal" aria-hidden="true" role="dialog">
 			<div class="modal-dialog modal-dialog-centered" role="document" >
 				<div class="modal-content">
-				<!--	<div class="modal-header">
-						<h5 class="modal-title">Delete</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>-->
 					<div class="modal-body">
 						<div class="form-content p-2">
 							<h4 class="modal-title">删除</h4>

@@ -29,7 +29,7 @@ function showtable(){
         document.writeln("<a data-toggle=\"modal\" onclick=\"detail("+i+")\" class=\"btn btn-sm bg-success-light mr-2\">")
         document.writeln("<i class=\"fe fe-pencil\">详情</i>")
         document.writeln("</a>")
-        document.writeln("<a class=\"btn btn-sm bg-danger-light\" data-toggle=\"modal\" href=\"#delete_modal\">")
+        document.writeln("<a class=\"btn btn-sm bg-danger-light\" onclick=\"del("+i+")\" data-toggle=\"modal\" href=\"#delete_modal\">")
         document.writeln("<i class=\"fe fe-trash\">删除</i>")
         document.writeln("</a>")
         document.writeln("</div>")

@@ -6,7 +6,7 @@
         <title>Mentoring - Dashboard</title>
 		
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
 		
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://www.jq22.com/jquery/bootstrap-4.2.1.css">
@@ -20,18 +20,20 @@
 		<link rel="stylesheet" href="static/assets/plugins/morris/morris.css">
 		
 		<!-- Main CSS -->
-        <link rel="stylesheet" href="static/assets/css/style.css">
+		<link rel="stylesheet" href="static/assets/css/style.css">
+		
 		
 		<!--[if lt IE 9]>
-			<script src="static/assets/js/html5shiv.min.js"></script>
-			<script src="static/assets/js/respond.min.js"></script>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
 
-         <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
-            integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
-    <script src="static/js/jquery.min.js"></script>
-    <script src="static/js/jquery.nicescroll.min.js"></script>
-    <script src="static/js/echarts.js"></script>
+<script src="static/js/jquery.min.js"></script>
+<script src="static/js/jquery.nicescroll.min.js"></script>
+<script src="static/js/echarts.js"></script>
+<script src="static/js/dialog.js"></script>
+<script src="static/js/Information.js"></script>
+<script src="static/js/notification.js"></script>
 
 <script>
   $(document).ready(function() {
@@ -86,94 +88,96 @@
 					<!-- Notifications -->
 					<li class="nav-item dropdown noti-dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-							<i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
+							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
 						</a>
 						<div class="dropdown-menu notifications">
 							<div class="topnav-dropdown-header">
-								<span class="notification-title">Notifications</span>
-								<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+								<span class="notification-title">消息提醒</span>
+								<a href="javascript:void(0)" class="clear-noti"> 隐藏 </a>
 							</div>
 							<div class="noti-content">
 								<ul class="notification-list">
-									<li class="notification-message">
-										<a href="#">
-											<div class="media">
-												<span class="avatar avatar-sm">
-													<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/user/user13.jpg">
-												</span>
-												<div class="media-body">
-													<p class="noti-details"><span class="noti-title">云云云</span> 发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
-													<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-									<li class="notification-message">
-										<a href="#">
-											<div class="media">
-												<span class="avatar avatar-sm">
-													<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/user/歼灭.jpg">
-												</span>
-												<div class="media-body">
-													<p class="noti-details"><span class="noti-title">飞飞飞</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
-													<p class="noti-time"><span class="notification-time">1 days ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
-									<li class="notification-message">
-										<a href="#">
-											<div class="media">
-												<span class="avatar avatar-sm">
-													<img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-122.jpg">
-												</span>
-												<div class="media-body">
-												<p class="noti-details"><span class="noti-title">白白白</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
-												<p class="noti-time"><span class="notification-time">2 days ago</span></p>
-												</div>
-											</div>
-										</a>
-									</li>
+									<script>
+										readJson()
+									</script>
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
-								<a href="#">查看所有消息</a>
+								<a href="report">查看所有消息</a>
 							</div>
 						</div>
 					</li>
 					<!-- /Notifications -->
+					<!-- Write -->
+					<li >
+						<a data-toggle="modal" href="#text_inputs" title="信息上报">
+							<i class="fe fe-file"></i>
+						</a>
+					</li>
+					<!-- Write -->
 					<!-- download-->
-					<li class="nav-item dropdown noti-dropdown">
-						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导出">
+					<li >
+						<a data-toggle="modal" href="#text_download" title="数据导出">
 							<i class="fe fe-download"></i>
 						</a>
 					</li>
+					<!-- <li >
+						<a href="#" title="数据导出">
+							<i class="fe fe-download" onclick="dianwo()"></i>
+						</a>
+						<div class="dropdown-menu" style="padding: 5px;">
+							
+							<script type="text/javascript">
+								document.getElementById('zhezhao').style.display="none";
+								function mez(){
+									document.getElementById('zhezhao').style.display="";
+								}
+								function hidder(){
+									document.getElementById('zhezhao').style.display="none";
+								}
+							</script>
+			
+						</div>
+					</li> -->
 					<!-- /download>
-					!-- upload -->
-					<li class="nav-item dropdown noti-dropdown">
-						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导入">
+					<!-- upload -->
+					<li >
+						<a data-toggle="modal" href="#text_upload" title="数据上传">
 							<i class="fe fe-upload"></i>
 						</a>
 					</li>
+					<!-- <li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导入">
+							<i class="fe fe-upload"></i>
+						</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+							<a class="dropdown-item"><input type="file" ></a>
+								<button type="button" class="btn btn-primary" onclick="dianwo1()" style="color:#F8F9FA;float: right;">确认上传</button>
+						</div>
+							
+					</li> -->
 					<!-- /upload -->
 					<!-- User Menu -->
 					<li class="nav-item dropdown has-arrow">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-							<span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
 						</a>
 						<div class="dropdown-menu">
 							<div class="user-header">
 								<div class="avatar avatar-sm">
-									<img src="assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
+									<img src="static/assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
 								</div>
 								<div class="user-text">
 									<h6>汪宇晖</h6>
 									<p class="text-muted mb-0">Administrator</p>
 								</div>
 							</div>
-							<a class="dropdown-item" href="profile">My Profile</a>
-							<a class="dropdown-item" href="settings">Settings</a>
-							<a class="dropdown-item" href="logout">Logout</a>
+							<a class="dropdown-item" href="profile">个人设置</a>
+							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
 						</div>
 					</li>
 					<!-- /User Menu -->
@@ -196,15 +200,15 @@
 								<a href="#" style="background:#9ca8b8"><span><font color="#293c55"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li ><a class="active" href="evaporation"><font color="#1e88e5">蒸发波导诊断</font></a></li>
-									<li><a href="surface-evaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
-									<li><a href="future-height"><font color="#CCCCCC">未来波导高度预测</font></a></li>
+									<li><a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
+									<li><a href="futureheight"><font color="#CCCCCC">未来波导高度预测</font></a></li>
 								</ul>
 							</li>
 
 							<li class="submenu"> 
 								<a href="#"><span><font color="#CCCCCC">电磁损耗计算</font></span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="electromagnetic"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
+									<li><a href="electromagenetic"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
 									
 								</ul>
 							</li>
@@ -218,7 +222,7 @@
 							<li class="submenu">
 								<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+									<li><a href="login"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
 									<li><a href="user-management"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
 									<li><a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a></li>
 								</ul>
@@ -239,8 +243,8 @@
 			<!-- Slimscroll JS -->
 			<script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 			
-			<script src="static/assets/plugins/raphael/raphael.min.js"></script>
-			<script src="static/assets/plugins/morris/morris.min.js"></script>
+			<script src="static/assets/plugins/raphael/raphael.min.js"></script>    
+			<script src="static/assets/plugins/morris/morris.min.js"></script>  
 			<script src="static/assets/js/chart.morris.js"></script>
 			
 			<!-- Custom JS -->
@@ -250,7 +254,123 @@
             <div class="page-wrapper">
 			
                 <div class="content container-fluid">
-					
+								
+					<!-- <div class="zhezhao" id='zhezhao'  >
+						<div class="tankuang" style="padding: 10px;">
+							<div id="header">
+									<div>			
+										<form action="#">
+											<div class="form-group row">
+			
+											</div>
+											<div class="form-group row">
+														<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+													max-width: 24.666667%;padding-right: 5px;padding-left: 25px;font-weight: bolder;">近期数据打包</label>
+														<div class="col-md-10" style="flex: 0 0 75.333333%;
+													max-width:52.333333%;">
+														<select class="form-control" style="width: 80%;float: right;">
+															<option>-- Select --</option>
+															<option>波导分析计算</option>
+															<option>电磁损耗计算</option>
+															<option>雷达有效距离</option>
+															</select>
+														</div>
+														<button class="btn btn-primary"  >
+															<a class="fe fe-download" style="font-size: 15px;color: #fff;float: right;" href="/images/1.PNG" download="1.PNG">&nbsp;&nbsp;下载</a>
+														</button>	
+													</div>
+											<div class="form-group row">
+												<h5 style="padding-left:4%;color:#569CD6 ;font-weight: bolder;">精确下载选择👇</h5>
+													</div>	
+											<div class="form-group row">
+												<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+											max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-经度</label>
+												<div class="col-md-10"  style="flex: 0 0 75.333333%;
+											max-width: 75.333333%;">
+													<input type="text" class="form-control" placeholder="122.27°E" style="width: 80%;float: right;">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+											max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-纬度</label>
+												<div class="col-md-10"  style="flex: 0 0 75.333333%;
+											max-width: 75.333333%;">
+													<input type="text" class="form-control" placeholder="31.65°N" style="width: 80%;float: right;">
+												</div>
+											</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">起始时间</label>
+										
+											<div class="col-md-10" style="flex: 0  75.333333%;
+										max-width: 75.333333%;">
+											<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
+											</div>
+										</div>
+										<div class="form-group row">
+											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
+										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">结束时间</label>
+											<div class="col-md-10" style="flex: 0 0 75.333333%;
+										max-width: 75.333333%;">
+											<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
+											</div>
+										</div>
+										<div class="input-group-append" style="float: right;">
+											<a class="btn btn-primary"   href="static//images/1.png" download="111" >确认选择并下载</a>
+										</div>
+									
+									</form>
+									
+									
+								</div>
+								
+								<div id="header-right" onclick="hidder()">x</div>
+							</div>
+						</div>
+					</div>
+					<script type="text/javascript">
+						document.getElementById('zhezhao').style.display="none";
+						function dianwo(){
+							document.getElementById('zhezhao').style.display="";
+						}
+						function hidder(){
+							document.getElementById('zhezhao').style.display="none";
+						}
+					</script>
+			
+			<div class="zhezhao1" id='zhezhao1'  >
+				<div class="tankuang1" style="padding: 10px;">
+					<div id="header">
+							<div>			
+								<form action="#">
+									
+									<center><h4 class="modal-title" style="padding-top: 5%;">确认上传</h4>
+										<p class="mb-4">确定上传所有选中的文件？</p></center>
+								<div class="input-group-append" style="float: left;padding-left:10%;padding-bottom: 2%; color: #fff;">
+									<a class="btn btn-primary"  onclick="hidder1()"  >确&nbsp;&nbsp;认</a>
+								</div>
+								<div class="input-group-append" style="float: right;padding-right:10%;padding-bottom: 2%; color: #fff;">
+									<a class="btn btn-danger"  onclick="hidder1()"  >取&nbsp;&nbsp;消</a>
+								</div>
+							
+							</form>
+							
+							
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<script type="text/javascript">
+				document.getElementById('zhezhao1').style.display="none";
+				function dianwo1(){
+					document.getElementById('zhezhao1').style.display="";
+				}
+				function hidder1(){
+					document.getElementById('zhezhao1').style.display="none";
+				}
+			</script> -->
+			
 					<!-- Page Header -->
 					<div class="page-header">
 						<div class="row">
@@ -321,7 +441,7 @@
 										
 										<h6 class="text-muted">大气压强</h6>
 										<div class="progress progress-sm">
-											<div class="progress-bar bg-danger w-50"></div>
+											<div class="progress-bar bg-warning w-50"></div>
 										</div>
 									</div>
 								</div>
@@ -445,6 +565,9 @@
 										</div>
 										<div class="input-group-append" style="float: right;">
 											<button class="btn btn-primary" type="button" >确认</button>
+											<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+												<i class="fe fe-trash"></i> 删除
+											</a>
 										</div>
 									</form>
 								</div>
@@ -474,6 +597,8 @@
 					</div>	
 				</div>			
 			</div>
+		<script src="static/js/download.js"></script>
+		<script src="static/js/upload.js"></script>
 			<!-- /Page Wrapper -->
         </div>
 		

@@ -6,40 +6,40 @@
         <title>Mentoring - Profile</title>
 		
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename="assets/img/favicon.png") }}">
 		
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://www.jq22.com/jquery/bootstrap-4.2.1.css">
 		
 		<!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename="assets/css/font-awesome.min.css") }}">
 		
 		<!-- Feathericon CSS -->
-        <link rel="stylesheet" href="static/assets/css/feathericon.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename="assets/css/feathericon.min.css") }}">
 		
 		<!-- Main CSS -->
-		<link rel="stylesheet" href="static/assets/css/style.css">
+		<link rel="stylesheet" href="{{ url_for('static', filename="assets/css/style.css") }}">
 		<script src="static/js/dialog.js"></script>
 		
 		<!--[if lt IE 9]>
-			<script src="static/assets/js/html5shiv.min.js"></script>
-			<script src="static/assets/js/respond.min.js"></script>
+			<script src="{{ url_for('static', filename="assets/js/html5shiv.min.js") }}"></script>
+			<script src="{{ url_for('static', filename="assets/js/respond.min.js") }}"></script>
 		<![endif]-->
     </head>
     <body>
 	
 		<!-- Main Wrapper -->
-        <div class="main-wrapper">
+    <div class="main-wrapper">
 		<!-- Header -->
 		<div class="header">
 			
 			<!-- Logo -->
 			<div class="header-left">
 				<a href="index" class="logo">
-					<img src="static/assets/img/logo.png" alt="Logo">
+					<img src="{{ url_for('static', filename="assets/img/logo.png") }}" alt="Logo">
 				</a>
 				<a href="index" class="logo logo-small">
-					<img src="static/assets/img/logo-small.png" alt="Logo" width="30" height="30">
+					<img src="{{ url_for('static', filename="assets/img/logo-small.png") }}" alt="Logo" width="30" height="30">
 				</a>
 			</div>
 			<!-- /Logo -->
@@ -77,7 +77,7 @@
 									<a href="#">
 										<div class="media">
 											<span class="avatar avatar-sm">
-												<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/user/user13.jpg">
+												<img class="avatar-img rounded-circle" alt="User Image" src="{{ url_for('static', filename="assets/img/user/user13.jpg") }}">
 											</span>
 											<div class="media-body">
 												<p class="noti-details"><span class="noti-title">云云云</span> 发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
@@ -235,7 +235,7 @@
 		</div>
 		<!-- /Sidebar -->
 			<!-- Page Wrapper -->
-            <div class="page-wrapper">
+        <div class="page-wrapper">
                 <div class="content container-fluid">
 					
 					<!-- Page Header -->
@@ -275,12 +275,8 @@
 									<li class="nav-item">
 										<a class="nav-link active" href="#per_details_tab" data-toggle="tab">个人信息</a>
 									</li>
-									<li class="nav-item">
-										<a class="nav-link" href="#password_tab" data-toggle="tab">修改密码</a>
-									</li>
 								</ul>
-							</div>	
-							<div class="tab-content profile-tab-cont">
+							</div>
 							<div class="tab-content profile-tab-cont">
 
 								<!-- Personal Details Tab -->
@@ -315,134 +311,34 @@
 														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">级别</p>
 														<p class="col-sm-10">{{ user.level }}</p>
 													</div>
-                                                    {% for message in get_flashed_messages() %}
-                                                        {{ message }}
-                                                    {% endfor %}
 												</div>
 											</div>
-										
-											
 										</div>
-
-									
 									</div>
 									<!-- /Personal Details -->
-
 								</div>
-								<!-- /Personal Details Tab -->
-								
-								<!-- Change Password Tab -->
-								<div id="password_tab" class="tab-pane fade">
-								
-									<div class="card">
-										<div class="card-body">
-											<h5 class="card-title">修改密码</h5>
-											<div class="row">
-												<div class="col-md-10 col-lg-6">
-													<form method="POST">
-                                                        {{ password_form.csrf_token }}
-                                                        {{ password_form.hidden_tag() }}
-														<div class="form-group">
-															<label>旧密码</label>
-                                                            {{ password_form.old_password(class_="form-control") }}
-														</div>
-														<div class="form-group">
-															<label>新密码</label>
-															{{ password_form.new_password(class_="form-control") }}
-														</div>
-														<div class="form-group">
-															<label>确认新密码</label>
-															{{ password_form.repeat(class_="form-control") }}
-														</div>
-														<button class="btn btn-primary" type="submit">保存</button>
-													</form>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-								<!-- /Change Password Tab -->
-								
 							</div>
 						</div>
 					</div>
-				
 				</div>			
-			</div>
-			<!-- /Page Wrapper -->
-		
         </div>
+			<!-- /Page Wrapper -->
+    </div>
 		<!-- /Main Wrapper -->
 
-		<!-- Edit Details Modal -->
-		<div class="modal fade" id="edit_personal_details" aria-hidden="true" role="dialog">
-			<div class="modal-dialog modal-dialog-centered" role="document" >
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">个人信息</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<form method="post">
-                            {{ profile_form.csrf_token }}
-                            {{ profile_form.hidden_tag() }}
-							<div class="row form-row">
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>姓名</label>
-										{{ profile_form.name(class_="form-control",value = user.name) }}
-									</div>
-								</div>
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>邮箱地址</label>
-										{{ profile_form.emailAddress(class_="form-control",value = user.emailAddress) }}
-									</div>
-								</div>
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>电话</label>
-										{{ profile_form.phoneNumber(class_="form-control",value = user.phoneNumber) }}
-									</div>
-								</div>
-								<div class="col-12">
-									<h5 class="form-title"><span>单位</span></h5>
-								</div>
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>当前级别</label>
-										{{ profile_form.level(class_="form-control", value = user.level, readonly = "readonly") }}
-									</div>
-								</div>
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>隶属部门</label>
-										{{ profile_form.department(class_="form-control", value = user.department, readonly = "readonly") }}
-									</div>
-								</div>
-							</div>
-							<button type="submit" class="btn btn-primary btn-block">Save Changes</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- /Edit Details Modal -->
 		
 		<!-- jQuery -->
         <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
 		
 		<!-- Bootstrap Core JS -->
-        <script src="static/assets/js/popper.min.js"></script>
-        <script src="static/assets/js/bootstrap.min.js"></script>
+        <script src="{{ url_for('static', filename="assets/js/popper.min.js") }}"></script>
+        <script src="{{ url_for('static', filename="assets/js/bootstrap.min.js") }}"></script>
 		
 		<!-- Slimscroll JS -->
-        <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="{{ url_for('static', filename="assets/plugins/slimscroll/jquery.slimscroll.min.js") }}"></script>
 		
 		<!-- Custom JS -->
-		<script  src="static/assets/js/script.js"></script>
+		<script  src="{{ url_for('static', filename="assets/js/script.js") }}"></script>
 		
     </body>
 </html>

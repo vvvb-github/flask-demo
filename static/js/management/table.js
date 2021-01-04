@@ -1,17 +1,17 @@
 
 function showtable(){
     var obj = eval(Infor_User)
-    infor_length = Infor.length
+    infor_length = Infor_User.length
     for(i=0;i<infor_length;i++){
-        identity = obj[i].permission
+        identity = obj[i].authorityLevel
         state = obj[i].status
         document.writeln("<tr>")
-        document.writeln("<td><a href=\"invoice.html\" id=\"num_"+i+"\">"+obj[i].account+"</a></td>")
+        document.writeln("<td><a href=\"profile" + "/" + obj[i].account + "\"" + " id=\"num_"+i+"\">"+obj[i].account+"</a></td>")
         document.writeln("<td>#"+i+"</td>")
         document.writeln("<td>")
         document.writeln("<h2 class=\"table-avatar\">")
-        document.writeln("<a href=\"profile.html\" class=\"avatar avatar-sm mr-2\"><img class=\"avatar-img rounded-circle\" src=\"static/assets/img/user/user0.jpg\" alt=\"User Image\"></a>")
-        document.writeln("<a id=\"name_"+i+"\" href=\"profile.html\">"+obj[i].name+"</a>")
+        document.writeln("<a href=\"profile" + "/" + obj[i].account + "\"" + " class=\"avatar avatar-sm mr-2\"><img class=\"avatar-img rounded-circle\" src=\"static/assets/img/user/user0.jpg\" alt=\"User Image\"></a>")
+        document.writeln("<a id=\"name_"+i+"\" href=\"profile" + "/" + obj[i].account + "\"" +">"+obj[i].name+"</a>")
         document.writeln("</h2>")
         document.writeln("</td>")
         if(identity == 2)
@@ -32,8 +32,8 @@ function showtable(){
         document.writeln("<a href=\"#edit_invoice_report\" data-toggle=\"modal\" onclick=\"edit("+i+")\" class=\"btn btn-sm bg-success-light mr-2\">")
         document.writeln("<i class=\"fe fe-pencil\"></i> 编辑")
         document.writeln("</a>")
-        // document.writeln("<a class=\"btn btn-sm bg-danger-light\" data-toggle=\"modal\" href=\"#delete_modal\">")
-        // document.writeln("<i class=\"fe fe-trash\"></i> 删除")
+        document.writeln("<a class=\"btn btn-sm bg-danger-light\" data-toggle=\"modal\" onclick=\"del("+i+")\" href=\"#delete_modal\">")
+        document.writeln("<i class=\"fe fe-trash\"></i> 删除")
         document.writeln("</a>")
         document.writeln("</div>")
         document.writeln("</td>")

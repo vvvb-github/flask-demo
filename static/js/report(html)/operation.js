@@ -1,6 +1,5 @@
 
 document.getElementById('details_div').style.display="none";
-console.log(123)
 function detail(number){
 	var obj = eval(Infor)
 	console.log('num:', number)	
@@ -51,6 +50,13 @@ function detail(number){
 
 	//document.getElementById('detail_state').style.backgroundColor=color;
 	document.getElementById('details_div').style.display="";
+}
+function del(number){
+	Num = 'num_' + number
+	Name = 'name_' + number
+	num_infor = document.getElementById(Num).innerHTML
+	name_infor = document.getElementById(Name).innerHTML
+	document.getElementById('del_infor').innerHTML = "删除："+num_infor + "," +name_infor + "?"
 }
 function hidder(){
 	document.getElementById('details_div').style.display="none";

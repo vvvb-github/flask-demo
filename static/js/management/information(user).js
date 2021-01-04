@@ -1,3 +1,4 @@
+/*
 var Infor_User = [
     {
         "account" : "Wang",
@@ -47,4 +48,4 @@ var Infor_User = [
         "authorityLevel":1,
         "status":0,
     }
-]
+]*/
