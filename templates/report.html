@@ -29,9 +29,13 @@
 		<![endif]-->
         <script>
             let Infor = {{ Infor|tojson }}
+
+            var User = {{ User|tojson }}
+            console.log(User)
         </script>
 		<script src="static/js/jquery.min.js"></script>
 		<script src="static/js/jquery.nicescroll.min.js"></script>
+<!--		<script src="static/js/User.js"></script>-->
 		<script src="static/js/report(html)/table.js"></script>
 		<script src="static/js/notification.js"></script>
 		<script>
@@ -275,10 +279,12 @@
                             </ul>
                         {% endif %}
                     {% endwith %}
-                    <script type="text/javascript">
-                        var Infor = {{ Infor |tojson }};
-                    </script>
-					<div class="detail" id='details_div'>
+<!--                    <script type="text/javascript">-->
+<!--                        var Infor = {{ Infor |tojson }};-->
+<!--                        var User = {{ User|tojson }}-->
+<!--            			console.log(User)-->
+<!--                    </script>-->
+					<div class="detail" id='details_div' style="display:none">
 						<div class="card">
 							<div class="card-header">
 								<h4 class="card-title" id='detail_number' style="float:left; width:50%"></h4>
@@ -296,6 +302,10 @@
 									<div class="form-group">
 										<label style="font-weight: bold;">申报人: </label>
 										<label id="detail_proposer">飞飞飞</label>
+									</div>
+									<div class="form-group">
+										<label style="font-weight: bold;">审批人:</label>
+										<label id="receiver_name"></label>
 									</div>
 									<div class="form-group">
 										<label style="font-weight: bold;">时间: </label>
@@ -361,6 +371,7 @@
 										<input id="report_name" type="text" class="form-control" value="">
 									</div>
 								</div>
+
 								<div class="col-12">
 									<div class="form-group">
 										<label style="font-weight: bold;">驳回原因</label>

@@ -15,7 +15,7 @@ function readJson(){
             document.writeln("<img class=\"avatar-img rounded-circle\" alt=\"User Image\" src=\"static/assets/img/user/user13.jpg\">")
             document.writeln("</span>")
             document.writeln("<div class=\"media-body\">")
-            document.writeln("<p class=\"noti-details\"><span class=\"noti-title\">"+obj[i].name+"</span> 发布一则<span class=\"noti-title\">"+obj[i].subject+"</span></p>")
+            document.writeln("<p class=\"noti-details\"><span class=\"noti-title\">"+obj[i].sender_name+"</span> 发布一则<span class=\"noti-title\">"+obj[i].subject+"</span></p>")
             document.writeln("<p class=\"noti-time\"><span class=\"notification-time\">"+obj[i].sendData +"</span></p>")
             document.writeln("</div>")
             document.writeln("</div>")

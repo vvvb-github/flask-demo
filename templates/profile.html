@@ -289,7 +289,7 @@
 									<!-- Personal Details -->
 									<div class="row">
 										<div class="col-lg-12">
-											<div class="card">
+											<div class="card" style="margin-bottom: 1%;">
 												<div class="card-body">
 													<h5 class="card-title d-flex justify-content-between" style="margin-bottom: 2%;">
 														<span>详细信息</span> 
@@ -320,7 +320,15 @@
                                                     {% endfor %}
 												</div>
 											</div>
-										
+											<div class="card" id="tip" style="height: 20px;width: auto;display:none">
+												<!-- <img src="static/assets/img/error.jpg"> -->
+												<div style="background: url(static/assets/img/error.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+													<span style="padding-left: 2%;font-size: 16px;font-family: 'Mada';color: #CD3333;">
+														用户密码有误，请重新输入~
+													</span>
+												</div>
+												<!-- <div></div> -->
+											</div>
 											
 										</div>
 

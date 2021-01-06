@@ -32,7 +32,7 @@
 <script src="static/js/echarts.js"></script>
 <script src="static/js/Information.js"></script>
 <script src="static/js/notification.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
-
+<!--当前页面的地址-->
 <script>
   $(document).ready(function() {
   
@@ -235,122 +235,13 @@
             <div class="page-wrapper">
 			
                 <div class="content container-fluid">
-					
-		<!-- <div class="zhezhao" id='zhezhao'  >
-			<div class="tankuang" style="padding: 10px;">
-				<div id="header">
-						<div>			
-							<form action="#">
-								<div class="form-group row">
-
-								</div>
-								<div class="form-group row">
-											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;font-weight: bolder;">近期数据打包</label>
-											<div class="col-md-10" style="flex: 0 0 75.333333%;
-										max-width:52.333333%;">
-											<select class="form-control" style="width: 80%;float: right;">
-												<option>-- Select --</option>
-												<option>波导分析计算</option>
-												<option>电磁损耗计算</option>
-												<option>雷达有效距离</option>
-												</select>
-											</div>
-											<button class="btn btn-primary"  >
-												<a class="fe fe-download" style="font-size: 15px;color: #fff;float: right;" href="/images/1.PNG" download="1.PNG">&nbsp;&nbsp;下载</a>
-											</button>	
-										</div>
-								<div class="form-group row">
-									<h5 style="padding-left:4%;color:#569CD6 ;font-weight: bolder;">精确下载选择👇</h5>
-										</div>	
-								<div class="form-group row">
-									<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-								max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-经度</label>
-									<div class="col-md-10"  style="flex: 0 0 75.333333%;
-								max-width: 75.333333%;">
-										<input type="text" class="form-control" placeholder="122.27°E" style="width: 80%;float: right;">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-								max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-纬度</label>
-									<div class="col-md-10"  style="flex: 0 0 75.333333%;
-								max-width: 75.333333%;">
-										<input type="text" class="form-control" placeholder="31.65°N" style="width: 80%;float: right;">
-									</div>
-								</div>
-							<div class="form-group row">
-								<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-							max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">起始时间</label>
-							
-								<div class="col-md-10" style="flex: 0  75.333333%;
-							max-width: 75.333333%;">
-								<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-							max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">结束时间</label>
-								<div class="col-md-10" style="flex: 0 0 75.333333%;
-							max-width: 75.333333%;">
-								<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
-								</div>
-							</div>
-							<div class="input-group-append" style="float: right;">
-								<a class="btn btn-primary"   href="/images/1.png" download="111" >确认选择并下载</a>
-							</div>
-						
-						</form>
-						
-						
-					</div>
-					
-					<div id="header-right" onclick="hidder()">x</div>
-				</div>
-			</div>
-		</div>
-		<script type="text/javascript">
-			document.getElementById('zhezhao').style.display="none";
-			function dianwo(){
-				document.getElementById('zhezhao').style.display="";
-			}
-			function hidder(){
-				document.getElementById('zhezhao').style.display="none";
-			}
-		</script>
-
-<div class="zhezhao1" id='zhezhao1'  >
-	<div class="tankuang1" style="padding: 10px;">
-		<div id="header">
-				<div>			
-					<form action="#">
-						
-						<center><h4 class="modal-title" style="padding-top: 5%;">确认上传</h4>
-							<p class="mb-4">确定上传所有选中的文件？</p></center>
-					<div class="input-group-append" style="float: left;padding-left:10%;padding-bottom: 2%; color: #fff;">
-						<a class="btn btn-primary"  onclick="hidder1()"  >确&nbsp;&nbsp;认</a>
-					</div>
-					<div class="input-group-append" style="float: right;padding-right:10%;padding-bottom: 2%; color: #fff;">
-						<a class="btn btn-danger"  onclick="hidder1()"  >取&nbsp;&nbsp;消</a>
-					</div>
-				
-				</form>
-				
-				
-			</div>
-		</div>
-	</div>
-</div>
-
-<script type="text/javascript">
-	document.getElementById('zhezhao1').style.display="none";
-	function dianwo1(){
-		document.getElementById('zhezhao1').style.display="";
-	}
-	function hidder1(){
-		document.getElementById('zhezhao1').style.display="none";
-	}
-</script> -->
+					{% with messages = get_flashed_messages() %}
+						{% if messages %}
+							{% for message in messages %}
+								{{message}}
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
 
 					<!-- Page Header -->
 					<div class="page-header">
