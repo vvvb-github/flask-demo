@@ -2,6 +2,7 @@
 document.getElementById('details_div').style.display="none";
 function detail(number){
 	var obj = eval(Infor)
+	console.log(obj)
 	console.log('num:', number)
 	account = eval(User).account
 	Num = 'num_' + number
@@ -54,7 +55,7 @@ function detail(number){
 				
 	document.getElementById('detail_proposer').innerHTML = document.getElementById(Name).innerHTML;
 	document.getElementById('report_name').value = document.getElementById(Name).innerHTML;
-	document.getElementById('receiver_name').value = obj[number].receiver_name + "("+obj[number].receiver_account+")";
+	document.getElementById('receiver_name').innerHTML = obj[number].receiver_name + "("+obj[number].receiver_account+")";
 	document.getElementById('detail_topic').value = document.getElementById(Topic).innerHTML;
 	document.getElementById('detail_time').innerHTML = document.getElementById(Time).innerHTML;
 	document.getElementById('datatext').innerHTML = content
@@ -70,6 +71,7 @@ function del(number){
 	num_infor = document.getElementById(Num).innerHTML
 	name_infor = document.getElementById(Name).innerHTML
 	document.getElementById('del_infor').innerHTML = "删除："+num_infor + "," +name_infor + "?"
+	document.getElementById('del_num').innerHTML = num_infor
 }
 function hidder(){
 	document.getElementById('details_div').style.display="none";

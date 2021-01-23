@@ -370,6 +370,37 @@ def clearTable(table):
     for record in record_list:
         db.session.delete(record)
 
+# notification消息发送给index等页面提示栏
+def notify():
+    report = Info.query.filter(
+        or_(Info.receiverID == current_user.account, Info.senderID == current_user.account)).order_by(Info.keyID.desc())
+    infos = []
+    for i in report:
+        sender_infor = User.query.filter_by(account=i.senderID).first()
+        receiver_infor = User.query.filter_by(account=i.receiverID).first()
+        if i.result == 0:
+            j = {
+                "sender_account": i.senderID,
+                "receiver_account": i.receiverID,
+                "sender_name": sender_infor.name,
+                "receiver_name": receiver_infor.name,
+                "KeyID": i.keyID,
+                "sendData": i.sendDate,
+                "subject": i.subject,
+                "content": i.content,
+                "result": i.result,
+                "remark": i.remark
+            }
+            infos.append(j)
+    count = len(infos)
+    infos = infos[-3:]
+    User_infor = {
+        "account": current_user.account,
+        "name": current_user.name,
+        "department": current_user.department,
+        "authorityLevel": current_user.authorityLevel
+    }
+    return infos, User_infor, count
 
 # 更新Page表
 def updatePage(data: dict):
@@ -441,7 +472,8 @@ def load_user(user_account):
 @app.route('/')
 @login_required
 def direct_index():
-    return render_template('index.html')
+    infos, User_infor, count = notify()
+    return render_template('index.html', Infor=infos, User=User_infor, count=count)
 
 
 # 登录逻辑
@@ -500,7 +532,8 @@ def user_management_page():
         }
         Infor.append(j)
     print(Infor)
-    return render_template('user-management.html', Infor=Infor)
+    infos, _, count = notify()
+    return render_template('user-management.html', Infor=infos, Users=Infor, count=count)
 
 
 # 删除用户
@@ -616,7 +649,8 @@ def add_user():
 @app.route('/index')
 @login_required
 def index():
-    return render_template('index.html')
+    infos, User_infor, count = notify()
+    return render_template('index.html', Infor=infos, User=User_infor, count=count)
 
 @app.route('/infor_report', methods=['POST'])
 @login_required
@@ -771,6 +805,7 @@ def invoice_page():
     report = Info.query.filter(
         or_(Info.receiverID == current_user.account, Info.senderID == current_user.account)).order_by(Info.keyID.desc())
     infos = []
+    count = 0
     for i in report:
         sender_infor = User.query.filter_by(account=i.senderID).first()
         receiver_infor = User.query.filter_by(account=i.receiverID).first()
@@ -786,6 +821,8 @@ def invoice_page():
             "result": i.result,
             "remark": i.remark
         }
+        if i.result == 0:
+            count += 1
         infos.append(j)
     User_infor = {
         "account":current_user.account,
@@ -794,18 +831,20 @@ def invoice_page():
         "authorityLevel":current_user.authorityLevel
     }
     print(infos)
-    return render_template('report.html', Infor=infos, User=User_infor)
+    return render_template('report.html', Infor=infos, User=User_infor, count=count)
 
 
 @app.route('/report/pass/<reportID>')
 @login_required
 def pass_report(reportID):
+    reportID = "#" + reportID
+    print(reportID)
     current_report = Info.query.filter_by(keyID=reportID).first()
     if current_report is None:
         flash("请求对象不存在，请刷新后重试！")
     current_report.result = 1
     db.session.commit()
-    flash("操作成功")
+    # flash("操作成功")
     return redirect(url_for('invoice_page'))
 
 
@@ -813,6 +852,7 @@ def pass_report(reportID):
 @login_required
 def reject_report():
     rejectID = request.form['reportID']
+    print(rejectID)
     rejectReason = request.form['rejectReason']
     current_report = Info.query.filter_by(keyID=rejectID).first()
     if current_report is None:
@@ -820,19 +860,20 @@ def reject_report():
     current_report.result = 2
     current_report.remark = rejectReason
     db.session.commit()
-    flash("操作成功")
+    # flash("操作成功")
     return redirect(url_for('invoice_page'))
 
 
 @app.route('/report/delete/<reportID>')
 @login_required
 def delete_report(reportID):
+    reportID = "#" + reportID
     current_report = Info.query.filter_by(keyID=reportID).first()
     if current_report is None:
         flash("请求对象不存在，请刷新后重试！")
     db.session.delete(current_report)
     db.session.commit()
-    flash("操作成功")
+    # flash("操作成功")
     return redirect(url_for('invoice_page'))
 
 

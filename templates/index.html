@@ -26,12 +26,17 @@
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
-
 <script src="static/js/jquery.min.js"></script>
 <script src="static/js/jquery.nicescroll.min.js"></script>
 <script src="static/js/echarts.js"></script>
+<script>
+   let Infor = {{ Infor|tojson }}
+   var User = {{ User|tojson }}
+   var count = {{count}}
+</script>
 <script src="static/js/Information.js"></script>
-<script src="static/js/notification.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+<script src="static/js/notification.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
 <!--当前页面的地址-->
 <script>
   $(document).ready(function() {

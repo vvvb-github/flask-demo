@@ -441,7 +441,7 @@ button.bg-warning:hover {
 }
 .bg-danger,
 .badge-danger {
-	background-color: #FDC839 !important;
+	background-color: #dc3545 !important;
 }
 a.bg-danger:focus, 
 a.bg-danger:hover, 

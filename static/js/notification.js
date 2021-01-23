@@ -1,13 +1,15 @@
 function readJson(){
     var obj = eval(Infor)
+    console.log(obj)
     infor_length = Infor.length
-    console.log(111111111)
-    count = 0
+    console.log(count)
+    //count = 0
+    thiscount = 0
     for(i=0;i<infor_length;i++){
         if(obj[i].result != 0){
             continue
         }
-        else{
+        else if(thiscount<=3){
             document.writeln("<li class=\"notification-message\">")
             document.writeln("<a href=\"#\">")
             document.writeln("<div class=\"media\">")
@@ -21,11 +23,9 @@ function readJson(){
             document.writeln("</div>")
             document.writeln("</a>")
             document.writeln("</li>")
-            count += 1
-        }
-        if(count>=3){
-            break
+            thiscount += 1
         }
     }
+
     document.getElementById("infor_count").innerHTML = count
 }
