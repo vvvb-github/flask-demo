@@ -582,6 +582,7 @@ def edit_user():
     flash("修改成功")
     return redirect(url_for('user_management_page'))
 
+
 @app.route('/user/add', methods=['POST', 'GET'])
 @login_required
 def add_user():
@@ -645,12 +646,14 @@ def add_user():
         flash("新增用户成功！")
         return redirect(url_for('user_management_page'))
 
+
 # 主页逻辑
 @app.route('/index')
 @login_required
 def index():
     infos, User_infor, count = notify()
     return render_template('index.html', Infor=infos, User=User_infor, count=count)
+
 
 @app.route('/infor_report', methods=['POST'])
 @login_required
@@ -698,22 +701,37 @@ def infor_report():
         report_info["message"] = "信息申报提交成功"
         return render_template('valid.html', Report_Info=report_info)
 
+
 @app.route('/evaporation')
 @login_required
 def evaporation_page():
     return render_template('evaporation.html')
 
 
-@app.route('/future-height')
+@app.route('/futureheight')
 @login_required
 def futureheight_page():
     return render_template('futureheight.html')
 
 
-@app.route('/surface-evaporation')
+@app.route('/surfaceevaporation')
 @login_required
 def sufaceevaporation_page():
     return render_template('surfaceevaporation.html')
+
+
+@app.route('/electromagenetic')
+@login_required
+def electromagenetic_page():
+    return render_template('electromagenetic.html')
+
+
+@app.route('/radar-valid-distance')
+@login_required
+def radar_page():
+    return render_template('radar-valid-distance.html')
+
+
 
 
 @app.route('/profile', methods=['POST', 'GET'])
@@ -1126,4 +1144,4 @@ def default_error_handler(e):
 
 if __name__ == '__main__':
     api.rootPath(app)
-    socket_io.run(app, debug=True, host='10.201.239.0', port=8085)
+    socket_io.run(app, debug=True, host='192.168.2.246', port=8085)
