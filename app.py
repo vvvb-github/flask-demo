@@ -831,15 +831,28 @@ def connect():
 def disconnect():
     global client_num
     client_num -= 1
+    current_user.status = 0
+    temp_user = User.query.filter_by(account=current_user.account).first()
+    if temp_user is None:
+        logout_user()
+    else:
+        temp_user.status = 0
+        db.session.commit()
     print('断开连接：' + str(client_num))
 
 
 # 客户端用户通告自己在线
 # socket事件：客户端通告在线，并请求报表信息
 # socket响应：获取当前于用户信息，并更新用户状态，并发送报表信息
-@socket_io.on('info')
+@socket_io.on('online_info')
 def user_status_update():
     current_user.status = 1
+    temp_user = User.query.filter_by(account=current_user.account).first()
+    if temp_user is None:
+        logout_user()
+    else:
+        temp_user.status = 1
+        db.session.commit()
 
 
 # socket事件：新的客户端切换页面至主页
@@ -962,4 +975,4 @@ def default_error_handler(e):
 
 if __name__ == '__main__':
     api.rootPath(app)
-    socket_io.run(app, debug=True, host='10.201.255.10', port=8085)
+    socket_io.run(app, debug=True, host='10.201.59.122', port=8085)
