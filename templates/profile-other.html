@@ -115,7 +115,7 @@
 							</ul>
 						</div>
 						<div class="topnav-dropdown-footer">
-							<a href="report">查看所有报告信息</a>
+							<a href="{{ url_for('static', filename="report") }}">查看所有报告信息</a>
 						</div>
 					</div>
 				</li>
@@ -166,20 +166,20 @@
 				<!-- User Menu -->
 				<li class="nav-item dropdown has-arrow">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-						<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
+						<span class="user-img"><img class="rounded-circle" src="{{ url_for('static', filename= "assets/img/profiles/" + user.account + ".jpg" ) }}" width="31" alt="{{ user.name }}"></span>
 					</a>
 					<div class="dropdown-menu">
 						<div class="user-header">
-							<div class="avatar avatar-sm">
-								<img src="static/assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
+								<div class="avatar avatar-sm">
+									<img src="{{ url_for('static', filename= "assets/img/profiles/" + user.account + ".jpg" ) }}" alt="User Image" class="avatar-img rounded-circle">
+								</div>
+								<div class="user-text">
+									<h6>{{ user.name }}</h6>
+									<p class="text-muted mb-0">Administrator</p>
+								</div>
 							</div>
-							<div class="user-text">
-								<h6>汪宇晖</h6>
-								<p class="text-muted mb-0">Administrator</p>
-							</div>
-						</div>
-						<a class="dropdown-item" href="profile">配置文件</a>
-						<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
+						<a class="dropdown-item" href="{{ url_for('profile_page') }}">配置文件</a>
+						<a class="dropdown-item" href="{{ url_for('logout') }}"><font color="#E63C3C">退出</font></a>
 					</div>
 				</li>
 				<!-- /User Menu -->
@@ -195,37 +195,37 @@
 				<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
 					<ul>
 						<li> 
-							<a href="index"><span><font color="#CCCCCC">首页</font></span></a>
+							<a href={{ url_for('index') }}><span><font color="#CCCCCC">首页</font></span></a>
 						</li>
 						<li class="submenu">
 							<a href="#"><span><font color="#CCCCCC"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
 							<ul style="display: none;">
-								<li><a href="evaporation"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
-								<li><a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
-								<li><a href="futureheight"><font color="#CCCCCC">未来波导高度预测</font></a></li>
+								<li><a href="{{ url_for('evaporation_page') }}"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
+								<li><a href="{{ url_for('sufaceevaporation_page') }}"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
+								<li><a href="{{ url_for('futureheight_page') }}"><font color="#CCCCCC">未来波导高度预测</font></a></li>
 							</ul>
 						</li>
 
 						<li class="submenu"> 
 							<a href="#"><span><font color="#CCCCCC">电磁损耗计算</font></span> <span class="menu-arrow"></span></a>
 							<ul style="display: none;">
-								<li><a href="electromagenetic"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
+								<li><a href="{{ url_for('electromagenetic_page') }}"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
 								
 							</ul>
 						</li>
 						<li class="submenu">
 							<a href="#"><span><font color="#CCCCCC"> 雷达有效距离探测 </font></span> <span class="menu-arrow"></span></a>
 							<ul style="display: none;">
-								<li><a href="radar-valid-distance"><font color="CCCCCC">雷达有效探测性能</font> </a></li>
+								<li><a href="{{ url_for('radar_page') }}"><font color="CCCCCC">雷达有效探测性能</font> </a></li>
 								
 							</ul>
 						</li>
 						<li class="submenu">
 							<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
 							<ul style="display: none;">
-								<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
-								<li><a href="user-management"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
-								<li><a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a></li>
+								<li><a href="{{ url_for('profile_page') }}"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+								<li><a href="{{ url_for('user_management_page') }}"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
+								<li><a href="{{ url_for('profile_page') }}"><font color="#CCCCCC"> 修改密码 </font></a></li>
 							</ul>
 						
 						</li>
@@ -258,13 +258,13 @@
 								<div class="row align-items-center">
 									<div class="col-auto profile-image">
 										<a href="#">
-											<img class="rounded-circle" alt="User Image" src="static/assets/img/profiles/avatar-12.jpg">
+											<img class="rounded-circle" alt="User Image" src="{{ url_for('static', filename= "assets/img/profiles/" + other_user.account + ".jpg" ) }}">
 										</a>
 									</div>
 									<div class="col ml-md-n2 profile-user-info">
-										<h4 class="user-name mb-0">{{ user.name }}</h4>
-										<h6>{{ user.email }}</h6>
-										<div class="about-text">{{ user.level }}</div>
+										<h4 class="user-name mb-0">{{ other_user.name }}</h4>
+										<h6>{{ other_user.email }}</h6>
+										<div class="about-text">{{ other_user.level }}</div>
 									</div>
 									<div class="col-auto profile-btn">
 									</div>
@@ -288,28 +288,27 @@
 											<div class="card">
 												<div class="card-body">
 													<h5 class="card-title d-flex justify-content-between" style="margin-bottom: 2%;">
-														<span>详细信息</span> 
-														<a class="edit-link" data-toggle="modal" href="#edit_personal_details"><i class="fa fa-edit mr-1"></i>编辑</a>
+														<span>详细信息</span>
 													</h5>
 													<div class="row">
 														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">姓名</p>
-														<p class="col-sm-10">{{ user.name }}</p>
+														<p class="col-sm-10">{{ other_user.name }}</p>
 													</div>
 													<div class="row">
 														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">邮箱</p>
-														<p class="col-sm-10">{{ user.emailAddress }}</p>
+														<p class="col-sm-10">{{ other_user.emailAddress }}</p>
 													</div>
 													<div class="row">
 														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">电话</p>
-														<p class="col-sm-10">{{ user.phoneNumber }}</p>
+														<p class="col-sm-10">{{ other_user.phoneNumber }}</p>
 													</div>
 													<div class="row">
 														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">隶属</p>
-														<p class="col-sm-10">{{ user.department }}</p>
+														<p class="col-sm-10">{{ other_user.department }}</p>
 													</div>
 													<div class="row">
 														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">级别</p>
-														<p class="col-sm-10">{{ user.level }}</p>
+														<p class="col-sm-10">{{ other_user.level }}</p>
 													</div>
 												</div>
 											</div>

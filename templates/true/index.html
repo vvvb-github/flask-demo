@@ -26,14 +26,18 @@
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
-
 <script src="static/js/jquery.min.js"></script>
 <script src="static/js/jquery.nicescroll.min.js"></script>
 <script src="static/js/echarts.js"></script>
-<script src="static/js/dialog.js"></script>
+<script>
+   let Infor = {{ Infor|tojson }}
+   var User = {{ User|tojson }}
+   var count = {{count}}
+</script>
 <script src="static/js/Information.js"></script>
 <script src="static/js/notification.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+<!--当前页面的地址-->
 <script>
   $(document).ready(function() {
   
@@ -102,11 +106,11 @@
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
-								<a href="report">查看所有消息</a>
+								<a href="report">查看所有报告信息</a>
 							</div>
 						</div>
-					</li>>
-					<!-- /Notifications -->
+					</li>
+					<!-- Notifications -->
 					<!-- Write -->
 					<li >
 						<a data-toggle="modal" href="#text_inputs" title="信息上报">
@@ -163,24 +167,23 @@
 					<!-- User Menu -->
 					<li class="nav-item dropdown has-arrow">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
 						</a>
 						<div class="dropdown-menu">
 							<div class="user-header">
 								<div class="avatar avatar-sm">
-									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
+									<img src="static/assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
 								</div>
 								<div class="user-text">
-									<h6>{{ user.name }}</h6>
+									<h6>汪宇晖</h6>
 									<p class="text-muted mb-0">Administrator</p>
 								</div>
 							</div>
-							<a class="dropdown-item" href="profile">个人设置</a>
+							<a class="dropdown-item" href="profile">配置文件</a>
 							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
 						</div>
 					</li>
 					<!-- /User Menu -->
-					
 				</ul>
 				<!-- /Header Right Menu -->
 				
@@ -192,14 +195,14 @@
                 <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
 						<ul>
-							<li> 
-								<a href="index"><span><font color="#CCCCCC">首页</font></span></a>
+							<li style="background:#9ca8b8"> 
+								<a href="index"><span><font color="#293c55">首页</font></span></a>
 							</li>
-							<li class="submenu" >
-								<a href="#" style="background:#9ca8b8"><span><font color="#293c55"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
+							<li class="submenu">
+								<a href="#"><span><font color="#CCCCCC"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a href="evaporation"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
-									<li><a class="active" href="surfaceevaporation"><font color="#1e88e5">表面波导与悬空波导诊断</font></a></li>
+									<li><a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
 									<li><a href="futureheight"><font color="#CCCCCC">未来波导高度预测</font></a></li>
 								</ul>
 							</li>
@@ -221,10 +224,12 @@
 							<li class="submenu">
 								<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+									<li><a href="login"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
 									<li><a href="user-management"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
 									<li><a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a></li>
 								</ul>
+							
+							</li>
 						</ul>
 					</div>
                 </div>
@@ -235,127 +240,19 @@
             <div class="page-wrapper">
 			
                 <div class="content container-fluid">
-					<!-- <div class="zhezhao" id='zhezhao'  >
-						<div class="tankuang" style="padding: 10px;">
-							<div id="header">
-									<div>			
-										<form action="#">
-											<div class="form-group row">
-			
-											</div>
-											<div class="form-group row">
-														<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-													max-width: 24.666667%;padding-right: 5px;padding-left: 25px;font-weight: bolder;">近期数据打包</label>
-														<div class="col-md-10" style="flex: 0 0 75.333333%;
-													max-width:52.333333%;">
-														<select class="form-control" style="width: 80%;float: right;">
-															<option>-- Select --</option>
-															<option>波导分析计算</option>
-															<option>电磁损耗计算</option>
-															<option>雷达有效距离</option>
-															</select>
-														</div>
-														<button class="btn btn-primary"  >
-															<a class="fe fe-download" style="font-size: 15px;color: #fff;float: right;" href="/images/1.PNG" download="1.PNG">&nbsp;&nbsp;下载</a>
-														</button>	
-													</div>
-											<div class="form-group row">
-												<h5 style="padding-left:4%;color:#569CD6 ;font-weight: bolder;">精确下载选择👇</h5>
-													</div>	
-											<div class="form-group row">
-												<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-											max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-经度</label>
-												<div class="col-md-10"  style="flex: 0 0 75.333333%;
-											max-width: 75.333333%;">
-													<input type="text" class="form-control" placeholder="122.27°E" style="width: 80%;float: right;">
-												</div>
-											</div>
-											<div class="form-group row">
-												<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-											max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-纬度</label>
-												<div class="col-md-10"  style="flex: 0 0 75.333333%;
-											max-width: 75.333333%;">
-													<input type="text" class="form-control" placeholder="31.65°N" style="width: 80%;float: right;">
-												</div>
-											</div>
-										<div class="form-group row">
-											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">起始时间</label>
-										
-											<div class="col-md-10" style="flex: 0  75.333333%;
-										max-width: 75.333333%;">
-											<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
-											</div>
-										</div>
-										<div class="form-group row">
-											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">结束时间</label>
-											<div class="col-md-10" style="flex: 0 0 75.333333%;
-										max-width: 75.333333%;">
-											<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
-											</div>
-										</div>
-										<div class="input-group-append" style="float: right;">
-											<a class="btn btn-primary"   href="/images/1.png" download="111" >确认选择并下载</a>
-										</div>
-									
-									</form>
-									
-									
-								</div>
-								
-								<div id="header-right" onclick="hidder()">x</div>
-							</div>
-						</div>
-					</div>
-					<script type="text/javascript">
-						document.getElementById('zhezhao').style.display="none";
-						function dianwo(){
-							document.getElementById('zhezhao').style.display="";
-						}
-						function hidder(){
-							document.getElementById('zhezhao').style.display="none";
-						}
-					</script>
-			
-			<div class="zhezhao1" id='zhezhao1'  >
-				<div class="tankuang1" style="padding: 10px;">
-					<div id="header">
-							<div>			
-								<form action="#">
-									
-									<center><h4 class="modal-title" style="padding-top: 5%;">确认上传</h4>
-										<p class="mb-4">确定上传所有选中的文件？</p></center>
-								<div class="input-group-append" style="float: left;padding-left:10%;padding-bottom: 2%; color: #fff;">
-									<a class="btn btn-primary"  onclick="hidder1()"  >确&nbsp;&nbsp;认</a>
-								</div>
-								<div class="input-group-append" style="float: right;padding-right:10%;padding-bottom: 2%; color: #fff;">
-									<a class="btn btn-danger"  onclick="hidder1()"  >取&nbsp;&nbsp;消</a>
-								</div>
-							
-							</form>
-							
-							
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<script type="text/javascript">
-				document.getElementById('zhezhao1').style.display="none";
-				function dianwo1(){
-					document.getElementById('zhezhao1').style.display="";
-				}
-				function hidder1(){
-					document.getElementById('zhezhao1').style.display="none";
-				}
-			</script> -->
-			
+					{% with messages = get_flashed_messages() %}
+						{% if messages %}
+							{% for message in messages %}
+								{{message}}
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
+
 					<!-- Page Header -->
 					<div class="page-header">
 						<div class="row">
 							<div class="col-sm-12">
-								<h3 class="page-title">表面波导与悬空波导诊断页面</h3>
+								<h3 class="page-title">欢迎来到大气波导分析页面!</h3>
 								<ul class="breadcrumb">
 									<li class="breadcrumb-item active">当前所在地理位置：31.65°N, 122.27°E </li>
 								</ul>
@@ -451,108 +348,212 @@
 							</div>
 						</div>
 					</div>
-
-					<!-- jQuery -->
-        			<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
-		
-					<!-- Bootstrap Core JS -->
-        			<script src="static/assets/js/popper.min.js"></script>
-        			<script src="static/assets/js/bootstrap.min.js"></script>
-		
-					<!-- Slimscroll JS -->
-        			<script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-		
-					<script src="static/assets/plugins/raphael/raphael.min.js"></script>    
-					<script src="static/assets/plugins/morris/morris.min.js"></script>  
-					<script src="static/assets/js/chart.morris.js"></script>
-		
-					<!-- Custom JS -->
-					<script  src="static/assets/js/script.js"></script>			
-					<!-- Sales Chart -->
-					<div class="row">
-						<div class="col-md-12 col-lg-6">
-							<div class="card card-chart">
-								<div  class="card-header">
-									<h4 class="card-title">温度、湿度、气压随高度变化值</h4>
-								</div>
-								<div id="chart1" style="height: 500px"></div>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
-		
-								<!--left chart js-->
-								<script type="text/javascript" src="static/chart/suface-evaporation/chart1.js">
-								</script>
-							</div>
-						</div>
-						<div class="col-md-12 col-lg-6">
-							<div class="card card-chart">
-								<div  class="card-header">
-									<h4 class="card-title">大气相关指数情况</h4>
-								</div>
-								<div id="chart2" style="height: 500px"></div>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
-				
-								<!--right chart js-->
-								<script type="text/javascript" src="static/chart/suface-evaporation/chart2.js">
-								</script>
-							</div>
-						</div>				
-					</div>
-
-					<div class="row">
-						<div class="col-md-12 col-lg-6">
-							<div class="card card-chart">
-								<div  class="card-header">
-									<h4 class="card-title">波导实际廓线</h4>
-								</div>
-								<div id="chart3" style="height: 500px"></div>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
-		
-								<!--left chart js-->
-								<script type="text/javascript" src="static/chart/suface-evaporation/chart3.js">
-								</script>
-							</div>
-						</div>
-						<div class="col-md-12 col-lg-6" >	
+					<div class="row" >
+						<div class="col-md-12 col-lg-6" >
+						
 							<!-- Sales Chart -->
 							<div class="card card-chart" >
-								<!-- Sales Chart -->
+								<div class="card-header" >
+									<h4 class="card-title">历史温度信息</h4>
+								</div>
+								<div class="card-body" id='echarts'>
+									
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-lg-6" >
+						
+							<!-- Sales Chart -->
+							<div class="card card-chart" >
+								<div class="card-header" >
+									<h4 class="card-title">历史气压信息</h4>
+								</div>
+								<div class="card-body" id='echarts2'>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row" >
+						<div class="col-md-12 col-lg-6" >
+						
+							<!-- Sales Chart -->
+							<div class="card card-chart" >
+								<div class="card-header" >
+									<h4 class="card-title">历史湿度信息</h4>
+								</div>
+								<div class="card-body" id='echarts3'>
+									
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-lg-6" >
+						
+							<!-- Sales Chart -->
+							<div class="card card-chart" >
+								<div class="card-header" >
+									<h4 class="card-title">历史风速信息</h4>
+								</div>
+								<div class="card-body" id='echarts4'>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-lg-6">
+						
+							<!-- Sales Chart -->
+							<div class="card card-chart">
 								<div class="card-header">
 									<h4 class="card-title">操作记录</h4>
 								</div>
 								<div class="card-body">
+								
 									<div id="boxscroll2">
-										<div id="contentscroll2">
-											<p><h6>已成功连接服务器，时间: 2020.9.30，19:59！</h6></p>
-										</div>
+  <div id="contentscroll2">
+    <p>已成功连接服务器，时间: 2020.8.8，20:45！</p>
+  </div>
+</div>
+
+								</div>
+							</div>
+							<!-- /Sales Chart -->
+							
+						</div>
+						<div class="col-md-12 col-lg-6">
+						
+							<!-- Invoice Chart -->
+							<div class="card card-chart">
+								<div class="card-header">
+									<h4 class="card-title">数据信息</h4>
+								</div>
+								<div class="card-body">
+									<div id="boxscroll2">
+									  <div id="contentscroll2">
+										  <p id='datatext'></p>
+									   </div>
 									</div>
 								</div>
-							</div>	
-						</div>			
+							</div>
+							<!-- /Invoice Chart -->
+							
+						</div>	
+					</div>	
+				</div>			
+			</div>
+			<!-- /Page Wrapper -->
+		
+		</div>
+		
+		<!-- <div class="modal fade" id="text_inputs" aria-hidden="true" role="dialog">
+			<div class="modal-dialog" style="max-width: 40%;margin-left: 30%;margin-top: 20%;" role="document" >
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">信息上报</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="form-group row">
+								<label class="col-form-label col-md-2">主题</label>
+								<div class="col-md-10">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-form-label col-md-2">收信人/审核人</label>
+								<div class="col-md-10">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-form-label col-md-2">附件</label>
+								<div class="col-md-10">
+									<input class="form-control" type="file">
+								</div>
+							</div>
+									
+							<div class="form-group row">
+								<label class="col-form-label col-md-2">信息栏</label>
+								<div class="col-md-10">
+										<textarea rows="5" cols="5" class="form-control" placeholder="请输入..."></textarea>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary btn-block">确定</button>
+						</form>
 					</div>
 				</div>
 			</div>
+		</div> -->
+		<script src="static/js/dialog.js"></script>
 		<script src="static/js/download.js"></script>
 		<script src="static/js/upload.js"></script>
-		</div>
-				
+		<!-- <div class="modal fade" id="text_inputs" aria-hidden="true" role="dialog"> 
+			<div role="document" class="modal-dialog" style="max-width: 40%;margin-left: 30%;margin-top: 20%;">				
+				<div class="card">
+					<div class="modal-header">
+						<h5 class="modal-title">信息上报</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="card-body">
+						<form action="#">
+							<div class="form-group row">
+								<label class="col-form-label col-md-2">主题</label>
+								<div class="col-md-10">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-form-label col-md-2">收信人/审核人</label>
+								<div class="col-md-10">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label class="col-form-label col-md-2">附件</label>
+								<div class="col-md-10">
+									<input class="form-control" type="file">
+								</div>
+							</div>
+									
+						<div class="form-group row">
+							<label class="col-form-label col-md-2">信息栏</label>
+								<div class="col-md-10">
+										<textarea rows="5" cols="5" class="form-control" placeholder="请输入..."></textarea>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary btn-block">确定</button>
+						</form>
+					</div>
+				</div>
+			</div>		
+		</div>	 -->
+
+		<!-- /Main Wrapper -->
 		
-	</body>
+		<!-- jQuery -->
+        <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="static/assets/js/popper.min.js"></script>
+        <script src="static/assets/js/bootstrap.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+        <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<script src="static/assets/plugins/raphael/raphael.min.js"></script>    
+		<script src="static/assets/plugins/morris/morris.min.js"></script>  
+		<script src="static/assets/js/chart.morris.js"></script>
+		
+		<!-- Custom JS -->
+		<script  src="static/assets/js/script.js"></script>
+				
+		<script type="text/javascript" src="static/chart/index/main.js"></script>
+		
+    </body>
 </html>

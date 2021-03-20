@@ -25,7 +25,12 @@
 		
 		<!-- Main CSS -->
 		<link rel="stylesheet" href="static/assets/css/style.css">
-		
+		<script  type=text/javascript>
+			let Infor = {{ Infor|tojson }}
+   			var count = {{count}}
+            var Infor_User = {{ Users | tojson }}
+            console.log(Infor_User)
+        </script>
 		
 		<script src="static/js/Information.js"></script>
 		<script src="static/js/notification.js"></script>
@@ -148,18 +153,18 @@
             		<!-- User Menu -->
             		<li class="nav-item dropdown has-arrow">
             			<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-            				<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
+            				<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
             			</a>
             			<div class="dropdown-menu">
             				<div class="user-header">
-            					<div class="avatar avatar-sm">
-            						<img src="static/assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
-            					</div>
-            					<div class="user-text">
-            						<h6>汪宇晖</h6>
-            						<p class="text-muted mb-0">Administrator</p>
-            					</div>
-            				</div>
+								<div class="avatar avatar-sm">
+									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
+								</div>
+								<div class="user-text">
+									<h6>{{ user.name }}</h6>
+									<p class="text-muted mb-0">Administrator</p>
+								</div>
+							</div>
             				<a class="dropdown-item" href="profile">配置文件</a>
             				<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
             			</div>
@@ -206,7 +211,7 @@
 							<li class="submenu">
 								<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="login"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
 									<li><a href="user-management"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
 									<li><a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a></li>
 								</ul>
@@ -221,121 +226,6 @@
 			<!-- Page Wrapper -->
             <div class="page-wrapper">
                 <div class="content container-fluid">
-					<!-- <div class="zhezhao" id='zhezhao'  >
-						<div class="tankuang" style="padding: 10px;">
-							<div id="header">
-									<div>			
-										<form action="#">
-											<div class="form-group row">
-			
-											</div>
-											<div class="form-group row">
-														<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-													max-width: 24.666667%;padding-right: 5px;padding-left: 25px;font-weight: bolder;">近期数据打包</label>
-														<div class="col-md-10" style="flex: 0 0 75.333333%;
-													max-width:52.333333%;">
-														<select class="form-control" style="width: 80%;float: right;">
-															<option>-- Select --</option>
-															<option>波导分析计算</option>
-															<option>电磁损耗计算</option>
-															<option>雷达有效距离</option>
-															</select>
-														</div>
-														<button class="btn btn-primary"  >
-															<a class="fe fe-download" style="font-size: 15px;color: #fff;float: right;" href="/images/1.PNG" download="1.PNG">&nbsp;&nbsp;下载</a>
-														</button>	
-													</div>
-											<div class="form-group row">
-												<h5 style="padding-left:4%;color:#569CD6 ;font-weight: bolder;">精确下载选择👇</h5>
-													</div>	
-											<div class="form-group row">
-												<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-											max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-经度</label>
-												<div class="col-md-10"  style="flex: 0 0 75.333333%;
-											max-width: 75.333333%;">
-													<input type="text" class="form-control" placeholder="122.27°E" style="width: 80%;float: right;">
-												</div>
-											</div>
-											<div class="form-group row">
-												<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-											max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-纬度</label>
-												<div class="col-md-10"  style="flex: 0 0 75.333333%;
-											max-width: 75.333333%;">
-													<input type="text" class="form-control" placeholder="31.65°N" style="width: 80%;float: right;">
-												</div>
-											</div>
-										<div class="form-group row">
-											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">起始时间</label>
-										
-											<div class="col-md-10" style="flex: 0  75.333333%;
-										max-width: 75.333333%;">
-											<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
-											</div>
-										</div>
-										<div class="form-group row">
-											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">结束时间</label>
-											<div class="col-md-10" style="flex: 0 0 75.333333%;
-										max-width: 75.333333%;">
-											<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
-											</div>
-										</div>
-										<div class="input-group-append" style="float: right;">
-											<a class="btn btn-primary"   href="/images/1.png" download="111" >确认选择并下载</a>
-										</div>
-									
-									</form>
-									
-									
-								</div>
-								
-								<div id="header-right" onclick="hidder()">x</div>
-							</div>
-						</div>
-					</div>
-					<script type="text/javascript">
-						document.getElementById('zhezhao').style.display="none";
-						function dianwo(){
-							document.getElementById('zhezhao').style.display="";
-						}
-						function hidder(){
-							document.getElementById('zhezhao').style.display="none";
-						}
-					</script>
-			
-			<div class="zhezhao1" id='zhezhao1'  >
-				<div class="tankuang1" style="padding: 10px;">
-					<div id="header">
-							<div>			
-								<form action="#">
-									
-									<center><h4 class="modal-title" style="padding-top: 5%;">确认上传</h4>
-										<p class="mb-4">确定上传所有选中的文件？</p></center>
-								<div class="input-group-append" style="float: left;padding-left:10%;padding-bottom: 2%; color: #fff;">
-									<a class="btn btn-primary"  onclick="hidder1()"  >确&nbsp;&nbsp;认</a>
-								</div>
-								<div class="input-group-append" style="float: right;padding-right:10%;padding-bottom: 2%; color: #fff;">
-									<a class="btn btn-danger"  onclick="hidder1()"  >取&nbsp;&nbsp;消</a>
-								</div>
-							
-							</form>
-							
-							
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<script type="text/javascript">
-				document.getElementById('zhezhao1').style.display="none";
-				function dianwo1(){
-					document.getElementById('zhezhao1').style.display="";
-				}
-				function hidder1(){
-					document.getElementById('zhezhao1').style.display="none";
-				}
-			</script> -->
 					<!-- Page Header -->
 					<div class="page-header">
 						<div class="row">
@@ -387,10 +277,7 @@
 							</form>
 						</div>
 					</div>
-                    <script  type=text/javascript>
-                        var Infor_User = {{ Infor | tojson }}
-                        console.log(Infor_User)
-                    </script>
+
 					<div id="all_members" class="row">
 						<div class="col-sm-12">
 							<div class="card">
@@ -420,24 +307,49 @@
 									</div>
 								</div>
 							</div>
+							{% with messages = get_flashed_messages() %}
+							{% if messages %}
+							{% for message in messages %}
+							{% if message != "新增用户成功！"%}
+							<div class="card" style="height: 36px;color: #ce0c0c;background-color: #f393a5a8;font-size: x-large;">
+								<div style="background: url(static/assets/img/error.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+									<span style="padding-left: 2%;font-size: x-large;font-family: 'Mada';color: #CD3333;">
+										{{message}}
+									</span>
+								</div>
+							</div>
+							{% else %}
+							<div class="card" style="height: 36px;background-color: #b7f3b7db;color: #06ab06;font-size: x-large;">
+								<div style="background: url(static/assets/img/right.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+									<span style="padding-left: 2%;font-size: x-large;font-family: 'Mada';color: #06ab06;">
+										{{message}}
+									</span>
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+							{% endif %}
+							{% endwith %}
 						</div>
+
 						<div style="width: 100%;float: right;padding-right: 1%;padding-bottom: 1%;padding-top: 1%;">
 							<a data-toggle="modal" href="#edit_invoice_report" style="float: right;">
-								<button class="btn btn-primary" type="button">新增用户</button>
+								<button class="btn btn-primary" type="button" onclick="add_user()">新增用户</button>
 							</a>
 						</div>			
 					</div>
 
-                    {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                            <ul class=flashes>
-                            {% for message in messages %}
-                                    <li>{{ message }}</li>
-                            {% endfor %}
-                            </ul>
-                        {% endif %}
-                    {% endwith %}
-					
+<!--                    {% with messages = get_flashed_messages() %}-->
+<!--                        {% if messages %}-->
+<!--                            <ul class=flashes>-->
+<!--                            {% for message in messages %}-->
+<!--                                    <li>{{ message }}</li>-->
+<!--                            {% endfor %}-->
+<!--                            </ul>-->
+<!--                        {% endif %}-->
+<!--                    {% endwith %}-->
+
+
 					
 						<div class="row" id="searched_content" style="display: none;">
 							<h5 style="color: cornflowerblue;margin-left: 2%;">搜索</h5><h5 id="searched_head" style="color:#FF7F50;"></h5><h5 style="color: cornflowerblue;">结果：</h5>
@@ -490,17 +402,40 @@
 										</div>
 									</div>
 								</div>
+								{% with messages = get_flashed_messages() %}
+								{% if messages %}
+								{% for message in messages %}
+								{% if message != "新增用户成功！"%}
+								<div class="card" style="height: 36px;color: #ce0c0c;background-color: #f393a5a8;font-size: x-large;">
+									<div style="background: url(static/assets/img/error.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+										<span style="padding-left: 2%;font-size: x-large;font-family: 'Mada';color: #CD3333;">
+											{{message}}
+										</span>
+									</div>
+								</div>
+								{% else %}
+								<div class="card" style="height: 36px;background-color: #b7f3b7db;color: #06ab06;font-size: x-large;">
+									<div style="background: url(static/assets/img/right.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+										<span style="padding-left: 2%;font-size: x-large;font-family: 'Mada';color: #06ab06;">
+											{{message}}
+										</span>
+									</div>
+								</div>
+								{% endif %}
+								{% endfor %}
+								{% endif %}
+								{% endwith %}
 							</div>		
 							<div style="width: 100%;float: right;padding-right: 1%;padding-bottom: 1%;padding-top: 1%;">
 								<button class="btn btn-primary" type="button" onclick="return_page()" style="background-color: mediumpurple;border: 1px solid #6610f2;float: right;margin-left: 1%;">返回主页</button>
 								<a data-toggle="modal" href="#edit_invoice_report" style="float: right;">
-									<button class="btn btn-primary" type="button">新增用户</button>
+									<button class="btn btn-primary" type="button" onclick="add_user()">新增用户</button>
 								</a>
 							</div>		
 						</div>
 						
 					</div>
-					
+					message_infor()
 			<!-- /Page Wrapper -->
 			
         
@@ -510,13 +445,13 @@
 			<div class="modal-dialog modal-dialog-centered" role="document" >
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">用户信息编辑</h5>
+						<h5 class="modal-title" id="infor-title"></h5>
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
-						<form action="user/edit" method="post">
+						<form id="EorA" action="user/edit" method="post">
 							<div class="row form-row">
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
@@ -533,21 +468,21 @@
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>用户密码</label>
-										<input id="userpasswd" name="password" type="password" class="form-control" value="123">
+										<input id="userpasswd" name="password" type="password" class="form-control" value="123456">
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>确认密码</label>
-										<input id="confirmpasswd" name="confirm" type="password" class="form-control" value="123">
+										<input id="confirmpasswd" name="confirm" type="password" class="form-control" value="123456">
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>用户身份</label>
 										<!-- 需要当前身份的权限去修改次一级的权限 -->
-										<select class="select" name="level">
-											<option id="" value="0">值班用户</option>
+										<select class="select" name="level" id="Identity">
+											<option value="0">值班用户</option>
 											<option value="1">管理员</option>
 											<option value="2">超级管理员</option>
 										</select>
@@ -562,24 +497,25 @@
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>创建日期</label>
-										<input id="Time" type="text"  class="form-control" value="9th Sep 2019" readonly="readonly">
+										<input id="Time" type="text" name="date" class="form-control" value="9th Sep 2019" readonly="readonly">
 									</div>
 								</div>
 								<div class="col-12 col-sm-6">
 									<div class="form-group">
 										<label>备注</label>
-										<input type="text"  class="form-control" value="无">
+										<input type="text" name="remark" class="form-control" value="无">
 									</div>
 								</div>
 							</div>
-							<button type="submit" class="btn btn-primary btn-block" >保存</button>
+							<button type="submit" class="btn btn-primary btn-block" id="Save">保存</button>
 						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!-- /Edit Details Modal -->
-	
+		<!--错误提示-->
+
 		<!-- Delete Modal -->
 		<div class="modal fade" id="delete_modal" aria-hidden="true" role="dialog">
 			<div class="modal-dialog modal-dialog-centered" role="document" >
@@ -600,8 +536,16 @@
 					</div>
 				</div>
 			</div>
-		
+
 		</div>
+		<script>
+			function message_infor(){
+				message = document.getElementById("flash")
+				if(message!=""){
+					alert(message)
+				}
+			}
+		</script>
 		<!-- /Delete Modal -->
 		<script src="static/js/management/operation.js"></script>
 		<!-- jQuery -->

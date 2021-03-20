@@ -410,6 +410,9 @@ button.bg-primary:hover {
 .badge-success {
 	background-color: #28a745 !important;
 }
+.bg-outline{
+	background-color: gray !important;
+}
 a.bg-success:focus, 
 a.bg-success:hover, 
 button.bg-success:focus, 
@@ -438,7 +441,7 @@ button.bg-warning:hover {
 }
 .bg-danger,
 .badge-danger {
-	background-color: #FDC839 !important;
+	background-color: #dc3545 !important;
 }
 a.bg-danger:focus, 
 a.bg-danger:hover, 

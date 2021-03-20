@@ -166,18 +166,18 @@
 				<!-- User Menu -->
 				<li class="nav-item dropdown has-arrow">
 					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-						<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
+						<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
 					</a>
 					<div class="dropdown-menu">
 						<div class="user-header">
-							<div class="avatar avatar-sm">
-								<img src="static/assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
+								<div class="avatar avatar-sm">
+									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
+								</div>
+								<div class="user-text">
+									<h6>{{ user.name }}</h6>
+									<p class="text-muted mb-0">Administrator</p>
+								</div>
 							</div>
-							<div class="user-text">
-								<h6>汪宇晖</h6>
-								<p class="text-muted mb-0">Administrator</p>
-							</div>
-						</div>
 						<a class="dropdown-item" href="profile">配置文件</a>
 						<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
 					</div>
@@ -258,7 +258,7 @@
 								<div class="row align-items-center">
 									<div class="col-auto profile-image">
 										<a href="#">
-											<img class="rounded-circle" alt="User Image" src="static/assets/img/profiles/avatar-12.jpg">
+											<img class="rounded-circle" alt="User Image" src="static/assets/img/profiles/{{ user.account }}.jpg">
 										</a>
 									</div>
 									<div class="col ml-md-n2 profile-user-info">
@@ -278,6 +278,9 @@
 									<li class="nav-item">
 										<a class="nav-link" href="#password_tab" data-toggle="tab">修改密码</a>
 									</li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#avatar_tab" data-toggle="tab">修改头像</a>
+                                    </li>
 								</ul>
 							</div>	
 							<div class="tab-content profile-tab-cont">
@@ -289,7 +292,7 @@
 									<!-- Personal Details -->
 									<div class="row">
 										<div class="col-lg-12">
-											<div class="card">
+											<div class="card" style="margin-bottom: 1%;">
 												<div class="card-body">
 													<h5 class="card-title d-flex justify-content-between" style="margin-bottom: 2%;">
 														<span>详细信息</span> 
@@ -320,7 +323,15 @@
                                                     {% endfor %}
 												</div>
 											</div>
-										
+											<div class="card" id="tip" style="height: 20px;width: auto;display:none">
+												<!-- <img src="static/assets/img/error.jpg"> -->
+												<div style="background: url(static/assets/img/error.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+													<span style="padding-left: 2%;font-size: 16px;font-family: 'Mada';color: #CD3333;">
+														用户密码有误，请重新输入~
+													</span>
+												</div>
+												<!-- <div></div> -->
+											</div>
 											
 										</div>
 
@@ -362,7 +373,26 @@
 									</div>
 								</div>
 								<!-- /Change Password Tab -->
-								
+							    <div id="avatar_tab" class="tab-pane fade">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">修改头像</h5>
+                                            <div class="row">
+                                               <div class="col-md-10 col-lg-6">
+                                                    <form method="POST" enctype="multipart/form-data">
+                                                        {{ avatar_form.csrf_token }}
+                                                        {{ avatar_form.hidden_tag() }}
+                                                        {{ avatar_form.avatar() }}
+                                                        <input type="submit" value="Upload" accept="image/*">
+                                                    </form>
+                                               </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
 							</div>
 						</div>
 					</div>

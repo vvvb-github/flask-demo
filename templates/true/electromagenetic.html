@@ -105,7 +105,7 @@
 								<a href="report">查看所有消息</a>
 							</div>
 						</div>
-					</li>>
+					</li>
 					<!-- /Notifications -->
 					<!-- Write -->
 					<li >
@@ -115,7 +115,7 @@
 					</li>
 					<!-- Write -->
 					<!-- download-->
-					<li >
+				    <li >
 						<a data-toggle="modal" href="#text_download" title="数据导出">
 							<i class="fe fe-download"></i>
 						</a>
@@ -138,7 +138,7 @@
 			
 						</div>
 					</li> -->
-					<!-- /download -->
+					<!-- /download>
 					<!-- upload -->
 					<li >
 						<a data-toggle="modal" href="#text_upload" title="数据上传">
@@ -163,15 +163,15 @@
 					<!-- User Menu -->
 					<li class="nav-item dropdown has-arrow">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/avatar-12.jpg" width="31" alt="Ryan Taylor"></span>
 						</a>
 						<div class="dropdown-menu">
 							<div class="user-header">
 								<div class="avatar avatar-sm">
-									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
+									<img src="static/assets/img/profiles/avatar-12.jpg" alt="User Image" class="avatar-img rounded-circle">
 								</div>
 								<div class="user-text">
-									<h6>{{ user.name }}</h6>
+									<h6>汪宇晖</h6>
 									<p class="text-muted mb-0">Administrator</p>
 								</div>
 							</div>
@@ -196,18 +196,18 @@
 								<a href="index"><span><font color="#CCCCCC">首页</font></span></a>
 							</li>
 							<li class="submenu" >
-								<a href="#" style="background:#9ca8b8"><span><font color="#293c55"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
+								<a href="#"><span><font color="#CCCCCC"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
 									<li><a href="evaporation"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
-									<li><a class="active" href="surfaceevaporation"><font color="#1e88e5">表面波导与悬空波导诊断</font></a></li>
+									<li><a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
 									<li><a href="futureheight"><font color="#CCCCCC">未来波导高度预测</font></a></li>
 								</ul>
 							</li>
 
 							<li class="submenu"> 
-								<a href="#"><span><font color="#CCCCCC">电磁损耗计算</font></span> <span class="menu-arrow"></span></a>
+								<a href="#" style="background:#9ca8b8"><span><font color="#CCCCCC">电磁损耗计算</font></span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="electromagenetic"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
+									<li><a class="active" href="electromagenetic"> <font color="#1e88e5">电磁波传播损耗计算 </font></a></li>
 									
 								</ul>
 							</li>
@@ -221,7 +221,7 @@
 							<li class="submenu">
 								<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
 								<ul style="display: none;">
-									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+									<li><a href="login"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
 									<li><a href="user-management"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
 									<li><a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a></li>
 								</ul>
@@ -233,7 +233,6 @@
 			
 			<!-- Page Wrapper -->
             <div class="page-wrapper">
-			
                 <div class="content container-fluid">
 					<!-- <div class="zhezhao" id='zhezhao'  >
 						<div class="tankuang" style="padding: 10px;">
@@ -256,7 +255,7 @@
 															</select>
 														</div>
 														<button class="btn btn-primary"  >
-															<a class="fe fe-download" style="font-size: 15px;color: #fff;float: right;" href="/images/1.PNG" download="1.PNG">&nbsp;&nbsp;下载</a>
+															<a class="fe fe-download" style="font-size: 15px;color: #fff;float: right;" href="static//images/1.PNG" download="1.PNG">&nbsp;&nbsp;下载</a>
 														</button>	
 													</div>
 											<div class="form-group row">
@@ -296,7 +295,7 @@
 											</div>
 										</div>
 										<div class="input-group-append" style="float: right;">
-											<a class="btn btn-primary"   href="/images/1.png" download="111" >确认选择并下载</a>
+											<a class="btn btn-primary"   href="static//images/1.png" download="111" >确认选择并下载</a>
 										</div>
 									
 									</form>
@@ -350,19 +349,17 @@
 					document.getElementById('zhezhao1').style.display="none";
 				}
 			</script> -->
-			
 					<!-- Page Header -->
 					<div class="page-header">
 						<div class="row">
 							<div class="col-sm-12">
-								<h3 class="page-title">表面波导与悬空波导诊断页面</h3>
+								<h3 class="page-title">电磁损耗计算页面</h3>
 								<ul class="breadcrumb">
 									<li class="breadcrumb-item active">当前所在地理位置：31.65°N, 122.27°E </li>
 								</ul>
 							</div>
 						</div>
 					</div>
-					<!-- /Page Header -->
 
 					<div class="row">
 						<div class="col-xl-3 col-sm-6 col-12">
@@ -451,12 +448,14 @@
 							</div>
 						</div>
 					</div>
-
+					<!-- /Page Header -->
+					<!-- /Main Wrapper -->
+					
 					<!-- jQuery -->
         			<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
 		
 					<!-- Bootstrap Core JS -->
-        			<script src="static/assets/js/popper.min.js"></script>
+       				<script src="static/assets/js/popper.min.js"></script>
         			<script src="static/assets/js/bootstrap.min.js"></script>
 		
 					<!-- Slimscroll JS -->
@@ -467,34 +466,18 @@
 					<script src="static/assets/js/chart.morris.js"></script>
 		
 					<!-- Custom JS -->
-					<script  src="static/assets/js/script.js"></script>			
+					<script  src="static/assets/js/script.js"></script>						
+		
+		
 					<!-- Sales Chart -->
+
 					<div class="row">
 						<div class="col-md-12 col-lg-6">
 							<div class="card card-chart">
 								<div  class="card-header">
-									<h4 class="card-title">温度、湿度、气压随高度变化值</h4>
+									<h4 class="card-title">修正大气折射指数结构</h4>
 								</div>
-								<div id="chart1" style="height: 500px"></div>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
-								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
-		
-								<!--left chart js-->
-								<script type="text/javascript" src="static/chart/suface-evaporation/chart1.js">
-								</script>
-							</div>
-						</div>
-						<div class="col-md-12 col-lg-6">
-							<div class="card card-chart">
-								<div  class="card-header">
-									<h4 class="card-title">大气相关指数情况</h4>
-								</div>
-								<div id="chart2" style="height: 500px"></div>
+								<div id="chart-left" style="height: 500px"></div>
 								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
 								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
@@ -504,19 +487,16 @@
 								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
 				
 								<!--right chart js-->
-								<script type="text/javascript" src="static/chart/suface-evaporation/chart2.js">
+								<script type="text/javascript" src="static/chart/electromagenetic/chart-left.js">
 								</script>
 							</div>
-						</div>				
-					</div>
-
-					<div class="row">
+						</div>
 						<div class="col-md-12 col-lg-6">
 							<div class="card card-chart">
 								<div  class="card-header">
-									<h4 class="card-title">波导实际廓线</h4>
+									<h4 class="card-title">电磁波传播损失分布(单程)</h4>
 								</div>
-								<div id="chart3" style="height: 500px"></div>
+								<div id="chart-right" style="height: 500px"></div>
 								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
 								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
 								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
@@ -524,35 +504,39 @@
 								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
 								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
 								<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
-		
-								<!--left chart js-->
-								<script type="text/javascript" src="static/chart/suface-evaporation/chart3.js">
+				
+								<!--right chart js-->
+								<script type="text/javascript" src="static/chart/electromagenetic/chart-right.js">
 								</script>
 							</div>
-						</div>
-						<div class="col-md-12 col-lg-6" >	
+						</div>				
+					</div>
+				
+													
+				
+					<div class="col-md-12 col-lg-6" >	
+						<!-- Sales Chart -->
+						<div class="card card-chart" >
 							<!-- Sales Chart -->
-							<div class="card card-chart" >
-								<!-- Sales Chart -->
-								<div class="card-header">
-									<h4 class="card-title">操作记录</h4>
-								</div>
-								<div class="card-body">
-									<div id="boxscroll2">
-										<div id="contentscroll2">
-											<p><h6>已成功连接服务器，时间: 2020.9.30，19:59！</h6></p>
-										</div>
+							<div class="card-header">
+								<h4 class="card-title">操作记录</h4>
+							</div>
+							<div class="card-body">
+								<div id="boxscroll2">
+									<div id="contentscroll2">
+										<p><h6>已成功连接服务器，时间: 2020.9.30，19:59！</h6></p>
 									</div>
 								</div>
-							</div>	
-						</div>			
+							</div>
+						</div>	
 					</div>
 				</div>
+		
 			</div>
-		<script src="static/js/download.js"></script>
+			<script src="static/js/download.js"></script>
 		<script src="static/js/upload.js"></script>
-		</div>
-				
+        </div>
+
 		
 	</body>
 </html>

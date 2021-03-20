@@ -8,7 +8,7 @@ function showtable(){
         document.writeln("<td>")
         document.writeln("<h2 class=\"table-avatar\">")
         document.writeln("<a href=\"profile.html\" class=\"avatar avatar-sm mr-2\"><img class=\"avatar-img rounded-circle\" src=\"static/assets/img/user/歼灭.jpg\" alt=\"User Image\"></a>")
-        document.writeln("<a id='name_"+i+"' href=\"profile.html\">"+obj[i].name+"</a>")
+        document.writeln("<a id='name_"+i+"' href=\"profile.html\">"+obj[i].sender_name+"("+obj[i].sender_account+")"+"</a>")
         document.writeln("</h>")
         document.writeln("</td>")
         document.writeln("<td id=\"topic_"+i+"\">"+obj[i].subject+"</td>")

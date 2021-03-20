@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Report Validation</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="static/assets/js/bootstrap.min.js">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="static/assets/css/feathericon.min.css">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="static/assets/css/style.css">
+		<script src="static/assets/js/jquery-3.2.1.js"></script>
+		<!--[if lt IE 9]>
+
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+
+		<![endif]-->
+    </head>
+
+    <body class="error-page" style="background:url(static/assets/img/ocean.jpg) no-repeat;background-size:cover;">
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+			
+			<div class="error-box">
+				<h1 id="ok" style="background-color: #abfbab;color:#0ee20e;border-bottom-left-radius: 20px;border-top-right-radius: 20px;width: auto;font-size: 56px;display:none">信息申报提交成功！</h1>
+				<h1 id="error" style=".background-color: #f7abab;color:#f75454;border-bottom-left-radius: 20px;border-top-right-radius: 20px;width: auto;font-size: 56px;display:none">信息申报提交失败！</h1>
+				<h3 id="message" class="h2 mb-3" style="color: #c70505;font-size: x-large;display:none"><i class="fa fa-warning"></i> </h3>
+				<p class="h4 font-weight-normal"><span id="time">5</span>秒后跳回界面</p>
+				<a id="jump" href="index.html" class="btn btn-primary" style="color: white;background-color:#216c97; border:1px solid #4f97c5">点击直接返回</a>
+			</div>
+		
+        </div>
+        <script>
+            var Report_Info = {{ Report_Info|tojson }}
+            console.log(Report_Info)
+            document.getElementById("jump").href = Report_Info.url_info
+			if(Report_Info.valid == "error"){
+			    document.getElementById("error").style.display = ""
+			    document.getElementById("message").style.display = ""
+			    document.getElementById("message").innerHTML = Report_Info.message
+			}
+			else{
+			    document.getElementById("ok").style.display = ""
+			}
+            $(function () {
+            setTimeout(ChangeTime, 1000);
+        });
+        function ChangeTime(){
+				var time;
+				time= $("#time").text();
+				time = parseInt(time);
+				time--;
+				if(time <=0){
+					window.location.href = Report_Info.url_info
+				}else{
+					$("#time").text(time);
+					setTimeout(ChangeTime, 1000)
+				}
+		}
+        </script>
+		<!-- /Main Wrapper -->
+		<!-- jQuery -->
+
+		
+		<!-- Bootstrap Core JS -->
+        <script src="static/assets/js/popper.min.js"></script>
+        <script src="static/assets/js/bootstrap.min.js"></script>
+		
+		<!-- Custom JS -->
+		<script  src="static/assets/js/script.js"></script>
+		
+    </body>
+</html>
