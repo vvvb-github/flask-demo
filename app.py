@@ -898,9 +898,9 @@ def invoice_page():
         receiver_infor = User.query.filter_by(account=i.receiverID).first()
         j = {
             "sender_account": i.senderID,
-            "receiver_account":i.receiverID,
-            "sender_name":sender_infor.name,
-            "receiver_name":receiver_infor.name,
+            "receiver_account": i.receiverID,
+            "sender_name": sender_infor.name,
+            "receiver_name": receiver_infor.name,
             "KeyID": i.keyID,
             "sendData": i.sendDate,
             "subject": i.subject,
@@ -912,13 +912,17 @@ def invoice_page():
             count += 1
         infos.append(j)
     User_infor = {
-        "account":current_user.account,
-        "name":current_user.name,
-        "department":current_user.department,
-        "authorityLevel":current_user.authorityLevel
+        "account": current_user.account,
+        "name": current_user.name,
+        "department": current_user.department,
+        "authorityLevel": current_user.authorityLevel
+    }
+    user = {
+        "name": current_user.name,
+        "account": current_user.account,
     }
     print(infos)
-    return render_template('report.html', Infor=infos, User=User_infor, count=count)
+    return render_template('report.html', Infor=infos, User=User_infor, count=count, user=user)
 
 
 @app.route('/report/pass/<reportID>')
