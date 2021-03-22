@@ -1230,5 +1230,6 @@ def default_error_handler(e):
 
 if __name__ == '__main__':
     api.rootPath(app)
+    # 服务器地址可能更变
     socket_io.run(app, debug=True, host='10.201.59.122', port=8085)
 
