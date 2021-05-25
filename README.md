@@ -17,10 +17,11 @@
 `pip install pymysql`\
 `pip install flask-socketio`\
 `pip install gevent`\
-`pip install gevent-websocket`
-`pip install flask_login`
-`pip install flask_wtf`
-`pip install wtforms
+`pip install gevent-websocket`\
+`pip install flask_login`\
+`pip install flask_wtf` \
+`pip install wtforms \
+pip install email_validator
 - **项目结构说明**
 ```
 -src
