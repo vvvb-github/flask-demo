@@ -683,8 +683,6 @@ def infor_report():
         "name": current_user.name,
         "account": current_user.account,
     }
-
-
     sender_account = current_user.account
     receiver_account = request.form['receive']
     content = request.form['messages']
@@ -831,7 +829,8 @@ def profile_page():
             return redirect(url_for('login', message="请重新登录"))
         else:
             flash("密码不正确")
-            return render_template('profile.html', user=user, profile_form=profile_form, password_form=password_form, avatar_form=avatar_form)
+            return render_template('profile.html', user=user, profile_form=profile_form, password_form=password_form,
+                                   avatar_form=avatar_form)
     else:
         if (bool(password_form.errors)) and (len(password_form.errors) != 2):
             flash("请检查重复输入的两次密码是否一致")
@@ -850,9 +849,8 @@ def profile_page():
         if bool(avatar_form.errors):
             flash("文件格式不正确")
 
-
-
-    return render_template('profile.html', user=user, profile_form=profile_form, password_form=password_form, avatar_form=avatar_form)
+    return render_template('profile.html', user=user, profile_form=profile_form, password_form=password_form,
+                           avatar_form=avatar_form)
 
 
 @app.route('/profile/<userID>')
@@ -1231,5 +1229,5 @@ def default_error_handler(e):
 if __name__ == '__main__':
     api.rootPath(app)
     # 服务器地址可能更变
-    socket_io.run(app, debug=True, host='10.201.59.122', port=8085)
+    socket_io.run(app, debug=True, host='10.201.61.145', port=8085)
 
