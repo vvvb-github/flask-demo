@@ -749,12 +749,36 @@ def futureheight_page():
 
 @app.route('/surfaceevaporation')
 @login_required
-def sufaceevaporation_page():
+def surface_page():
     user = {
         "name": current_user.name,
         "account": current_user.account,
     }
-    return render_template('surfaceevaporation.html', user=user)
+    print("normal")
+    return render_template('surfaceevaporation.html',MeteoData=[0,0,0], Refraction=[0,0,0], SD=[0,0,0],
+                           ED=[0,0,0], user=user)
+
+
+@app.route('/surfaceevaporation_updata')
+@login_required
+def surface_page_updata():
+    user = {
+        "name": current_user.name,
+        "account": current_user.account,
+    }
+    MeteoData={
+        "tem":random.random(),
+        "hum": random.random(),
+        "wind": random.random(),
+        "press": random.random()
+    }
+    print("update")
+    return render_template('surfaceevaporation1.html',MeteoData=MeteoData, Refraction=[[1,random.random()],
+                                                                                       [3,random.random()],[5,random.random()],[7,random.random()],[9,random.random()]],
+                           SD=[1,2,3],
+                           ED=[2,4,8],
+                           user=user,
+                           word="update"+str(time.asctime( time.localtime(time.time()))))
 
 
 @app.route('/electromagenetic')
