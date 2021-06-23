@@ -25,6 +25,10 @@
 			<script src="{{ url_for('static', filename="assets/js/html5shiv.min.js") }}"></script>
 			<script src="{{ url_for('static', filename="assets/js/respond.min.js") }}"></script>
 		<![endif]-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+        <!--socket io get information -->
+        <script src="{{ url_for('static', filename="js/notification.js") }}"></script>
+        <script src="{{ url_for('static', filename="js/socketio.js") }}"></script>
     </head>
     <body>
 	
@@ -57,182 +61,104 @@
 				<i class="fa fa-bars"></i>
 			</a>
 			<!-- /Mobile Menu Toggle -->
-			
-			<!-- Header Right Menu -->
+
+            <!-- Header Right Menu -->
 			<ul class="nav user-menu">
-				
-				<!-- Notifications -->
-				<li class="nav-item dropdown noti-dropdown">
-					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-						<i class="fe fe-bell"></i> <span class="badge badge-pill">3</span>
-					</a>
-					<div class="dropdown-menu notifications">
-						<div class="topnav-dropdown-header">
-							<span class="notification-title">Notifications</span>
-							<a href="javascript:void(0)" class="clear-noti"> Clear All </a>
+
+					<!-- Notifications -->
+					<li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
+						</a>
+						<div class="dropdown-menu notifications">
+							<div class="topnav-dropdown-header">
+								<span class="notification-title">消息提醒</span>
+								<a href="javascript:void(0)" class="clear-noti"> 隐藏 </a>
+							</div>
+							<div class="noti-content">
+								<ul class="notification-list">
+									<script>
+										readJson()
+									</script>
+								</ul>
+							</div>
+							<div class="topnav-dropdown-footer">
+								<a href="report">查看所有报告信息</a>
+							</div>
 						</div>
-						<div class="noti-content">
-							<ul class="notification-list">
-								<li class="notification-message">
-									<a href="#">
-										<div class="media">
-											<span class="avatar avatar-sm">
-												<img class="avatar-img rounded-circle" alt="User Image" src="{{ url_for('static', filename="assets/img/user/user13.jpg") }}">
-											</span>
-											<div class="media-body">
-												<p class="noti-details"><span class="noti-title">云云云</span> 发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
-												<p class="noti-time"><span class="notification-time">4 mins ago</span></p>
-											</div>
-										</div>
-									</a>
-								</li>
-								<li class="notification-message">
-									<a href="#">
-										<div class="media">
-											<span class="avatar avatar-sm">
-												<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/user/歼灭.jpg">
-											</span>
-											<div class="media-body">
-												<p class="noti-details"><span class="noti-title">飞飞飞</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
-												<p class="noti-time"><span class="notification-time">1 days ago</span></p>
-											</div>
-										</div>
-									</a>
-								</li>
-								<li class="notification-message">
-									<a href="#">
-										<div class="media">
-											<span class="avatar avatar-sm">
-												<img class="avatar-img rounded-circle" alt="User Image" src="static/assets/img/profiles/avatar-122.jpg">
-											</span>
-											<div class="media-body">
-											<p class="noti-details"><span class="noti-title">白白白</span>发布一则<span class="noti-title">信息汇总报告，请求审批</span></p>
-											<p class="noti-time"><span class="notification-time">2 days ago</span></p>
-											</div>
-										</div>
-									</a>
-								</li>
-							</ul>
-						</div>
-						<div class="topnav-dropdown-footer">
-							<a href="{{ url_for('invoice_page') }}">查看所有报告信息</a>
-						</div>
-					</div>
-				</li>
-				<!-- Notifications -->
-				<!-- Write -->
-				<li >
-					<a data-toggle="modal" href="#text_inputs" title="信息上报">
-						<i class="fe fe-file"></i>
-					</a>
-				</li>
-				<!-- Write -->
-				<!-- download-->
-				<li >
-					<a href="#" title="数据导出">
-						<i class="fe fe-download" onclick="dianwo()"></i>
-					</a>
-					<div class="dropdown-menu" style="padding: 5px;">
-						
-						<script type="text/javascript">
-							document.getElementById('zhezhao').style.display="none";
-							function mez(){
-								document.getElementById('zhezhao').style.display="";
-							}
-							function hidder(){
-								document.getElementById('zhezhao').style.display="none";
-							}
-						</script>
-		
-					</div>
-				</li>
-				<!-- /download -->
-				<!-- upload -->
-				<li class="nav-item dropdown noti-dropdown">
-					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导入">
-						<i class="fe fe-upload"></i>
-					</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item"><input type="file" ></a>
-						<a class="dropdown-item"><input type="file" ></a>
-						<a class="dropdown-item"><input type="file" ></a>
-						<a class="dropdown-item"><input type="file" ></a>
-						<a class="dropdown-item"><input type="file" ></a>
-							<button type="button" class="btn btn-primary" onclick="dianwo1()" style="color:#F8F9FA;float: right;">确认上传</button>
-					</div>
-						
-				</li>
-				<!-- /upload -->
-				<!-- User Menu -->
-				<li class="nav-item dropdown has-arrow">
-					<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-						<span class="user-img"><img class="rounded-circle" src="{{ url_for('static', filename= "assets/img/profiles/" + user.account + ".jpg" ) }}" width="31" alt="{{ user.name }}"></span>
-					</a>
-					<div class="dropdown-menu">
-						<div class="user-header">
+					</li>
+					<!-- Notifications -->
+					<!-- Write -->
+					<li >
+						<a data-toggle="modal" href="#text_inputs" title="信息上报">
+							<i class="fe fe-file"></i>
+						</a>
+					</li>
+					<!-- Write -->
+					<!-- download-->
+					<li >
+						<a data-toggle="modal" href="#text_download" title="数据导出">
+							<i class="fe fe-download"></i>
+						</a>
+					</li>
+					<li >
+						<a data-toggle="modal" href="#text_upload" title="数据上传">
+							<i class="fe fe-upload"></i>
+						</a>
+					</li>
+
+					<li class="nav-item dropdown has-arrow">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
+						</a>
+						<div class="dropdown-menu">
+							<div class="user-header">
 								<div class="avatar avatar-sm">
-									<img src="{{ url_for('static', filename= "assets/img/profiles/" + user.account + ".jpg" ) }}" alt="User Image" class="avatar-img rounded-circle">
+									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
 								</div>
 								<div class="user-text">
 									<h6>{{ user.name }}</h6>
 									<p class="text-muted mb-0">Administrator</p>
 								</div>
 							</div>
-						<a class="dropdown-item" href="{{ url_for('profile_page') }}">配置文件</a>
-						<a class="dropdown-item" href="{{ url_for('logout') }}"><font color="#E63C3C">退出</font></a>
-					</div>
-				</li>
-				<!-- /User Menu -->
-			</ul>
-			<!-- /Header Right Menu -->
+							<a class="dropdown-item" href="profile">配置文件</a>
+							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
+						</div>
+					</li>
+					<!-- /User Menu -->
+				</ul>
+				<!-- /Header Right Menu -->
 			
 		</div>
 		<!-- /Header -->
 		
 		<!-- Sidebar -->
-		<div class="sidebar" id="sidebar">
-			<div class="sidebar-inner slimscroll">
-				<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
-					<ul>
-						<li> 
-							<a href={{ url_for('index') }}><span><font color="#CCCCCC">首页</font></span></a>
-						</li>
-						<li class="submenu">
-							<a href="#"><span><font color="#CCCCCC"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
-							<ul style="display: none;">
-								<li><a href="{{ url_for('evaporation_page') }}"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
-								<li><a href="{{ url_for('sufaceevaporation_page') }}"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
-								<li><a href="{{ url_for('futureheight_page') }}"><font color="#CCCCCC">未来波导高度预测</font></a></li>
-							</ul>
-						</li>
-
-						<li class="submenu"> 
-							<a href="#"><span><font color="#CCCCCC">电磁损耗计算</font></span> <span class="menu-arrow"></span></a>
-							<ul style="display: none;">
-								<li><a href="{{ url_for('electromagenetic_page') }}"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
-								
-							</ul>
-						</li>
-						<li class="submenu">
-							<a href="#"><span><font color="#CCCCCC"> 雷达有效距离探测 </font></span> <span class="menu-arrow"></span></a>
-							<ul style="display: none;">
-								<li><a href="{{ url_for('radar_page') }}"><font color="CCCCCC">雷达有效探测性能</font> </a></li>
-								
-							</ul>
-						</li>
-						<li class="submenu">
-							<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
-							<ul style="display: none;">
-								<li><a href="{{ url_for('profile_page') }}"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
-								<li><a href="{{ url_for('user_management_page') }}"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
-								<li><a href="{{ url_for('profile_page') }}"><font color="#CCCCCC"> 修改密码 </font></a></li>
-							</ul>
-						
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
+						<ul>
+							<li >
+								<a href="{{ url_for('index') }}"><font color="#CCCCCC">首页</font></a>
+							</li>
+							<li>
+								<a href="{{ url_for('surface_page') }}"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a>
+							</li>
+							<li >
+								<a href="{{ url_for('profile_page') }}"> <span><font color="#CCCCCC">个人资料</font></span> </a>
+							</li>
+							<li>
+								<a href="{{ url_for('profile_page') }}"><font color="#CCCCCC">修改密码</font> </a>
+							</li>
+                            <li>
+								<a href="{{ url_for('user_management_page') }}"><font color="#CCCCCC">用户管理</font> </a>
+							</li>
+                            <li>
+								<a href="{{ url_for('report_page') }}"><font color="#CCCCCC">个人信息报表</font> </a>
+							</li>
+						</ul>
+					</div>
+                </div>
+            </div>
 		<!-- /Sidebar -->
 			<!-- Page Wrapper -->
         <div class="page-wrapper">
@@ -332,12 +258,16 @@
 		<!-- Bootstrap Core JS -->
         <script src="{{ url_for('static', filename="assets/js/popper.min.js") }}"></script>
         <script src="{{ url_for('static', filename="assets/js/bootstrap.min.js") }}"></script>
+
 		
 		<!-- Slimscroll JS -->
         <script src="{{ url_for('static', filename="assets/plugins/slimscroll/jquery.slimscroll.min.js") }}"></script>
 		
 		<!-- Custom JS -->
 		<script  src="{{ url_for('static', filename="assets/js/script.js") }}"></script>
-		
+        <script src="{{ url_for('static', filename="js/dialog.js") }}"></script>
+		<script src="{{ url_for('static', filename="js/download.js") }}"></script>
+		<script src="{{ url_for('static', filename="js/upload.js") }}"></script>
+		<script src="{{ url_for('static', filename="js/notification.js") }}"></script>
     </body>
 </html>

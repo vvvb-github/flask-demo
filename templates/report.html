@@ -27,11 +27,14 @@
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+        <!--socket io get information -->
+        <script src="static/js/notification.js"></script>
+        <script src="static/js/socketio.js"></script>
         <script>
             let Infor = {{ Infor|tojson }}
 			var count = {{count}}
-            var User = {{ User|tojson }}
-            console.log(User)
+            var User = {{ user|tojson }}
         </script>
 		<script src="static/js/jquery.min.js"></script>
 		<script src="static/js/jquery.nicescroll.min.js"></script>
@@ -86,8 +89,8 @@
 				<!-- /Mobile Menu Toggle -->
 				
 				<!-- Header Right Menu -->
-				<ul class="nav user-menu">
-					
+			    <ul class="nav user-menu">
+
 					<!-- Notifications -->
 					<li class="nav-item dropdown noti-dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
@@ -95,7 +98,7 @@
 						</a>
 						<div class="dropdown-menu notifications">
 							<div class="topnav-dropdown-header">
-								<span class="notification-title">信息提醒</span>
+								<span class="notification-title">消息提醒</span>
 								<a href="javascript:void(0)" class="clear-noti"> 隐藏 </a>
 							</div>
 							<div class="noti-content">
@@ -106,53 +109,30 @@
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
-								<a href="#">查看所有报告信息</a>
+								<a href="report">查看所有报告信息</a>
 							</div>
 						</div>
 					</li>
-					<!-- /Notifications -->
+					<!-- Notifications -->
+					<!-- Write -->
 					<li >
 						<a data-toggle="modal" href="#text_inputs" title="信息上报">
 							<i class="fe fe-file"></i>
 						</a>
 					</li>
+					<!-- Write -->
 					<!-- download-->
 					<li >
-						<a href="#" title="数据导出">
-							<i class="fe fe-download" onclick="dianwo()"></i>
+						<a data-toggle="modal" href="#text_download" title="数据导出">
+							<i class="fe fe-download"></i>
 						</a>
-						<div class="dropdown-menu" style="padding: 5px;">
-							
-							<script type="text/javascript">
-								document.getElementById('zhezhao').style.display="none";
-								function mez(){
-									document.getElementById('zhezhao').style.display="";
-								}
-								function hidder(){
-									document.getElementById('zhezhao').style.display="none";
-								}
-							</script>
-			
-						</div>
 					</li>
-					<!-- /download -->
-					<!-- upload -->
-					<li class="nav-item dropdown noti-dropdown">
-						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导入">
+					<li >
+						<a data-toggle="modal" href="#text_upload" title="数据上传">
 							<i class="fe fe-upload"></i>
 						</a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-								<button type="button" class="btn btn-primary" onclick="dianwo1()" style="color:#F8F9FA;float: right;">确认上传</button>
-						</div>
-							
 					</li>
-					<!-- /upload -->
-					<!-- User Menu -->
+
 					<li class="nav-item dropdown has-arrow">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
@@ -167,8 +147,7 @@
 									<p class="text-muted mb-0">Administrator</p>
 								</div>
 							</div>
-							<a class="dropdown-item" href="profile">个人设置</a>
-							<a class="dropdown-item" href="settings">设置</a>
+							<a class="dropdown-item" href="profile">配置文件</a>
 							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
 						</div>
 					</li>
@@ -184,40 +163,23 @@
                 <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
 						<ul>
-							<li> 
-								<a href="index"><span><font color="#CCCCCC">首页</font></span></a>
+							<li>
+								<a href="index"><font color="#CCCCCC">首页</font></a>
 							</li>
-							<li class="submenu">
-								<a href="#"><span><font color="#CCCCCC"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="evaporation"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
-									<li><a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
-									<li><a href="futureheight"><font color="#CCCCCC">未来波导高度预测</font></a></li>
-								</ul>
+							<li>
+								<a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a>
 							</li>
-
-							<li class="submenu"> 
-								<a href="#"><span><font color="#CCCCCC">电磁损耗计算</font></span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="electromagenetic"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
-									
-								</ul>
+							<li>
+								<a href="profile"> <font color="#CCCCCC">个人资料</font> </a>
 							</li>
-							<li class="submenu">
-								<a href="#"><span><font color="#CCCCCC"> 雷达有效距离探测 </font></span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="radar-valid-distance"><font color="CCCCCC">雷达有效探测性能</font> </a></li>
-									
-								</ul>
+							<li>
+								<a href="profile"><font color="#CCCCCC">修改密码</font> </a>
 							</li>
-							<li class="submenu">
-								<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
-									<li><a href="user-management"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
-									<li><a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a></li>
-								</ul>
-							
+                            <li>
+								<a href="user-management"><font color="#CCCCCC">用户管理</font> </a>
+							</li>
+                            <li style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;">
+								<a href="report"><span><font color="#293c55">个人信息报表</font> </span></a>
 							</li>
 						</ul>
 					</div>
@@ -279,11 +241,6 @@
                             </ul>
                         {% endif %}
                     {% endwith %}
-<!--                    <script type="text/javascript">-->
-<!--                        var Infor = {{ Infor |tojson }};-->
-<!--                        var User = {{ User|tojson }}-->
-<!--            			console.log(User)-->
-<!--                    </script>-->
 					<div class="detail" id='details_div' style="display:none">
 						<div class="card">
 							<div class="card-header">
@@ -420,7 +377,12 @@
 				</div>
 			</div>
 		</div>
-		
+
+
+        <script src="static/js/dialog.js"></script>
+		<script src="static/js/download.js"></script>
+		<script src="static/js/upload.js"></script>
+        <script src="static/js/notification.js"></script>
 		
 		<!-- jQuery -->
         <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>

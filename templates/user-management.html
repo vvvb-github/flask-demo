@@ -25,20 +25,15 @@
 		
 		<!-- Main CSS -->
 		<link rel="stylesheet" href="static/assets/css/style.css">
-		<script  type=text/javascript>
-			let Infor = {{ Infor|tojson }}
-   			var count = {{count}}
-            var Infor_User = {{ Users | tojson }}
-            console.log(Infor_User)
-        </script>
-		
-		<script src="static/js/Information.js"></script>
-		<script src="static/js/notification.js"></script>
-		<script src="static/js/management/information(user).js"></script>
 		<script src="static/js/management/information(searched).js"></script>
 		<script src="static/js/management/table.js"></script>
-	
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+        <!--socket io get information -->
+        <script src="static/js/notification.js"></script>
+        <script src="static/js/socketio.js"></script>
+        <script type="text/javascript">
+            let Infor_User = {{ Users|tojson }}
+        </script>
 		<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
@@ -78,10 +73,10 @@
             	<!-- /Mobile Menu Toggle -->
             	
             	<!-- Header Right Menu -->
-            	<ul class="nav user-menu">
-            		
-            		<!-- Notifications -->
-            		<li class="nav-item dropdown noti-dropdown">
+			    <ul class="nav user-menu">
+
+					<!-- Notifications -->
+					<li class="nav-item dropdown noti-dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
 						</a>
@@ -92,9 +87,6 @@
 							</div>
 							<div class="noti-content">
 								<ul class="notification-list">
-									<script>
-										readJson()
-									</script>
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
@@ -102,61 +94,32 @@
 							</div>
 						</div>
 					</li>
-            		<!-- /Notifications -->
+					<!-- Notifications -->
+					<!-- Write -->
+					<li >
+						<a data-toggle="modal" href="#text_inputs" title="信息上报">
+							<i class="fe fe-file"></i>
+						</a>
+					</li>
+					<!-- Write -->
 					<!-- download-->
 					<li >
 						<a data-toggle="modal" href="#text_download" title="数据导出">
 							<i class="fe fe-download"></i>
 						</a>
 					</li>
-					<!-- <li >
-						<a href="#" title="数据导出">
-							<i class="fe fe-download" onclick="dianwo()"></i>
-						</a>
-						<div class="dropdown-menu" style="padding: 5px;">
-							
-							<script type="text/javascript">
-								document.getElementById('zhezhao').style.display="none";
-								function mez(){
-									document.getElementById('zhezhao').style.display="";
-								}
-								function hidder(){
-									document.getElementById('zhezhao').style.display="none";
-								}
-
-							</script>
-			
-						</div>
-					</li> -->
-					<!-- /download-->
-					<!-- upload -->
 					<li >
 						<a data-toggle="modal" href="#text_upload" title="数据上传">
 							<i class="fe fe-upload"></i>
 						</a>
 					</li>
-					<!-- <li class="nav-item dropdown noti-dropdown">
-						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导入">
-							<i class="fe fe-upload"></i>
+
+					<li class="nav-item dropdown has-arrow">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
 						</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-								<button type="button" class="btn btn-primary" onclick="dianwo1()" style="color:#F8F9FA;float: right;">确认上传</button>
-						</div>
-							
-					</li> -->
-					<!-- /upload -->
-            		<!-- User Menu -->
-            		<li class="nav-item dropdown has-arrow">
-            			<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-            				<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
-            			</a>
-            			<div class="dropdown-menu">
-            				<div class="user-header">
+							<div class="user-header">
 								<div class="avatar avatar-sm">
 									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
 								</div>
@@ -165,14 +128,13 @@
 									<p class="text-muted mb-0">Administrator</p>
 								</div>
 							</div>
-            				<a class="dropdown-item" href="profile">配置文件</a>
-            				<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
-            			</div>
-            		</li>
-            		<!-- /User Menu -->
-            		
-            	</ul>
-            	<!-- /Header Right Menu -->
+							<a class="dropdown-item" href="profile">配置文件</a>
+							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
+						</div>
+					</li>
+					<!-- /User Menu -->
+				</ul>
+				<!-- /Header Right Menu -->
             	
             </div>
             <!-- /Header -->
@@ -182,40 +144,23 @@
                 <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
 						<ul>
-							<li style="background:#9ca8b8"> 
-								<a href="index"><span><font color="#293c55">首页</font></span></a>
+							<li >
+								<a href="index"><font color="#CCCCCC">首页</font></a>
 							</li>
-							<li class="submenu">
-								<a href="#"><span><font color="#CCCCCC"> 波导分析计算</font></span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="evaporation"><font color="#CCCCCC">蒸发波导诊断</font></a></li>
-									<li><a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a></li>
-									<li><a href="futureheight"><font color="#CCCCCC">未来波导高度预测</font></a></li>
-								</ul>
+							<li>
+								<a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a>
 							</li>
-
-							<li class="submenu"> 
-								<a href="#"><span><font color="#CCCCCC">电磁损耗计算</font></span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="electromagenetic"> <font color="#CCCCCC">电磁波传播损耗计算</font> </a></li>
-									
-								</ul>
+							<li>
+								<a href="profile"> <font color="#CCCCCC">个人资料</font> </a>
 							</li>
-							<li class="submenu">
-								<a href="#"><span><font color="#CCCCCC"> 雷达有效距离探测 </font></span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="radar-valid-distance"><font color="CCCCCC">雷达有效探测性能</font> </a></li>
-									
-								</ul>
+							<li>
+								<a href="profile"><font color="#CCCCCC">修改密码</font> </a>
 							</li>
-							<li class="submenu">
-								<a href="#"><span><font color="#CCCCCC"> 用户权限管理 </font></span> <span class="menu-arrow"></span></a>
-								<ul style="display: none;">
-									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
-									<li><a href="user-management"><font color="#CCCCCC"> 用户信息管理 </font></a></li>
-									<li><a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a></li>
-								</ul>
-							
+                            <li style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;">
+								<a href="user-management"><span><font color="#293c55">用户管理</font></span></a>
+							</li>
+                            <li>
+								<a href="report"><font color="#CCCCCC">个人信息报表</font> </a>
 							</li>
 						</ul>
 					</div>
@@ -568,8 +513,10 @@
 		<!-- Custom JS -->
 		<script src="static/assets/js/script.js"></script>
 
+		<script src="static/js/dialog.js"></script>
 		<script src="static/js/download.js"></script>
 		<script src="static/js/upload.js"></script>
+
 		
     </body>
 </html>

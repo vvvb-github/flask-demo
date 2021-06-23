@@ -149,10 +149,8 @@ function nextvalue(){
 	content_temp += "<br/>"
 	content_text = content_temp + content_text
 	
-	console.log(content_text.length)
+
 	if(content_text.length > 1000){
-		console.log("true")
-		console.log(lastlength)
 		content_text = content_text.substring(0, content_text.length-lastlength[0])
 		lastlength.shift()
 		TEXT.innerHTML = content_text

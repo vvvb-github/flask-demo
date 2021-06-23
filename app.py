@@ -42,8 +42,14 @@ app.config['SECRET_KEY'] = 'secret!'
 socket_io = SocketIO(app, cors_allowed_origins='*')
 
 # 设置上传文件夹
+# 用户头像保存文件夹
 app.config['AVATAR_FOLDER'] = '/static/assets/img/profiles'
-
+# 最高级别文件夹
+app.config['SUPER_LEVEL_FOLDER'] = '/upload/super'
+# 次高级别文件夹
+app.config['SUB_LEVEL_FOLDER'] = '/upload/sub'
+# 最低级别文件夹
+app.config['NORMAL_LEVEL_FOLDER'] = '/upload/normal'
 
 # --------------------------------------------------- Entities ---------------------------------------------------------
 
@@ -376,37 +382,19 @@ def clearTable(table):
     for record in record_list:
         db.session.delete(record)
 
-# notification消息发送给index等页面提示栏
-def notify():
-    report = Info.query.filter(
-        or_(Info.receiverID == current_user.account, Info.senderID == current_user.account)).order_by(Info.keyID.desc())
-    infos = []
-    for i in report:
-        sender_infor = User.query.filter_by(account=i.senderID).first()
-        receiver_infor = User.query.filter_by(account=i.receiverID).first()
-        if i.result == 0:
-            j = {
-                "sender_account": i.senderID,
-                "receiver_account": i.receiverID,
-                "sender_name": sender_infor.name,
-                "receiver_name": receiver_infor.name,
-                "KeyID": i.keyID,
-                "sendData": i.sendDate,
-                "subject": i.subject,
-                "content": i.content,
-                "result": i.result,
-                "remark": i.remark
-            }
-            infos.append(j)
-    count = len(infos)
-    infos = infos[-3:]
-    User_infor = {
-        "account": current_user.account,
+
+# 获得当前用户信息
+def get_current_user():
+    user = {
         "name": current_user.name,
+        "account": current_user.account,
+        "emailAddress": current_user.emailAddress,
+        "phoneNumber": current_user.phoneNumber,
         "department": current_user.department,
-        "authorityLevel": current_user.authorityLevel
+        "level": current_user.authorityLevel
     }
-    return infos, User_infor, count
+    return user
+
 
 # 更新Page表
 def updatePage(data: dict):
@@ -482,327 +470,47 @@ def load_user(user_account):
     return User.get(user_account)
 
 
-# 登录页面
+# 以下为get方法，获取静态页面
+# 共包含六个不同的页面（登录、主页、表面波导悬空波导、用户管理、信息报表管理、个人资料（自己与他人））
+# 登录页面(page)
 @app.route('/')
 @login_required
 def direct_index():
-    infos, User_infor, count = notify()
-    return render_template('index.html', Infor=infos, User=User_infor, count=count)
+    return redirect(url_for('index'))
 
 
-# 登录逻辑
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    form = LoginForm()
-    message = None
-
-    if form.validate_on_submit():
-        user_name = form.username.data
-        print(user_name)
-        pass_word = form.password.data
-        print(pass_word)
-        temp_user = User.query.filter_by(account=user_name).first()
-        if temp_user is not None:
-            if temp_user.verify_password(pass_word) is True:
-                temp_user.status = 1
-                login_user(temp_user)
-                print(current_user)
-                return redirect(url_for('index'))
-            else:
-                message = "密码错误"
-        else:
-            message = "用户不存在"
-    else:
-        message = "请登录"
-    return render_template("login.html", message=message, form=form)
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    if session.get('was_once_logged_in'):
-        del session['was_once_logged_in']
-    return redirect(url_for('login'))
-
-
-# 用户查询
-@app.route('/user-management', methods=['POST', 'GET'])
-@login_required
-def user_management_page():
-    all_user = User.query.order_by(User.account.desc()).all()
-    Infor = []
-    for i in all_user:
-        j = {
-            'account': i.account,
-            'name': i.name,
-            'phoneNumber': i.phoneNumber,
-            'emailAddress': i.emailAddress,
-            'department': i.department,
-            'password': i.password,
-            'permission': i.permission,
-            'authorityLevel': i.authorityLevel,
-            'status': i.status,
-            'date': i.date.strftime("%Y-%m-%d %H:%M:%S")
-        }
-        Infor.append(j)
-    print(Infor)
-    infos, _, count = notify()
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-    }
-    return render_template('user-management.html', Infor=infos, Users=Infor, count=count, user=user)
-
-
-# 删除用户
-@app.route('/user/delete/<userID>')
-@login_required
-def delete_user(userID):
-    temp_user = User.query.filter_by(account=userID).first()
-    if temp_user is None:
-        flash("用户未找到，请刷新重试")
-        return redirect(url_for('user_management_page'))
-    else:
-        if temp_user.authorityLevel >= current_user.authorityLevel:
-            flash("您的权限不够")
-            return redirect(url_for('user_management_page'))
-        else:
-            db.session.delete(temp_user)
-            db.session.commit()
-    flash("删除成功")
-    return redirect(url_for('user_management_page'))
-
-
-# 编辑用户
-@app.route('/user/edit', methods=['POST'])
-@login_required
-def edit_user():
-    account = request.form['account']
-    name = request.form['name']
-    password = request.form['password']
-    confirm = request.form['confirm']
-    level = request.form['level']
-    temp_user = User.query.filter_by(account=account).first()
-    if temp_user is None:
-        flash("用户未找到，请刷新重试")
-        return redirect(url_for('user_management_page'))
-    else:
-        if temp_user.authorityLevel >= current_user.authorityLevel:
-            flash("您的权限不够")
-            return redirect(url_for('user_management_page'))
-        else:
-            temp_user.name = name
-            temp_user.password = password
-            temp_user.authorityLevel = level
-            db.session.commit()
-    flash("修改成功")
-    return redirect(url_for('user_management_page'))
-
-
-@app.route('/user/add', methods=['POST', 'GET'])
-@login_required
-def add_user():
-    all_user = User.query.order_by(User.account.desc()).all()
-    Infor = []
-    for i in all_user:
-        j = {
-            'account': i.account,
-            'name': i.name,
-            'phoneNumber': i.phoneNumber,
-            'emailAddress': i.emailAddress,
-            'department': i.department,
-            'password': i.password,
-            'permission': i.permission,
-            'authorityLevel': i.authorityLevel,
-            'status': i.status,
-            'date': i.date.strftime("%Y-%m-%d %H:%M:%S")
-        }
-    Infor.append(j)
-    account = request.form['account']
-    name = request.form['name']
-    password = request.form['password']
-    confirm = request.form['confirm']
-    level = request.form['level']
-    date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    remark = request.form['remark']
-    print(account)
-    print(name)
-    print(password)
-    print(date)
-    print(remark)
-    print(level)
-    temp_user = User.query.filter_by(account=account).first()
-    if temp_user is not None:
-        flash("\"" + account + "\"：用户名已存在")
-        return redirect(url_for('user_management_page'))
-    else:
-        if name == '':
-            flash("用户名不能为空！")
-            return redirect(url_for('user_management_page'))
-        elif password == "" or len(password)<6:
-            flash("密码不能为空且不能小于6位！")
-            return redirect(url_for('user_management_page'))
-        elif confirm != password:
-            flash("两次输入的密码不一致！")
-            return redirect(url_for('user_management_page'))
-        elif level == "":
-            level = 1
-        department = "暂定"
-        if current_user.authorityLevel == 2:
-            department = "暂定"
-        elif current_user.authorityLevel == 1:
-            department = current_user.department
-        print(department)
-        db.session.add(User(account, name, "", "", department, password, 0, level,
-                 0, date, remark))
-        db.session.commit()
-        # def __init__(self, account, name, phone_number, email_address, department, password, permission,
-        #              authority_level,
-        #              status, date, remark):
-        flash("新增用户成功！")
-        return redirect(url_for('user_management_page'))
-
-
-# 主页逻辑
+# 主页逻辑(page)
 @app.route('/index')
 @login_required
 def index():
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-    }
-    infos, User_infor, count = notify()
-    return render_template('index.html', Infor=infos, User=User_infor, count=count, user=user)
+    user = get_current_user()
+    return render_template('index.html', user=user)
 
 
-@app.route('/infor_report', methods=['POST'])
-@login_required
-def infor_report():
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-    }
-    sender_account = current_user.account
-    receiver_account = request.form['receive']
-    content = request.form['messages']
-    subject = request.form['title']
-    url_info = request.form['url_info']
-    print(sender_account)
-    print(receiver_account)
-    print(content)
-    print(subject)
-
-    temp_user = User.query.filter_by(account=receiver_account).first()
-
-    report_info = {
-        "url_info": url_info,
-        "valid": "error",
-        "message": "接收人用户账号错误，请重新输入！",
-    }
-    if temp_user is None:
-        return render_template('valid.html', Report_Info=report_info, user=user)
-    else:
-        print("receiver level:", temp_user.authorityLevel)
-        if temp_user.authorityLevel < current_user.authorityLevel:
-            report_info["message"] = "该用户无权限审批！"
-            return render_template('valid.html', Report_Info=report_info, user=user)
-        if temp_user.department != current_user.department and temp_user.authorityLevel!="2":
-            report_info["message"] = "不隶属于该部门，该用户无权审批你的申请。"
-            return render_template('valid.html', Report_Info=report_info, user=user)
-        elif subject == "":
-            report_info["message"] = "主题不能为空！"
-            return render_template('valid.html', Report_Info=report_info, user=user)
-        elif content == "":
-            report_info["message"] = "内容不能为空！"
-            return render_template('valid.html', Report_Info=report_info, user=user)
-        num = Info.query.count()
-        print("Infor:", num)
-        Key_id = '#' + str(num)
-        date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        db.session.add(Info(Key_id, sender_account, receiver_account, date, 0, content, subject, ""))
-        db.session.commit()
-        report_info["valid"] = ""
-        report_info["message"] = "信息申报提交成功"
-        return render_template('valid.html', Report_Info=report_info, user=user)
-
-
-@app.route('/evaporation')
-@login_required
-def evaporation_page():
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-    }
-    return render_template('evaporation.html', user=user)
-
-
-@app.route('/futureheight')
-@login_required
-def futureheight_page():
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-    }
-    return render_template('futureheight.html', user=user)
-
-
+# 表面波导与悬空波导界面（page）
 @app.route('/surfaceevaporation')
 @login_required
 def surface_page():
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-    }
-    print("normal")
-    return render_template('surfaceevaporation.html',MeteoData=[0,0,0], Refraction=[0,0,0], SD=[0,0,0],
-                           ED=[0,0,0], user=user)
-
-
-@app.route('/surfaceevaporation_updata')
-@login_required
-def surface_page_updata():
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-    }
-    MeteoData={
-        "tem":random.random(),
+    user = get_current_user()
+    MeteoData = {
+        "tem": random.random(),
         "hum": random.random(),
         "wind": random.random(),
         "press": random.random()
     }
     print("update")
-    return render_template('surfaceevaporation1.html',MeteoData=MeteoData, Refraction=[[1,random.random()],
-                                                                                       [3,random.random()],[5,random.random()],[7,random.random()],[9,random.random()]],
-                           SD=[1,2,3],
-                           ED=[2,4,8],
+    return render_template('surfaceevaporation.html', MeteoData=MeteoData, Refraction=[[1, random.random()],
+                                                                                        [3, random.random()],
+                                                                                        [5, random.random()],
+                                                                                        [7, random.random()],
+                                                                                        [9, random.random()]],
+                           SD=[1, 2, 3],
+                           ED=[2, 4, 8],
                            user=user,
-                           word="update"+str(time.asctime( time.localtime(time.time()))))
+                           word="update" + str(time.asctime(time.localtime(time.time()))))
 
 
-@app.route('/electromagenetic')
-@login_required
-def electromagenetic_page():
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-    }
-    return render_template('electromagenetic.html', user=user)
-
-
-@app.route('/radar-valid-distance')
-@login_required
-def radar_page():
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-    }
-    return render_template('radar-valid-distance.html', user=user)
-
-
-
-
+# 个人资料界面（page）
 @app.route('/profile', methods=['POST', 'GET'])
 @login_required
 def profile_page():
@@ -813,14 +521,7 @@ def profile_page():
         temp_level = "管理员"
     elif current_user.authorityLevel == 2:
         temp_level = "超级管理员"
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-        "emailAddress": current_user.emailAddress,
-        "phoneNumber": current_user.phoneNumber,
-        "department": current_user.department,
-        "level": temp_level
-    }
+    user = get_current_user()
 
     profile_form = EditProfileForm()
     password_form = EditPasswordForm()
@@ -877,6 +578,7 @@ def profile_page():
                            avatar_form=avatar_form)
 
 
+# 他人用户界面(page)
 @app.route('/profile/<userID>')
 @login_required
 def other_profile_page(userID):
@@ -898,19 +600,41 @@ def other_profile_page(userID):
         "level": temp_level,
         "account": temp_user.account
     }
-    user = {
-        "name": current_user.name,
-        "account": current_user.account,
-    }
+    user = get_current_user()
     if userID != current_user.account:
         return render_template('profile-other.html', other_user=other_user, user=user)
     else:
         return redirect(url_for('profile_page'))
 
 
+# 用户管理页面(page)
+@app.route('/user-management', methods=['POST', 'GET'])
+@login_required
+def user_management_page():
+    all_user = User.query.order_by(User.account.desc()).all()
+    users = []
+    for i in all_user:
+        j = {
+            'account': i.account,
+            'name': i.name,
+            'phoneNumber': i.phoneNumber,
+            'emailAddress': i.emailAddress,
+            'department': i.department,
+            'password': i.password,
+            'permission': i.permission,
+            'authorityLevel': i.authorityLevel,
+            'status': i.status,
+            'date': i.date.strftime("%Y-%m-%d %H:%M:%S")
+        }
+        users.append(j)
+    user = get_current_user()
+    return render_template('user-management.html', Users=users, user=user)
+
+
+# 信息报表界面(page)
 @app.route('/report')
 @login_required
-def invoice_page():
+def report_page():
     report = Info.query.filter(
         or_(Info.receiverID == current_user.account, Info.senderID == current_user.account)).order_by(Info.keyID.desc())
     infos = []
@@ -933,20 +657,214 @@ def invoice_page():
         if i.result == 0:
             count += 1
         infos.append(j)
-    User_infor = {
-        "account": current_user.account,
-        "name": current_user.name,
-        "department": current_user.department,
-        "authorityLevel": current_user.authorityLevel
-    }
+    user = get_current_user()
+    print(infos)
+    print(count)
+    print(user)
+    return render_template('report.html', Infor=infos, count=count, user=user)
+
+
+# 登录逻辑(func&page)
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    form = LoginForm()
+    message = None
+
+    if form.validate_on_submit():
+        user_name = form.username.data
+        print(user_name)
+        pass_word = form.password.data
+        print(pass_word)
+        temp_user = User.query.filter_by(account=user_name).first()
+        if temp_user is not None:
+            if temp_user.verify_password(pass_word) is True:
+                temp_user.status = 1
+                login_user(temp_user)
+                print(current_user)
+                return redirect(url_for('index'))
+            else:
+                message = "密码错误"
+        else:
+            message = "用户不存在"
+    else:
+        message = "请登录"
+    return render_template("login.html", message=message, form=form)
+
+
+# 以下方法可能为POST或直接重定向页面
+# 登出逻辑(func)
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    if session.get('was_once_logged_in'):
+        del session['was_once_logged_in']
+    return redirect(url_for('login'))
+
+
+# 删除用户(func)
+@app.route('/user/delete/<userID>')
+@login_required
+def delete_user(userID):
+    temp_user = User.query.filter_by(account=userID).first()
+    if temp_user is None:
+        flash("用户未找到，请刷新重试")
+        return redirect(url_for('user_management_page'))
+    else:
+        if temp_user.authorityLevel >= current_user.authorityLevel:
+            flash("您的权限不够")
+            return redirect(url_for('user_management_page'))
+        else:
+            db.session.delete(temp_user)
+            db.session.commit()
+    flash("删除成功")
+    return redirect(url_for('user_management_page'))
+
+
+# 编辑用户(func)
+@app.route('/user/edit', methods=['POST'])
+@login_required
+def edit_user():
+    account = request.form['account']
+    name = request.form['name']
+    password = request.form['password']
+    confirm = request.form['confirm']
+    level = request.form['level']
+    temp_user = User.query.filter_by(account=account).first()
+    if temp_user is None:
+        flash("用户未找到，请刷新重试")
+        return redirect(url_for('user_management_page'))
+    else:
+        if temp_user.authorityLevel >= current_user.authorityLevel:
+            flash("您的权限不够")
+            return redirect(url_for('user_management_page'))
+        else:
+            temp_user.name = name
+            temp_user.password = password
+            temp_user.authorityLevel = level
+            db.session.commit()
+    flash("修改成功")
+    return redirect(url_for('user_management_page'))
+
+
+# 添加用户(func)
+@app.route('/user/add', methods=['POST', 'GET'])
+@login_required
+def add_user():
+    all_user = User.query.order_by(User.account.desc()).all()
+    Infor = []
+    for i in all_user:
+        j = {
+            'account': i.account,
+            'name': i.name,
+            'phoneNumber': i.phoneNumber,
+            'emailAddress': i.emailAddress,
+            'department': i.department,
+            'password': i.password,
+            'permission': i.permission,
+            'authorityLevel': i.authorityLevel,
+            'status': i.status,
+            'date': i.date.strftime("%Y-%m-%d %H:%M:%S")
+        }
+    Infor.append(j)
+    account = request.form['account']
+    name = request.form['name']
+    password = request.form['password']
+    confirm = request.form['confirm']
+    level = request.form['level']
+    date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    remark = request.form['remark']
+    print(account)
+    print(name)
+    print(password)
+    print(date)
+    print(remark)
+    print(level)
+    temp_user = User.query.filter_by(account=account).first()
+    if temp_user is not None:
+        flash("\"" + account + "\"：用户名已存在")
+        return redirect(url_for('user_management_page'))
+    else:
+        if name == '':
+            flash("用户名不能为空！")
+            return redirect(url_for('user_management_page'))
+        elif password == "" or len(password) < 6:
+            flash("密码不能为空且不能小于6位！")
+            return redirect(url_for('user_management_page'))
+        elif confirm != password:
+            flash("两次输入的密码不一致！")
+            return redirect(url_for('user_management_page'))
+        elif level == "":
+            level = 1
+        department = "暂定"
+        if current_user.authorityLevel == 2:
+            department = "暂定"
+        elif current_user.authorityLevel == 1:
+            department = current_user.department
+        print(department)
+        db.session.add(User(account, name, "", "", department, password, 0, level,
+                            0, date, remark))
+        db.session.commit()
+        # def __init__(self, account, name, phone_number, email_address, department, password, permission,
+        #              authority_level,
+        #              status, date, remark):
+        flash("新增用户成功！")
+        return redirect(url_for('user_management_page'))
+
+
+# 发送信息报表（func)
+@app.route('/send_report', methods=['POST'])
+@login_required
+def send_report():
     user = {
         "name": current_user.name,
         "account": current_user.account,
     }
-    print(infos)
-    return render_template('report.html', Infor=infos, User=User_infor, count=count, user=user)
+    sender_account = current_user.account
+    receiver_account = request.form['receive']
+    content = request.form['messages']
+    subject = request.form['title']
+    url_info = request.form['url_info']
+    print(sender_account)
+    print(receiver_account)
+    print(content)
+    print(subject)
+
+    temp_user = User.query.filter_by(account=receiver_account).first()
+
+    report_info = {
+        "url_info": url_info,
+        "valid": "error",
+        "message": "接收人用户账号错误，请重新输入！",
+    }
+    if temp_user is None:
+        return render_template('valid.html', Report_Info=report_info, user=user)
+    else:
+        print("receiver level:", temp_user.authorityLevel)
+        if temp_user.authorityLevel < current_user.authorityLevel:
+            report_info["message"] = "该用户无权限审批！"
+            return render_template('valid.html', Report_Info=report_info, user=user)
+        if temp_user.department != current_user.department and temp_user.authorityLevel != "2":
+            report_info["message"] = "不隶属于该部门，该用户无权审批你的申请。"
+            return render_template('valid.html', Report_Info=report_info, user=user)
+        elif subject == "":
+            report_info["message"] = "主题不能为空！"
+            return render_template('valid.html', Report_Info=report_info, user=user)
+        elif content == "":
+            report_info["message"] = "内容不能为空！"
+            return render_template('valid.html', Report_Info=report_info, user=user)
+        num = Info.query.count()
+        print("Infor:", num)
+        Key_id = '#' + str(num)
+        date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        db.session.add(Info(Key_id, sender_account, receiver_account, date, 0, content, subject, ""))
+        db.session.commit()
+        report_info["valid"] = ""
+        report_info["message"] = "信息申报提交成功"
+        return render_template('valid.html', Report_Info=report_info, user=user)
 
 
+# 通过信息报表(func)
 @app.route('/report/pass/<reportID>')
 @login_required
 def pass_report(reportID):
@@ -958,9 +876,10 @@ def pass_report(reportID):
     current_report.result = 1
     db.session.commit()
     # flash("操作成功")
-    return redirect(url_for('invoice_page'))
+    return redirect(url_for('report_page'))
 
 
+# 拒绝信息报表(func)
 @app.route('/report/reject', methods=['POST'])
 @login_required
 def reject_report():
@@ -974,9 +893,10 @@ def reject_report():
     current_report.remark = rejectReason
     db.session.commit()
     # flash("操作成功")
-    return redirect(url_for('invoice_page'))
+    return redirect(url_for('report_page'))
 
 
+# 删除信息报表(func)
 @app.route('/report/delete/<reportID>')
 @login_required
 def delete_report(reportID):
@@ -987,9 +907,7 @@ def delete_report(reportID):
     db.session.delete(current_report)
     db.session.commit()
     # flash("操作成功")
-    return redirect(url_for('invoice_page'))
-
-
+    return redirect(url_for('report_page'))
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -1156,6 +1074,34 @@ def index_init():
     emit('historical_index_data', this_data)
 
 
+# 客户端请求状态栏信息
+# socket事件：用户切换页面，请求状态栏信息
+# socket响应：获取当前用户信息，发送状态栏信息
+@socket_io.on('state')
+def send_state_information():
+    report = Info.query.filter(
+        or_(Info.receiverID == current_user.account, Info.senderID == current_user.account)).order_by(Info.sendDate.desc())
+    infos = []
+    infos_count = 4
+    i = 1
+    for r in report:
+        temp = {
+            'keyID': r.keyID,
+            'senderID': r.senderID,
+            'receiverID': r.receiverID,
+            'sendDate': r.sendDate.strftime("%Y/%m/%d %H:%M:%S"),
+            'result': r.result,
+            'content': r.content,
+            'subject': r.subject,
+            'remark': r.remark
+        }
+        infos.append(temp)
+        if i == infos_count:
+            break
+        i += 1
+    emit('send_state', infos)
+
+
 # socket事件：客户端请求新"主页"数据
 # socket响应：发送最新的一条数据至客户端，无论数据库是否更新
 @socket_io.on('request_index_data')
@@ -1172,24 +1118,6 @@ def send_new_index_data():
     }
     print("page table has an update,will send new data to client")
     emit('new_index_data', new_data)
-
-
-# socket事件：客户端切换页面至"蒸发波导诊断(evaporation)"
-# socket响应：发送最新的一则主表数据至客户端，并同时发送蒸发波导的历史数据至客户端
-# 参数：历史数据的多少 historical_evp_data_count
-# 对应DB表格：EW
-@socket_io.on('evaporation')
-def evaporation_init():
-    historical_evp_data_count = 50
-
-
-# socket事件：客户端请求新"蒸发波导诊断"数据
-# socket响应：发送最新的一条蒸发波导高度数据至客户端，同时附带有最新的Page表数据，至于是否更新视图，交给客户端判断
-# 对应DB表格：EW（仅发送实际值）
-@socket_io.on('request_evp_data')
-def send_new_evp_data():
-    # 填充
-    a = 20
 
 
 # socket事件：客户端切换页面至"表面波导与悬空波导诊断(surface-evaporation)"
@@ -1210,36 +1138,6 @@ def send_new_sfe_data():
     a = 20
 
 
-# socket事件：客户端切换页面至"未来波导高度预测(future-height-prediction)"
-# socket响应：发送最新的一则主表数据至客户端，并同时发送"蒸发波导"的预测信息
-# 参数：历史数据量 historical_fhp_data_count
-# 对应DB表格：EW（发送实际值与预测值）
-@socket_io.on('future_height_prediction')
-def fhp_init():
-    historical_fhp_data_count = 50
-
-
-# socket事件：客户端请求新"蒸发波导"预测数据
-# socket响应：发送最新的一条蒸发波导预测数据与实际数据至客户端，同时附带有最新的Page表数据，至于是否更新视图，交给客户端判断
-# 对应DB表格:EW（发送实际值与预测值）
-@socket_io.on('request_fhp_data')
-def send_new_fhp_data():
-    # 填充
-    a = 20
-
-
-# socket事件：客户端切换页面至"电磁波传播损耗计算(electromagnetic)"
-# socket响应：发送存储在js文件内的一组数据至客户端，客户端负责更新表格
-# 此处有一个问题：事件模型最好使用轮询的方式，但是socket无法维护具体某一个客户端，无法知道某个客户端拥有的是旧数据还是新数据
-# 设想的解决方案：客户端每次轮询时会顺便将自己所拥有信息的时间戳发送过来，服务端判断客户端时间戳就知道是否应该回复此条信息
-# 使用此方法可以防止每次都要传输完整的一组数据，节省流量
-# 对应js文件：elec.json
-@socket_io.on('request_ele_data')
-def send_new_ele_data(client_time):
-    # 填充
-    print(client_time)
-
-
 # socket异常处理
 @socket_io.on_error_default
 def default_error_handler(e):
@@ -1254,4 +1152,3 @@ if __name__ == '__main__':
     api.rootPath(app)
     # 服务器地址可能更变
     socket_io.run(app, debug=True, host='10.201.61.145', port=8085)
-

@@ -26,12 +26,15 @@
 			<script src="assets/js/html5shiv.min.js"></script>
 			<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
+        <script src="static/js/jquery.min.js"></script>
+        <script src="static/js/jquery.nicescroll.min.js"></script>
+        <script src="static/js/echarts.js"></script>
+        <!--socketIO -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+        <!--socket io get information -->
+        <script src="static/js/notification.js"></script>
+        <script src="static/js/socketio.js"></script>
 
-<script src="static/js/jquery.min.js"></script>
-<script src="static/js/jquery.nicescroll.min.js"></script>
-<script src="static/js/echarts.js"></script>
-<script src="static/js/Information.js"></script>
-<script src="static/js/notification.js"></script>
 
 <script>
   $(document).ready(function() {
@@ -48,7 +51,6 @@
 </script>
     </head>
     <body>
-	
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
 		
@@ -95,9 +97,6 @@
 							</div>
 							<div class="noti-content">
 								<ul class="notification-list">
-									<script>
-										readJson()
-									</script>
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
@@ -119,47 +118,12 @@
 							<i class="fe fe-download"></i>
 						</a>
 					</li>
-					<!-- <li >
-						<a href="#" title="数据导出">
-							<i class="fe fe-download" onclick="dianwo()"></i>
-						</a>
-						<div class="dropdown-menu" style="padding: 5px;">
-							
-							<script type="text/javascript">
-								document.getElementById('zhezhao').style.display="none";
-								function mez(){
-									document.getElementById('zhezhao').style.display="";
-								}
-								function hidder(){
-									document.getElementById('zhezhao').style.display="none";
-								}
-							</script>
-			
-						</div>
-					</li> -->
-					<!-- /download -->
-					<!-- upload -->
 					<li >
 						<a data-toggle="modal" href="#text_upload" title="数据上传">
 							<i class="fe fe-upload"></i>
 						</a>
 					</li>
-					<!-- <li class="nav-item dropdown noti-dropdown">
-						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown" title="数据导入">
-							<i class="fe fe-upload"></i>
-						</a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-							<a class="dropdown-item"><input type="file" ></a>
-								<button type="button" class="btn btn-primary" onclick="dianwo1()" style="color:#F8F9FA;float: right;">确认上传</button>
-						</div>
-							
-					</li> -->
-					<!-- /upload -->
-					<!-- User Menu -->
+
 					<li class="nav-item dropdown has-arrow">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
@@ -191,19 +155,22 @@
 					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
 						<ul>
 							<li style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;">
-								<a href="index"><font color="#293c55">首页</font></a>
+								<a href="index"><span><font color="#293c55">首页</font></span></a>
 							</li>
-							<li class="submenu">
-								<a href="surfaceevaporation"><font color="#CCCCCC"> 表面波导与悬空波导诊断</font> </a>
+							<li>
+								<a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a>
 							</li>
-							<li class="submenu"> 
-								<a href="profile"><font color="#CCCCCC">个人资料</font></span> </a>
+							<li>
+								<a href="profile"> <font color="#CCCCCC">个人资料</font> </a>
 							</li>
-							<li class="submenu">
-								<a href="user-management"><font color="#CCCCCC"> 用户权限管理 </font></a>
+							<li>
+								<a href="profile"><font color="#CCCCCC">修改密码</font> </a>
 							</li>
-							<li class="submenu">
-								<a href="forgot-password"><font color="#CCCCCC"> 修改密码 </font></a>
+                            <li>
+								<a href="user-management"><font color="#CCCCCC">用户管理</font> </a>
+							</li>
+                            <li>
+								<a href="report"><font color="#CCCCCC">个人信息报表</font> </a>
 							</li>
 						</ul>
 					</div>
@@ -215,122 +182,6 @@
             <div class="page-wrapper">
 			
                 <div class="content container-fluid">
-					
-		<!-- <div class="zhezhao" id='zhezhao'  >
-			<div class="tankuang" style="padding: 10px;">
-				<div id="header">
-						<div>			
-							<form action="#">
-								<div class="form-group row">
-
-								</div>
-								<div class="form-group row">
-											<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-										max-width: 24.666667%;padding-right: 5px;padding-left: 25px;font-weight: bolder;">近期数据打包</label>
-											<div class="col-md-10" style="flex: 0 0 75.333333%;
-										max-width:52.333333%;">
-											<select class="form-control" style="width: 80%;float: right;">
-												<option>-- Select --</option>
-												<option>波导分析计算</option>
-												<option>电磁损耗计算</option>
-												<option>雷达有效距离</option>
-												</select>
-											</div>
-											<button class="btn btn-primary"  >
-												<a class="fe fe-download" style="font-size: 15px;color: #fff;float: right;" href="/images/1.PNG" download="1.PNG">&nbsp;&nbsp;下载</a>
-											</button>	
-										</div>
-								<div class="form-group row">
-									<h5 style="padding-left:4%;color:#569CD6 ;font-weight: bolder;">精确下载选择👇</h5>
-										</div>	
-								<div class="form-group row">
-									<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-								max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-经度</label>
-									<div class="col-md-10"  style="flex: 0 0 75.333333%;
-								max-width: 75.333333%;">
-										<input type="text" class="form-control" placeholder="122.27°E" style="width: 80%;float: right;">
-									</div>
-								</div>
-								<div class="form-group row">
-									<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-								max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">地理位置-纬度</label>
-									<div class="col-md-10"  style="flex: 0 0 75.333333%;
-								max-width: 75.333333%;">
-										<input type="text" class="form-control" placeholder="31.65°N" style="width: 80%;float: right;">
-									</div>
-								</div>
-							<div class="form-group row">
-								<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-							max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">起始时间</label>
-							
-								<div class="col-md-10" style="flex: 0  75.333333%;
-							max-width: 75.333333%;">
-								<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-form-label col-md-2" style="flex: 0 0 24.666667%;
-							max-width: 24.666667%;padding-right: 5px;padding-left: 25px;">结束时间</label>
-								<div class="col-md-10" style="flex: 0 0 75.333333%;
-							max-width: 75.333333%;">
-								<input type="datetime-local" style="width: 80%;float: right;" value="2020-11-4T13:59:59"/>
-								</div>
-							</div>
-							<div class="input-group-append" style="float: right;">
-								<a class="btn btn-primary"   href="/images/1.png" download="111" >确认选择并下载</a>
-							</div>
-						
-						</form>
-						
-						
-					</div>
-					
-					<div id="header-right" onclick="hidder()">x</div>
-				</div>
-			</div>
-		</div>
-		<script type="text/javascript">
-			document.getElementById('zhezhao').style.display="none";
-			function dianwo(){
-				document.getElementById('zhezhao').style.display="";
-			}
-			function hidder(){
-				document.getElementById('zhezhao').style.display="none";
-			}
-		</script>
-
-<div class="zhezhao1" id='zhezhao1'  >
-	<div class="tankuang1" style="padding: 10px;">
-		<div id="header">
-				<div>			
-					<form action="#">
-						
-						<center><h4 class="modal-title" style="padding-top: 5%;">确认上传</h4>
-							<p class="mb-4">确定上传所有选中的文件？</p></center>
-					<div class="input-group-append" style="float: left;padding-left:10%;padding-bottom: 2%; color: #fff;">
-						<a class="btn btn-primary"  onclick="hidder1()"  >确&nbsp;&nbsp;认</a>
-					</div>
-					<div class="input-group-append" style="float: right;padding-right:10%;padding-bottom: 2%; color: #fff;">
-						<a class="btn btn-danger"  onclick="hidder1()"  >取&nbsp;&nbsp;消</a>
-					</div>
-				
-				</form>
-				
-				
-			</div>
-		</div>
-	</div>
-</div>
-
-<script type="text/javascript">
-	document.getElementById('zhezhao1').style.display="none";
-	function dianwo1(){
-		document.getElementById('zhezhao1').style.display="";
-	}
-	function hidder1(){
-		document.getElementById('zhezhao1').style.display="none";
-	}
-</script> -->
 
 					<!-- Page Header -->
 					<div class="page-header">
@@ -529,94 +380,10 @@
 			<!-- /Page Wrapper -->
 		
 		</div>
-		
-		<!-- <div class="modal fade" id="text_inputs" aria-hidden="true" role="dialog">
-			<div class="modal-dialog" style="max-width: 40%;margin-left: 30%;margin-top: 20%;" role="document" >
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">信息上报</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<form>
-							<div class="form-group row">
-								<label class="col-form-label col-md-2">主题</label>
-								<div class="col-md-10">
-									<input type="text" class="form-control">
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-form-label col-md-2">收信人/审核人</label>
-								<div class="col-md-10">
-									<input type="text" class="form-control">
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-form-label col-md-2">附件</label>
-								<div class="col-md-10">
-									<input class="form-control" type="file">
-								</div>
-							</div>
-									
-							<div class="form-group row">
-								<label class="col-form-label col-md-2">信息栏</label>
-								<div class="col-md-10">
-										<textarea rows="5" cols="5" class="form-control" placeholder="请输入..."></textarea>
-								</div>
-							</div>
-							<button type="submit" class="btn btn-primary btn-block">确定</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div> -->
+
 		<script src="static/js/dialog.js"></script>
 		<script src="static/js/download.js"></script>
 		<script src="static/js/upload.js"></script>
-		<!-- <div class="modal fade" id="text_inputs" aria-hidden="true" role="dialog"> 
-			<div role="document" class="modal-dialog" style="max-width: 40%;margin-left: 30%;margin-top: 20%;">				
-				<div class="card">
-					<div class="modal-header">
-						<h5 class="modal-title">信息上报</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="card-body">
-						<form action="#">
-							<div class="form-group row">
-								<label class="col-form-label col-md-2">主题</label>
-								<div class="col-md-10">
-									<input type="text" class="form-control">
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-form-label col-md-2">收信人/审核人</label>
-								<div class="col-md-10">
-									<input type="text" class="form-control">
-								</div>
-							</div>
-							<div class="form-group row">
-								<label class="col-form-label col-md-2">附件</label>
-								<div class="col-md-10">
-									<input class="form-control" type="file">
-								</div>
-							</div>
-									
-						<div class="form-group row">
-							<label class="col-form-label col-md-2">信息栏</label>
-								<div class="col-md-10">
-										<textarea rows="5" cols="5" class="form-control" placeholder="请输入..."></textarea>
-								</div>
-							</div>
-							<button type="submit" class="btn btn-primary btn-block">确定</button>
-						</form>
-					</div>
-				</div>
-			</div>		
-		</div>	 -->
 
 		<!-- /Main Wrapper -->
 		
