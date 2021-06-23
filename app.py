@@ -488,6 +488,7 @@ def index():
 
 
 # 表面波导与悬空波导界面（page）
+# 需重写 现在还是随机数
 @app.route('/surfaceevaporation')
 @login_required
 def surface_page():
@@ -504,7 +505,7 @@ def surface_page():
                                                                                         [5, random.random()],
                                                                                         [7, random.random()],
                                                                                         [9, random.random()]],
-                           SD=[1, 2, 3],
+                           SD=[1, 3, 3],
                            ED=[2, 4, 8],
                            user=user,
                            word="update" + str(time.asctime(time.localtime(time.time()))))
@@ -1050,30 +1051,6 @@ def user_status_update():
         db.session.commit()
 
 
-# socket事件：新的客户端切换页面至主页
-# socket响应：建立连接并发送主表历史数据至客户端
-# 参数：历史数据的多少 historical_index_data_count
-@socket_io.on('index')
-def index_init():
-    historical_index_data_count = 80
-    global upper_page_data
-    # 按照时间先后排序，选择最近的 count 个数据
-    temp_data = Page.query.order_by(Page.time.desc()).limit(historical_index_data_count).all()
-    this_data = []
-    i = 1
-    while i <= historical_index_data_count:  # 按照时间递增顺序传递数据（倒序赋值）
-        this_data.append({
-            'time': temp_data[historical_index_data_count - i].time.strftime("%Y/%m/%d %H:%M:%S"),
-            'tem': temp_data[historical_index_data_count - i].temperature,
-            'hum': temp_data[historical_index_data_count - i].humidity,
-            'wind': temp_data[historical_index_data_count - i].windSpeed,
-            'press': temp_data[historical_index_data_count - i].pressure,
-            'direction': random.randint(100, 300)
-        })
-        i = i + 1
-    emit('historical_index_data', this_data)
-
-
 # 客户端请求状态栏信息
 # socket事件：用户切换页面，请求状态栏信息
 # socket响应：获取当前用户信息，发送状态栏信息
@@ -1100,6 +1077,30 @@ def send_state_information():
             break
         i += 1
     emit('send_state', infos)
+
+
+# socket事件：新的客户端切换页面至主页
+# socket响应：建立连接并发送主表历史数据至客户端
+# 参数：历史数据的多少 historical_index_data_count
+@socket_io.on('index')
+def index_init():
+    historical_index_data_count = 80
+    global upper_page_data
+    # 按照时间先后排序，选择最近的 count 个数据
+    temp_data = Page.query.order_by(Page.time.desc()).limit(historical_index_data_count).all()
+    this_data = []
+    i = 1
+    while i <= historical_index_data_count:  # 按照时间递增顺序传递数据（倒序赋值）
+        this_data.append({
+            'time': temp_data[historical_index_data_count - i].time.strftime("%Y/%m/%d %H:%M:%S"),
+            'tem': temp_data[historical_index_data_count - i].temperature,
+            'hum': temp_data[historical_index_data_count - i].humidity,
+            'wind': temp_data[historical_index_data_count - i].windSpeed,
+            'press': temp_data[historical_index_data_count - i].pressure,
+            'direction': random.randint(100, 300)
+        })
+        i = i + 1
+    emit('historical_index_data', this_data)
 
 
 # socket事件：客户端请求新"主页"数据
@@ -1151,4 +1152,4 @@ def default_error_handler(e):
 if __name__ == '__main__':
     api.rootPath(app)
     # 服务器地址可能更变
-    socket_io.run(app, debug=True, host='10.201.61.145', port=8085)
+    socket_io.run(app, debug=True, host='0.0.0.0', port=8085)

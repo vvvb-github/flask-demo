@@ -22,11 +22,6 @@ let direction = []
 let max_save_count = 300
 let current_index = 0;
 
-let socket = null
-let url = "http://" + document.domain + ":" + location.port
-
-// socket io 初始化相关代码
-socket = io.connect(url)
 socket.emit('index')
 
 // socket io 监听事件
