@@ -51,6 +51,7 @@ app.config['SUB_LEVEL_FOLDER'] = '/upload/sub'
 # 最低级别文件夹
 app.config['NORMAL_LEVEL_FOLDER'] = '/upload/normal'
 
+
 # --------------------------------------------------- Entities ---------------------------------------------------------
 
 
@@ -199,165 +200,58 @@ class Data(db.Model):
                (self.ID, self.declareTime, self.examTime, self.declareAccount, self.examAccount, self.declareContent)
 
 
-class DW(db.Model):
-    __tablename__ = 'DW'  # 悬空波导
+class BasicMeteo(db.Model):
+    __tablename__ = 'basic_meteo'  # 基本探空信息
 
-    time = db.Column(db.DateTime, primary_key=True)
-    height = db.Column(db.Float)
-    longitude = db.Column(db.Float)
-    latitude = db.Column(db.Float)
+    ID = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+    Temperature = db.Column(db.FLOAT)
+    Press = db.Column(db.FLOAT)
+    Wind = db.Column(db.FLOAT)
+    Humidity = db.Column(db.FLOAT)
+    Direction = db.Column(db.FLOAT)
+    SST = db.Column(db.FLOAT)
 
-    def __init__(self, time, height, longitude, latitude):
-        self.time = time
-        self.height = height
-        self.longitude = longitude
-        self.latitude = latitude
-
-    def __repr__(self):
-        return '<DW %r %r %r %r>' % (self.time, self.height, self.longitude, self.latitude)
-
-
-class SW(db.Model):
-    __tablename__ = 'SW'  # 表面波导
-
-    time = db.Column(db.DateTime, primary_key=True)
-    height = db.Column(db.Float)
-    longitude = db.Column(db.Float)
-    latitude = db.Column(db.Float)
-
-    def __init__(self, time, height, longitude, latitude):
-        self.time = time
-        self.height = height
-        self.longitude = longitude
-        self.latitude = latitude
+    def __init__(self, id, basic_time, temperature, press, wind, humidity, direction, sst):
+        self.ID = id
+        self.time = basic_time
+        self.Temperature = temperature
+        self.Press = press
+        self.Wind = wind
+        self.Humidity = humidity
+        self.Direction = direction
+        self.SST = sst
 
     def __repr__(self):
-        return '<SW %r %r %r %r>' % (self.time, self.height, self.longitude, self.latitude)
+        return '<BasicMeteo %r %r %r %r %r %r %r %r>' % \
+               (self.ID, self.time, self.Temperature, self.Press, self.Wind, self.Humidity,
+                self.Direction, self.SST)
 
 
-class EW(db.Model):
-    __tablename__ = 'EW'  # 蒸发波导
+class SeInfor(db.Model):
+    __tablename__ = 'se_infor'  # 表面波导与悬空波导信息
 
-    time = db.Column(db.DateTime, primary_key=True)
-    height = db.Column(db.Float)
-    longitude = db.Column(db.Float)
-    latitude = db.Column(db.Float)
-    predictHeight = db.Column(db.Float)
+    Id = db.Column(db.Integer, primary_key=True)
+    time = db.Column(db.DateTime)
+    surf_height = db.Column(db.FLOAT)
+    surf_strength = db.Column(db.FLOAT)
+    elev_bottom = db.Column(db.FLOAT)
+    elev_top = db.Column(db.FLOAT)
+    elev_strength = db.Column(db.FLOAT)
 
-    def __init__(self, time, height, longitude, latitude, predict_height):
-        self.time = time
-        self.height = height
-        self.longitude = longitude
-        self.latitude = latitude
-        self.predictHeight = predict_height
-
-    def __repr__(self):
-        return '<EW %r %r %r %r %r>' % (self.time, self.height, self.longitude, self.latitude, self.predictHeight)
-
-
-class AWS(db.Model):
-    __tablename__ = 'AWS'  # 自动气象站数据
-
-    time = db.Column(db.DateTime, primary_key=True)
-    longitude = db.Column(db.Float)
-    latitude = db.Column(db.Float)
-    temperature = db.Column(db.Float)
-    humidity = db.Column(db.Float)
-    pressure = db.Column(db.Float)
-    windSpeed = db.Column(db.Float)
-
-    def __init__(self, time, longitude, latitude, temperature, humidity, pressure, wind_speed):
-        self.time = time
-        self.longitude = longitude
-        self.latitude = latitude
-        self.temperature = temperature
-        self.humidity = humidity
-        self.pressure = pressure
-        self.windSpeed = wind_speed
+    def __init__(self, Id, meteo_time, surf_height, surf_strength, elev_bottom, elev_top, elev_strength):
+        self.Id = Id
+        self.time = meteo_time
+        self.surf_height = surf_height
+        self.surf_strength = surf_strength
+        self.elev_top = elev_top
+        self.elev_bottom = elev_bottom
+        self.elev_strength = elev_strength
 
     def __repr__(self):
-        return '<AWS %r %r %r %r %r %r %r>' % \
-               (
-                   self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure,
-                   self.windSpeed)
-
-
-class SB(db.Model):
-    __tablename__ = 'SB'  # 探空气球
-
-    time = db.Column(db.DateTime, primary_key=True)
-    longitude = db.Column(db.Float)
-    latitude = db.Column(db.Float)
-    temperature = db.Column(db.Float)
-    humidity = db.Column(db.Float)
-    pressure = db.Column(db.Float)
-    windSpeed = db.Column(db.Float)
-
-    def __init__(self, time, longitude, latitude, temperature, humidity, pressure, wind_speed):
-        self.time = time
-        self.longitude = longitude
-        self.latitude = latitude
-        self.temperature = temperature
-        self.humidity = humidity
-        self.pressure = pressure
-        self.windSpeed = wind_speed
-
-    def __repr__(self):
-        return '<SB %r %r %r %r %r %r %r>' % \
-               (
-                   self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure,
-                   self.windSpeed)
-
-
-class MR(db.Model):
-    __tablename__ = 'MR'  # 微波辐射器
-
-    time = db.Column(db.DateTime, primary_key=True)
-    longitude = db.Column(db.Float)
-    latitude = db.Column(db.Float)
-    temperature = db.Column(db.Float)
-    humidity = db.Column(db.Float)
-    pressure = db.Column(db.Float)
-
-    def __init__(self, time, longitude, latitude, temperature, humidity, pressure):
-        self.time = time
-        self.longitude = longitude
-        self.latitude = latitude
-        self.temperature = temperature
-        self.humidity = humidity
-        self.pressure = pressure
-
-    def __repr__(self):
-        return '<MR %r %r %r %r %r %r>' % \
-               (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure)
-
-
-class Page(db.Model):
-    __tablename__ = 'Page'  # 探空气球
-
-    time = db.Column(db.DateTime, primary_key=True)
-    longitude = db.Column(db.Float)
-    latitude = db.Column(db.Float)
-    temperature = db.Column(db.Float)
-    humidity = db.Column(db.Float)
-    pressure = db.Column(db.Float)
-    windSpeed = db.Column(db.Float)
-
-    def __init__(self, time, longitude, latitude, temperature, humidity, pressure, wind_speed):
-        self.time = time
-        self.longitude = longitude
-        self.latitude = latitude
-        self.temperature = temperature
-        self.humidity = humidity
-        self.pressure = pressure
-        self.windSpeed = wind_speed
-
-    def __repr__(self):
-        return '<Page %r %r %r %r %r %r %r>' % \
-               (self.time, self.longitude, self.latitude, self.temperature, self.humidity, self.pressure,
-                self.windSpeed)
-
-
+        return '<SeInfor %r %r %r %r %r %r %r>' % \
+               (self.Id, self.time, self.surf_height, self.surf_strength, self.elev_bottom, self.elev_top,
+                self.surf_strength)
 # ----------------------------------------------------------------------------------------------------------------------
 
 
@@ -501,10 +395,10 @@ def surface_page():
     }
     print("update")
     return render_template('surfaceevaporation.html', MeteoData=MeteoData, Refraction=[[1, random.random()],
-                                                                                        [3, random.random()],
-                                                                                        [5, random.random()],
-                                                                                        [7, random.random()],
-                                                                                        [9, random.random()]],
+                                                                                       [3, random.random()],
+                                                                                       [5, random.random()],
+                                                                                       [7, random.random()],
+                                                                                       [9, random.random()]],
                            SD=[1, 3, 3],
                            ED=[2, 4, 8],
                            user=user,
@@ -1057,7 +951,8 @@ def user_status_update():
 @socket_io.on('state')
 def send_state_information():
     report = Info.query.filter(
-        or_(Info.receiverID == current_user.account, Info.senderID == current_user.account)).order_by(Info.sendDate.desc())
+        or_(Info.receiverID == current_user.account, Info.senderID == current_user.account)).order_by(
+        Info.sendDate.desc())
     infos = []
     infos_count = 4
     i = 1
