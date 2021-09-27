@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Mentoring - Transactions List Page</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="static/assets/css/bootstrap-4.2.1.css">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="static/assets/css/feathericon.min.css">
+		
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" href="static/assets/plugins/datatables/datatables.min.css">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="static/assets/css/style.css">
+		
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+        <script src="static/js/socket.io.dev.js"></script>
+        <!--socket io get information -->
+        <script src="static/js/notification.js"></script>
+        <script src="static/js/socketio.js"></script>
+        <script>
+            let Infor = {{ Infor|tojson }}
+			var count = {{count}}
+            var User = {{ user|tojson }}
+        </script>
+		<script src="static/js/jquery.min.js"></script>
+		<script src="static/js/jquery.nicescroll.min.js"></script>
+<!--		<script src="static/js/User.js"></script>-->
+		<script src="static/js/report(html)/table.js"></script>
+		<script src="static/js/notification.js"></script>
+		<script>
+			$(document).ready(function() {
+			
+			  var nice = $("html").niceScroll();  // The document page (body)
+			  
+			  $("#div1").html($("#div1").html()+' '+nice.version);
+			  
+			  $("#boxscroll").niceScroll({cursorborder:"",cursorcolor:"#00F",boxzoom:true}); // First scrollable DIV
+		  
+			  $("#boxscroll2").niceScroll("#contentscroll2",{cursorcolor:"#F00",cursoropacitymax:0.7,boxzoom:true,touchbehavior:true});  // Second scrollable DIV
+			  
+			});
+		  </script>
+    </head>
+    <body>
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			<!-- Header -->
+            <div class="header">
+			
+				<!-- Logo -->
+                <div class="header-left">
+                    <a href="index" class="logo">
+						<img src="static/assets/img/logo.png" alt="Logo">
+					</a>
+					<a href="index" class="logo logo-small">
+						<img src="static/assets/img/logo-small.png" alt="Logo" width="30" height="30">
+					</a>
+                </div>
+				<!-- /Logo -->
+				
+				<a href="javascript:void(0);" id="toggle_btn">
+					<i class="fe fe-text-align-left"></i>
+				</a>
+				
+				<div class="top-nav-search">
+
+				</div>
+				
+				<!-- Mobile Menu Toggle -->
+				<a class="mobile_btn" id="mobile_btn">
+					<i class="fa fa-bars"></i>
+				</a>
+				<!-- /Mobile Menu Toggle -->
+				
+				<!-- Header Right Menu -->
+			    <ul class="nav user-menu">
+
+					<!-- Notifications -->
+					<li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
+						</a>
+						<div class="dropdown-menu notifications">
+							<div class="topnav-dropdown-header">
+								<span class="notification-title">消息提醒</span>
+								<a href="javascript:void(0)" class="clear-noti"> 隐藏 </a>
+							</div>
+							<div class="noti-content">
+								<ul class="notification-list">
+									<script>
+										readJson()
+									</script>
+								</ul>
+							</div>
+							<div class="topnav-dropdown-footer">
+								<a href="report">查看所有报告信息</a>
+							</div>
+						</div>
+					</li>
+					<!-- Notifications -->
+					<!-- Write -->
+					<li >
+						<a data-toggle="modal" href="#text_inputs" title="信息上报">
+							<i class="fe fe-file"></i>
+						</a>
+					</li>
+					<!-- Write -->
+					<!-- download-->
+					<li >
+						<a href="file-management" title="数据下载">
+							<i class="fe fe-download"></i>
+						</a>
+					</li>
+					<li >
+						<a data-toggle="modal" href="#text_upload" title="数据上传">
+							<i class="fe fe-upload"></i>
+						</a>
+					</li>
+
+					<li class="nav-item dropdown has-arrow">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
+						</a>
+						<div class="dropdown-menu">
+							<div class="user-header">
+								<div class="avatar avatar-sm">
+									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
+								</div>
+								<div class="user-text">
+									<h6>{{ user.name }}</h6>
+									<p class="text-muted mb-0">Administrator</p>
+								</div>
+							</div>
+							<a class="dropdown-item" href="profile">配置文件</a>
+							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
+						</div>
+					</li>
+					<!-- /User Menu -->
+				</ul>
+				<!-- /Header Right Menu -->
+				
+            </div>
+			<!-- /Header -->
+			
+			<!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
+						<ul>
+							<li>
+								<a href="index"><font color="#CCCCCC">首页</font></a>
+							</li>
+							<li>
+								<a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a>
+							</li>
+							<li>
+								<a href="profile"> <font color="#CCCCCC">个人资料</font> </a>
+							</li>
+							<li>
+								<a href="profile"><font color="#CCCCCC">修改密码</font> </a>
+							</li>
+                            <li>
+								<a href="file-management"><font color="#CCCCCC">文件管理</font> </a>
+							</li>
+                            <li>
+								<a href="user-management"><font color="#CCCCCC">用户管理</font> </a>
+							</li>
+                            <li style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;">
+								<a href="report"><span><font color="#293c55">个人信息报表</font> </span></a>
+							</li>
+						</ul>
+					</div>
+                </div>
+            </div>
+			<!-- /Sidebar -->
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+				
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">信息报表</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index">首页</a></li>
+									<li class="breadcrumb-item active">信息报表</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card">
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="datatable table table-hover table-center mb-0">
+											<thead>
+												<tr>
+													<th>信息编号</th>
+													<th>时间</th>
+													<th>申报人</th>
+													<th>主题</th>
+													<th class="text-center">当前状态</th>
+													<th class="text-center">详情</th>
+												</tr>
+											</thead>
+											<tbody id="tbody">
+												<script>
+													showtable()
+												</script>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>			
+					</div>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul class=flashes>
+                            {% for message in messages %}
+                                    <li>{{ message }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+					<div class="detail" id='details_div' style="display:none">
+						<div class="card">
+							<div class="card-header">
+								<h4 class="card-title" id='detail_number' style="float:left; width:50%"></h4>
+								<span id="detail_state" class="badge badge-pill bg-warning inv-badge" style="float: right; height: auto !important; margin-left: 2%; font-size: 24px;background-color: yellow;">未审核</span>
+								<button class="btn btn-primary" type="button" style="float: right; background-color: #778899;border: 1px solid #778899;" onclick="hidder()">隐藏</button>
+								
+							</div>
+							<div class="card-body" style="padding-bottom: 0%;">
+								<form action="#">
+									<div class="form-group">
+										<label style="font-weight: bold;">主题:</label>
+										<input id="detail_topic" type="text" readonly="readonly" class="form-control" value="asdasdsadadadadadsad">
+									</div>
+									<div class="form-group">
+										<label style="font-weight: bold;">申报人: </label>
+										<label id="detail_proposer">飞飞飞</label>
+									</div>
+									<div class="form-group">
+										<label style="font-weight: bold;">审批人:</label>
+										<label id="receiver_name"></label>
+									</div>
+									<div class="form-group">
+										<label style="font-weight: bold;">时间: </label>
+										<label id="detail_time">12</label>
+									</div>
+									<div class="form-group" style="border-bottom: 1px solid #ccc;">
+										<label style="font-weight: bold;">内容：</label>
+										<div class="card-body">
+											<div id="boxscroll2" style="border: 2px solid #ccc">
+												<div id="contentscroll2">
+													<p id='datatext'></p>
+												</div>
+											</div>
+										</div>
+									</div>	
+									<div id="reject_div" class="form-group" style="display: none;">
+										<label style="font-weight: bold;color: crimson;">驳回原因: </label>
+										<label id="reject_reasons"></label>
+									</div>
+								</form>
+								
+							</div>
+							<div class="card-body" style="padding-top: 0%;">
+								<a id="Reject" data-toggle="modal" href="#edit_invoice_report">
+									<button class="btn btn-primary" type="button" style="float: right; margin-left: 2%;margin-right: 2%;background-color: #dc3545;border: 1px solid #dc3545;">驳回</button>
+								</a>
+								
+								<a id="Access" data-toggle="modal" href="#Ok">
+									<button class="btn btn-primary"type="button" style="float: right; background-color: #28a745;border: 1px solid #28a745;">通过</button>
+								</a>
+<!--                                <a id="delete" data-toggle="modal" href="#delete_modal" onclick="del">-->
+<!--                                    <button class="btn btn-sm bg-danger-light" type="button"  style="float: right; margin-left: 2%;margin-right: 2%;background-color: #db828a;border: 1px solid #ad5e65;">删除</button>-->
+<!--                                </a>-->
+								
+							</div>
+						</div>
+					</div>
+				</div>			
+			</div>
+
+		<div class="modal fade" id="edit_invoice_report" aria-hidden="true" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">驳回请求</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form action="{{ url_for('reject_report') }}" method="post">
+							<div class="row form-row">
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label style="font-weight: bold;">请求编号</label>
+										<input id="report_id" type="text" class="form-control" name="reportID">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label style="font-weight: bold;">申报人</label>
+										<input id="report_name" type="text" class="form-control" value="">
+									</div>
+								</div>
+
+								<div class="col-12">
+									<div class="form-group">
+										<label style="font-weight: bold;">驳回原因</label>
+										<div style="border: 2px solid #ccc">
+											<textarea style="width: 100%;" name="rejectReason"></textarea>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							<button type="submit" class="btn btn-primary btn-block">确定</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Edit Details Modal -->
+
+		<!-- Ok Modal -->
+		<div class="modal fade" id="Ok" aria-hidden="true" role="dialog" style="text-align: center;">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="form-content p-2">
+							<h4 class="modal-title">确认</h4>
+							<p class="mb-4">确定当前申报审批通过？</p>
+							<button type="button" class="btn btn-primary" onclick="location.href='report/pass/'+document.getElementById('detail_number').innerHTML.substring(1)">确认 </button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Delete Modal -->
+		<div class="modal fade" id="delete_modal" aria-hidden="true" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="form-content p-2">
+							<h4 class="modal-title">删除</h4>
+							<p id="del_infor" class="mb-4">确定删除当前记录么？</p>
+							<label style="display:none" id="del_num"></label>
+							<button type="button" class="btn btn-primary" onclick="location.href='report/delete/'+document.getElementById('del_num').innerHTML.substring(1)">删除 </button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+        <script src="static/js/dialog.js"></script>
+		<script src="static/js/download.js"></script>
+		<script src="static/js/upload.js"></script>
+        <script src="static/js/notification.js"></script>
+		
+		<!-- jQuery -->
+        <script src="static/assets/js/jquery-1.10.2.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="static/assets/js/popper.min.js"></script>
+        <script src="static/assets/js/bootstrap.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+        <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- Datatables JS -->
+		<script src="static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="static/assets/plugins/datatables/datatables.min.js"></script>
+		<script src="static/js/report(html)/operation.js"></script>
+		<!-- Custom JS -->
+		<script  src="static/assets/js/script.js"></script>
+	</body>
+	
+</html>

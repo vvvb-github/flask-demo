@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Mentoring - Profile</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename="assets/img/favicon.png") }}">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename="assets/css/bootstrap-4.2.1.css") }}">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename="assets/css/font-awesome.min.css") }}">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="{{ url_for('static', filename="assets/css/feathericon.min.css") }}">
+		
+		<!-- Main CSS -->
+		<link rel="stylesheet" href="{{ url_for('static', filename="assets/css/style.css") }}">
+		<script src="static/js/dialog.js"></script>
+		
+		<!--[if lt IE 9]>
+			<script src="{{ url_for('static', filename="assets/js/html5shiv.min.js") }}"></script>
+			<script src="{{ url_for('static', filename="assets/js/respond.min.js") }}"></script>
+		<![endif]-->
+        <script src="{{ url_for('static', filename="js/socket.io.dev.js") }}"></script>
+        <!--socket io get information -->
+        <script src="{{ url_for('static', filename="js/notification.js") }}"></script>
+        <script src="{{ url_for('static', filename="js/socketio.js") }}"></script>
+    </head>
+    <body>
+	
+		<!-- Main Wrapper -->
+    <div class="main-wrapper">
+		<!-- Header -->
+		<div class="header">
+			
+			<!-- Logo -->
+			<div class="header-left">
+				<a href="index" class="logo">
+					<img src="{{ url_for('static', filename="assets/img/logo.png") }}" alt="Logo">
+				</a>
+				<a href="index" class="logo logo-small">
+					<img src="{{ url_for('static', filename="assets/img/logo-small.png") }}" alt="Logo" width="30" height="30">
+				</a>
+			</div>
+			<!-- /Logo -->
+			
+			<a href="javascript:void(0);" id="toggle_btn">
+				<i class="fe fe-text-align-left"></i>
+			</a>
+			
+			<div class="top-nav-search">
+
+			</div>
+			
+			<!-- Mobile Menu Toggle -->
+			<a class="mobile_btn" id="mobile_btn">
+				<i class="fa fa-bars"></i>
+			</a>
+			<!-- /Mobile Menu Toggle -->
+
+            <!-- Header Right Menu -->
+			<ul class="nav user-menu">
+
+					<!-- Notifications -->
+					<li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
+						</a>
+						<div class="dropdown-menu notifications">
+							<div class="topnav-dropdown-header">
+								<span class="notification-title">消息提醒</span>
+								<a href="javascript:void(0)" class="clear-noti"> 隐藏 </a>
+							</div>
+							<div class="noti-content">
+								<ul class="notification-list">
+									<script>
+										readJson()
+									</script>
+								</ul>
+							</div>
+							<div class="topnav-dropdown-footer">
+								<a href="report">查看所有报告信息</a>
+							</div>
+						</div>
+					</li>
+					<!-- Notifications -->
+					<!-- Write -->
+					<li >
+						<a data-toggle="modal" href="#text_inputs" title="信息上报">
+							<i class="fe fe-file"></i>
+						</a>
+					</li>
+					<!-- Write -->
+					<!-- download-->
+					<li >
+						<a href="{{ url_for('file_management_page') }}" title="数据下载">
+							<i class="fe fe-download"></i>
+						</a>
+					</li>
+					<li >
+						<a data-toggle="modal" href="#text_upload" title="数据上传">
+							<i class="fe fe-upload"></i>
+						</a>
+					</li>
+
+					<li class="nav-item dropdown has-arrow">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
+						</a>
+						<div class="dropdown-menu">
+							<div class="user-header">
+								<div class="avatar avatar-sm">
+									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
+								</div>
+								<div class="user-text">
+									<h6>{{ user.name }}</h6>
+									<p class="text-muted mb-0">Administrator</p>
+								</div>
+							</div>
+							<a class="dropdown-item" href="profile">配置文件</a>
+							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
+						</div>
+					</li>
+					<!-- /User Menu -->
+				</ul>
+				<!-- /Header Right Menu -->
+			
+		</div>
+		<!-- /Header -->
+		
+		<!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
+						<ul>
+							<li >
+								<a href="{{ url_for('index') }}"><font color="#CCCCCC">首页</font></a>
+							</li>
+							<li>
+								<a href="{{ url_for('surface_page') }}"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a>
+							</li>
+							<li >
+								<a href="{{ url_for('profile_page') }}"> <span><font color="#CCCCCC">个人资料</font></span> </a>
+							</li>
+							<li>
+								<a href="{{ url_for('profile_page') }}"><font color="#CCCCCC">修改密码</font> </a>
+							</li>
+                            <li>
+								<a href="{{ url_for('file_management_page') }}"><font color="#CCCCCC">文件管理</font> </a>
+							</li>
+                            <li>
+								<a href="{{ url_for('user_management_page') }}"><font color="#CCCCCC">用户管理</font> </a>
+							</li>
+                            <li>
+								<a href="{{ url_for('report_page') }}"><font color="#CCCCCC">个人信息报表</font> </a>
+							</li>
+						</ul>
+					</div>
+                </div>
+            </div>
+		<!-- /Sidebar -->
+			<!-- Page Wrapper -->
+        <div class="page-wrapper">
+                <div class="content container-fluid">
+					
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col">
+								<h3 class="page-title">基本设置</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="index">首页</a></li>
+									<li class="breadcrumb-item active">基本设置</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+					<div class="row">
+						<div class="col-md-12">
+							<div class="profile-header">
+								<div class="row align-items-center">
+									<div class="col-auto profile-image">
+										<a href="#">
+											<img class="rounded-circle" alt="User Image" src="{{ url_for('static', filename= "assets/img/profiles/" + other_user.account + ".jpg" ) }}">
+										</a>
+									</div>
+									<div class="col ml-md-n2 profile-user-info">
+										<h4 class="user-name mb-0">{{ other_user.name }}</h4>
+										<h6>{{ other_user.email }}</h6>
+										<div class="about-text">{{ other_user.level }}</div>
+									</div>
+									<div class="col-auto profile-btn">
+									</div>
+								</div>
+							</div>
+							<div class="profile-menu">
+								<ul class="nav nav-tabs nav-tabs-solid">
+									<li class="nav-item">
+										<a class="nav-link active" href="#per_details_tab" data-toggle="tab">个人信息</a>
+									</li>
+								</ul>
+							</div>
+							<div class="tab-content profile-tab-cont">
+
+								<!-- Personal Details Tab -->
+								<div class="tab-pane fade show active" id="per_details_tab">
+								
+									<!-- Personal Details -->
+									<div class="row">
+										<div class="col-lg-12">
+											<div class="card">
+												<div class="card-body">
+													<h5 class="card-title d-flex justify-content-between" style="margin-bottom: 2%;">
+														<span>详细信息</span>
+													</h5>
+													<div class="row">
+														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">姓名</p>
+														<p class="col-sm-10">{{ other_user.name }}</p>
+													</div>
+													<div class="row">
+														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">邮箱</p>
+														<p class="col-sm-10">{{ other_user.emailAddress }}</p>
+													</div>
+													<div class="row">
+														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">电话</p>
+														<p class="col-sm-10">{{ other_user.phoneNumber }}</p>
+													</div>
+													<div class="row">
+														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">隶属</p>
+														<p class="col-sm-10">{{ other_user.department }}</p>
+													</div>
+													<div class="row">
+														<p class="col-sm-2 mb-0 mb-sm-3" style="font-weight: bold;">级别</p>
+														<p class="col-sm-10">{{ other_user.level }}</p>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<!-- /Personal Details -->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>			
+        </div>
+			<!-- /Page Wrapper -->
+    </div>
+		<!-- /Main Wrapper -->
+
+		
+		<!-- jQuery -->
+        <script src="{{ url_for('static', filename="assets/js/jquery-1.10.2.js")}}"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="{{ url_for('static', filename="assets/js/popper.min.js") }}"></script>
+        <script src="{{ url_for('static', filename="assets/js/bootstrap.min.js") }}"></script>
+
+		
+		<!-- Slimscroll JS -->
+        <script src="{{ url_for('static', filename="assets/plugins/slimscroll/jquery.slimscroll.min.js") }}"></script>
+		
+		<!-- Custom JS -->
+		<script  src="{{ url_for('static', filename="assets/js/script.js") }}"></script>
+        <script src="{{ url_for('static', filename="js/dialog.js") }}"></script>
+		<script src="{{ url_for('static', filename="js/download.js") }}"></script>
+		<script src="{{ url_for('static', filename="js/upload.js") }}"></script>
+		<script src="{{ url_for('static', filename="js/notification.js") }}"></script>
+    </body>
+</html>

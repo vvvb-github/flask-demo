@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Doccure - Invoice Report Page</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="static/assets/css/bootstrap-4.2.1.css">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="static/assets/css/feathericon.min.css">
+		
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" href="static/assets/plugins/datatables/datatables.min.css">
+		
+		<!-- Select2 CSS -->
+		<link rel="stylesheet" href="static/assets/css/select2.min.css">
+		
+		<!-- Main CSS -->
+		<link rel="stylesheet" href="static/assets/css/style.css">
+		<script src="static/js/management/information(searched).js"></script>
+		<script src="static/js/management/table.js"></script>
+        <script src="static/js/socket.io.dev.js"></script>
+        <!--socket io get information -->
+        <script src="static/js/notification.js"></script>
+        <script src="static/js/socketio.js"></script>
+        <script type="text/javascript">
+            let Infor_User = {{ Users|tojson }}
+        </script>
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+    </head>
+    <body>
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			<!-- Header -->
+            <div class="header">
+            
+            	<!-- Logo -->
+                <div class="header-left">
+                    <a href="index" class="logo">
+            			<img src="static/assets/img/logo.png" alt="Logo">
+            		</a>
+            		<a href="index" class="logo logo-small">
+            			<img src="static/assets/img/logo-small.png" alt="Logo" width="30" height="30">
+            		</a>
+                </div>
+            	<!-- /Logo -->
+            	
+            	<a href="javascript:void(0);" id="toggle_btn">
+            		<i class="fe fe-text-align-left"></i>
+            	</a>
+            	
+            	<div class="top-nav-search">
+            
+            	</div>
+            	
+            	<!-- Mobile Menu Toggle -->
+            	<a class="mobile_btn" id="mobile_btn">
+            		<i class="fa fa-bars"></i>
+            	</a>
+            	<!-- /Mobile Menu Toggle -->
+            	
+            	<!-- Header Right Menu -->
+			    <ul class="nav user-menu">
+
+					<!-- Notifications -->
+					<li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
+						</a>
+						<div class="dropdown-menu notifications">
+							<div class="topnav-dropdown-header">
+								<span class="notification-title">消息提醒</span>
+								<a href="javascript:void(0)" class="clear-noti"> 隐藏 </a>
+							</div>
+							<div class="noti-content">
+								<ul class="notification-list">
+								</ul>
+							</div>
+							<div class="topnav-dropdown-footer">
+								<a href="report">查看所有报告信息</a>
+							</div>
+						</div>
+					</li>
+					<!-- Notifications -->
+					<!-- Write -->
+					<li >
+						<a data-toggle="modal" href="#text_inputs" title="信息上报">
+							<i class="fe fe-file"></i>
+						</a>
+					</li>
+					<!-- Write -->
+					<!-- download-->
+					<li >
+						<a href="file-management" title="数据下载">
+							<i class="fe fe-download"></i>
+						</a>
+					</li>
+					<li >
+						<a data-toggle="modal" href="#text_upload" title="数据上传">
+							<i class="fe fe-upload"></i>
+						</a>
+					</li>
+
+					<li class="nav-item dropdown has-arrow">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
+						</a>
+						<div class="dropdown-menu">
+							<div class="user-header">
+								<div class="avatar avatar-sm">
+									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
+								</div>
+								<div class="user-text">
+									<h6>{{ user.name }}</h6>
+									<p class="text-muted mb-0">Administrator</p>
+								</div>
+							</div>
+							<a class="dropdown-item" href="profile">配置文件</a>
+							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
+						</div>
+					</li>
+					<!-- /User Menu -->
+				</ul>
+				<!-- /Header Right Menu -->
+            	
+            </div>
+            <!-- /Header -->
+			
+			<!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
+						<ul>
+							<li >
+								<a href="index"><font color="#CCCCCC">首页</font></a>
+							</li>
+							<li>
+								<a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a>
+							</li>
+							<li>
+								<a href="profile"> <font color="#CCCCCC">个人资料</font> </a>
+							</li>
+							<li>
+								<a href="profile"><font color="#CCCCCC">修改密码</font> </a>
+							</li>
+                            <li>
+								<a href="file-management"><font color="#CCCCCC">文件管理</font> </a>
+							</li>
+                            <li style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;">
+								<a href="user-management"><span><font color="#293c55">用户管理</font></span></a>
+							</li>
+                            <li>
+								<a href="report"><font color="#CCCCCC">个人信息报表</font> </a>
+							</li>
+						</ul>
+					</div>
+                </div>
+            </div>
+			<!-- /Sidebar -->
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">用户管理</h3>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					<div class="card">
+						<div class="card-header">
+							<h4 class="card-title" id='detail_number' style="float:left; width:50%">用户查询</h4>
+						</div>
+						<div class="card-body" style="padding-bottom: 0%;">
+							<form action="#">
+
+								<div class="form-group" style="width: 90%;">
+									<div style="border-left: 1px solid #eaeaea;margin-bottom: 1%;padding-bottom: 1%;border-bottom: 1px solid #eaeaea;border-right: 1px solid #eaeaea;width: 40%;float:left;">
+										<div class="btn-group" style="width: 100%;">
+											<div class="col-lg-10">
+												<div class="card-body">
+													<ul class="nav nav-tabs nav-tabs-solid">
+														<li class="nav-item"><a class="nav-link active" href="#solid-tab1" data-toggle="tab">账号搜索</a></li>
+														<li class="nav-item"><a class="nav-link" href="#solid-tab2" data-toggle="tab">姓名查询</a></li>
+														<li class="nav-item"><a class="nav-link" href="#solid-tab3" data-toggle="tab">部门查询</a></li>
+													</ul>
+													<div class="tab-content">
+														<div class="tab-pane show active" id="solid-tab1">
+															<input type="text" id="members" class="form-control" placeholder="请输入账号...">
+															<button class="btn btn-primary" type="button" onclick="search_member()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+														</div>
+														<div class="tab-pane" id="solid-tab2">
+															<input type="text" id="names" class="form-control" placeholder="请输入姓名...">
+															<button class="btn btn-primary" type="button" onclick="search_name()" style="float:right;background-color: #0794f3ab;border: 1px solid #0794f3ab;">搜索用户</button>
+														</div>
+														<div class="tab-pane" id="solid-tab3">
+															<input type="text" id="sections" class="form-control" placeholder="请输入部门...">
+															<button class="btn btn-primary" type="button" onclick="search_section()" style="float:right;background-color: #0794f3ab;border: 1px solid  #0794f3ab;">搜索用户</button>
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+
+									</div>
+
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<div id="all_members" class="row">
+						<div class="col-sm-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title" style="float:left; width:50%">所有用户</h4>		
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="datatable table table-hover table-center mb-0">
+											<thead>
+												<tr>
+													<th>用户账号</th>
+													<th>排列序号</th>
+													<th>用户名称</th>
+													<th>用户身份</th>
+													<th>创建日期</th>
+													<th class="text-center">状态</th>
+													<th class="text-center">操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												<script>
+													showtable()
+												</script>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							{% with messages = get_flashed_messages() %}
+							{% if messages %}
+							{% for message in messages %}
+							{% if message != "新增用户成功！"%}
+							<div class="card" style="height: 36px;color: #ce0c0c;background-color: #f393a5a8;font-size: x-large;">
+								<div style="background: url(static/assets/img/error.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+									<span style="padding-left: 2%;font-size: x-large;font-family: 'Mada';color: #CD3333;">
+										{{message}}
+									</span>
+								</div>
+							</div>
+							{% else %}
+							<div class="card" style="height: 36px;background-color: #b7f3b7db;color: #06ab06;font-size: x-large;">
+								<div style="background: url(static/assets/img/right.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+									<span style="padding-left: 2%;font-size: x-large;font-family: 'Mada';color: #06ab06;">
+										{{message}}
+									</span>
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+							{% endif %}
+							{% endwith %}
+						</div>
+
+						<div style="width: 100%;float: right;padding-right: 1%;padding-bottom: 1%;padding-top: 1%;">
+							<a data-toggle="modal" href="#edit_invoice_report" style="float: right;">
+								<button class="btn btn-primary" type="button" onclick="add_user()">新增用户</button>
+							</a>
+						</div>			
+					</div>
+
+<!--                    {% with messages = get_flashed_messages() %}-->
+<!--                        {% if messages %}-->
+<!--                            <ul class=flashes>-->
+<!--                            {% for message in messages %}-->
+<!--                                    <li>{{ message }}</li>-->
+<!--                            {% endfor %}-->
+<!--                            </ul>-->
+<!--                        {% endif %}-->
+<!--                    {% endwith %}-->
+
+
+					
+						<div class="row" id="searched_content" style="display: none;">
+							<h5 style="color: cornflowerblue;margin-left: 2%;">搜索</h5><h5 id="searched_head" style="color:#FF7F50;"></h5><h5 style="color: cornflowerblue;">结果：</h5>
+							<div class="col-sm-12">
+								<div class="card">
+									<div class="card-body">
+										<div class="table-responsive">
+											<table class="datatable table table-hover table-center mb-0">
+												<thead>
+													<tr>
+														<th>用户账号</th>
+														<th>排列序号</th>
+														<th>用户名称</th>
+														<th>用户身份</th>
+														<th>创建日期</th>
+														<th class="text-center">状态</th>
+														<th class="text-center">操作</th>
+													</tr>
+												</thead>
+												<tbody id="searched">
+													<tr>
+														<td><a href="invoice" id="num_1">#IN0001</a></td>
+														<td>#01</td>
+														<td>
+															<h2 class="table-avatar">
+																<a href="profile" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="static/assets/img/user/user0.jpg" alt="User Image"></a>
+																<a id="name_1" href="profile">汪宇晖 </a>
+															</h2>
+														</td>
+														<td id="identity_1">管理员</td>
+														<td id="time_1">2019年9月9日</td>
+														<td class="text-center">
+															<span class="badge badge-pill bg-success inv-badge">在线</span>
+														</td>
+														<td class="text-right">
+															<div class="actions">
+																
+																<a href="#edit_invoice_report" data-toggle="modal" onclick="edit(1)" class="btn btn-sm bg-success-light mr-2">
+																	<i class="fe fe-pencil"></i> 编辑
+																</a>
+																<a class="btn btn-sm bg-danger-light" data-toggle="modal" href="#delete_modal">
+																	<i class="fe fe-trash"></i> 删除
+																</a>
+															</div>
+														</td>
+													</tr>
+													
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								{% with messages = get_flashed_messages() %}
+								{% if messages %}
+								{% for message in messages %}
+								{% if message != "新增用户成功！"%}
+								<div class="card" style="height: 36px;color: #ce0c0c;background-color: #f393a5a8;font-size: x-large;">
+									<div style="background: url(static/assets/img/error.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+										<span style="padding-left: 2%;font-size: x-large;font-family: 'Mada';color: #CD3333;">
+											{{message}}
+										</span>
+									</div>
+								</div>
+								{% else %}
+								<div class="card" style="height: 36px;background-color: #b7f3b7db;color: #06ab06;font-size: x-large;">
+									<div style="background: url(static/assets/img/right.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+										<span style="padding-left: 2%;font-size: x-large;font-family: 'Mada';color: #06ab06;">
+											{{message}}
+										</span>
+									</div>
+								</div>
+								{% endif %}
+								{% endfor %}
+								{% endif %}
+								{% endwith %}
+							</div>		
+							<div style="width: 100%;float: right;padding-right: 1%;padding-bottom: 1%;padding-top: 1%;">
+								<button class="btn btn-primary" type="button" onclick="return_page()" style="background-color: mediumpurple;border: 1px solid #6610f2;float: right;margin-left: 1%;">返回主页</button>
+								<a data-toggle="modal" href="#edit_invoice_report" style="float: right;">
+									<button class="btn btn-primary" type="button" onclick="add_user()">新增用户</button>
+								</a>
+							</div>		
+						</div>
+						
+					</div>
+			<!-- /Page Wrapper -->
+			
+        
+		<!-- /Main Wrapper -->
+		<!-- Edit Details Modal -->
+		<div class="modal fade" id="edit_invoice_report" aria-hidden="true" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="infor-title"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form id="EorA" action="user/edit" method="post">
+							<div class="row form-row">
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>用户账号</label>
+										<input id="Number" name="account" type="text" class="form-control" value="#INV-0001" readonly="readonly">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>用户名称</label>
+										<input id="Name" name="name" type="text" class="form-control" value="汪宇晖">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>用户密码</label>
+										<input id="userpasswd" name="password" type="password" class="form-control" value="123456">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>确认密码</label>
+										<input id="confirmpasswd" name="confirm" type="password" class="form-control" value="123456">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>用户身份</label>
+										<!-- 需要当前身份的权限去修改次一级的权限 -->
+										<select class="select" name="level" id="Identity">
+											<option value="0">值班用户</option>
+											<option value="1">管理员</option>
+											<option value="2">超级管理员</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>用户照片</label>
+										<input type="file"  class="form-control">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>创建日期</label>
+										<input id="Time" type="text" name="date" class="form-control" value="9th Sep 2019" readonly="readonly">
+									</div>
+								</div>
+								<div class="col-12 col-sm-6">
+									<div class="form-group">
+										<label>备注</label>
+										<input type="text" name="remark" class="form-control" value="无">
+									</div>
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary btn-block" id="Save">保存</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Edit Details Modal -->
+		<!--错误提示-->
+
+		<!-- Delete Modal -->
+		<div class="modal fade" id="delete_modal" aria-hidden="true" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+				<!--	<div class="modal-header">
+						<h5 class="modal-title">Delete</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>-->
+					<div class="modal-body">
+						<div class="form-content p-2">
+							<h4 class="modal-title">删除身份信息</h4>
+							<p class="mb-4" id='del_infor'></p>
+							<button type="button" class="btn btn-primary" onclick="location.href='user/delete/'+document.getElementById('del_infor').innerHTML.split(',')[1].split('?')[0]">确认</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script>
+			function message_infor(){
+				message = document.getElementById("flash")
+				if(message!=""){
+					alert(message)
+				}
+			}
+		</script>
+		<!-- /Delete Modal -->
+		<script src="static/js/management/operation.js"></script>
+		<!-- jQuery -->
+        <script src="static/assets/js/jquery-1.10.2.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="static/assets/js/popper.min.js"></script>
+        <script src="static/assets/js/bootstrap.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+        <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- Datatables JS -->
+		<script src="static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="static/assets/plugins/datatables/datatables.min.js"></script>
+
+		<!-- Select2 JS -->
+		<script src="static/assets/js/select2.min.js"></script>
+		
+		<!-- Custom JS -->
+		<script src="static/assets/js/script.js"></script>
+
+		<script src="static/js/dialog.js"></script>
+		<script src="static/js/download.js"></script>
+		<script src="static/js/upload.js"></script>
+
+		
+    </body>
+</html>
