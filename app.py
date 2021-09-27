@@ -371,11 +371,10 @@ def direct_index():
     return redirect(url_for('index'))
 
 
-# 主页逻辑(page)
-@app.route('/index/<filename>')
+# 默认主页逻辑(page)
+@app.route('/index')
 @login_required
-def index(filename):
-    user = get_current_user()
+def index_default():
     all_files = Files.query.order_by(Files.date.desc()).all()
     files = []
     for i in all_files:
@@ -386,8 +385,68 @@ def index(filename):
             'subject': i.subject,
             'owner': i.owner
         }
-    files.append(j)
-    return render_template('index.html', user=user, files=files)
+        files.append(j)
+    user = get_current_user()
+    print(files)
+    return render_template('index.html', user=user, files=files, chart_data=None, current_file=None)
+
+
+# 主页逻辑(page)
+@app.route('/<filename>')
+@login_required
+def index(filename):
+    user = get_current_user()
+    # 声明主页图像所需要的数据Json
+    chart_data = {
+        # hpc 湿度廓线图
+        'hpc_data': {
+            'altitude': None,
+            'humidity': None,
+            'time': None,
+        },
+        # tpc 温度廓线图
+        'tpc_data': {
+            'altitude': None,
+            'temperature': None,
+            'time': None,
+        },
+        # 波导折线图
+        'line_data': {
+            'altitude': None,
+            'time': None
+        },
+        # 波导柱形图
+        'bar_data': {
+            'bottom': None,
+            'altitude': None,
+        }
+    }
+    all_files = Files.query.order_by(Files.date.desc()).all()
+    files = []
+    for i in all_files:
+        j = {
+            'filename': i.filename,
+            'filetype': i.filetype,
+            'date': i.date.strftime("%Y-%m-%d %H:%M:%S"),
+            'subject': i.subject,
+            'owner': i.owner
+        }
+        files.append(j)
+
+    temp_file = Files.query.filter_by(filename=filename).first()
+    current_file = {
+        'filename': temp_file.filename,
+        'filetype': temp_file.filetype,
+        'date': temp_file.date.strftime("%Y-%m-%d %H:%M:%S"),
+        'subject': temp_file.subject,
+        'owner': temp_file.owner
+    }
+    if current_file is not None:
+        # 读取不同类型的文件
+        pass
+    else:
+        return "没有该文件，请返回重试"
+    return render_template('index.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
 
 
 # 表面波导与悬空波导界面（page）
