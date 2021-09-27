@@ -34,6 +34,13 @@
         <!--socket io get information -->
         <script src="static/js/notification.js"></script>
         <script src="static/js/socketio.js"></script>
+        <!--file update information -->
+        <script type="text/javascript">
+            let files = {{ files|tojson }};
+            let chart_data = {{ chart_data|tojson }};
+            let current_file = {{ current_file|tojson }}
+        </script>
+
 
 
 <script>
@@ -205,11 +212,13 @@
 									    <h4 class="card-title">选择所要展示的数据文件</h4>
 							    	</div>
                                 <div class="card-body">
-                                    <select id="chartSelect" style="width: 60%">
-                                        <option>文件1.txt</option>
-                                        <option>文件2.txt</option>
-                                    </select>
-                                    <button class="btn btn-primary">确认</button>
+                                    <div class="input-group">
+                                        <select id="chartSelect" class="custom-select">
+                                        </select>
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary" id="confirmSelect">确认</button>
+                                        </div>
+                                    </div>
 								</div>
                             </div>
                         </div>
@@ -276,7 +285,7 @@
 			<!-- /Page Wrapper -->
 		
 		</div>
-
+        <script src="static/js/selection.js"></script>
 		<script src="static/js/dialog.js"></script>
 		<script src="static/js/download.js"></script>
 		<script src="static/js/upload.js"></script>
