@@ -5,7 +5,7 @@
 # 无海温情况下的蒸发波导情况
 
 import numpy as np
-from Utils import generate_data, Interplot
+from algorithm.Utils import generate_data, Interplot
 
 def evap_duct(ref, h):
     flag1 = np.zeros((400, ref.shape[1]))

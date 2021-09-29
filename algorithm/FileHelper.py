@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 import csv
 
+
 class FileHelper():
 
     def __init__(self, fileRoot=""):
@@ -87,7 +88,7 @@ class FileHelper():
                 dataset.append([alt, tem, pre, hum])
         return dataset
 
-    #读取湿度HPC文件
+    # 读取湿度HPC文件
     def ReadHPC(self, filepath):
         filepath = self.fileRootPath + filepath
         height = []
@@ -96,10 +97,10 @@ class FileHelper():
         with open(filepath, "r", encoding='utf-8') as f:
             for line in f.readlines():
                 line = line.strip('\n')
-                if(l==3):
-                    temp=line.split('#')
-                    temp=temp[0].split()
-                    humidity_max=float(temp[0])
+                if (l == 3):
+                    temp = line.split('#')
+                    temp = temp[0].split()
+                    humidity_max = float(temp[0])
                 if (l == 7):
                     temp = line.split(',')
                     for i in range(len(temp) - 1):
@@ -117,12 +118,12 @@ class FileHelper():
                     second = float(temp[5])
                     RainFlag = int(temp[6])
                     for i in range(7, len(temp)):
-                        #相对湿度计算
-                        humidity.append(float(temp[i])/humidity_max)
+                        # 相对湿度计算
+                        humidity.append(float(temp[i]) / humidity_max)
                     humidity_re.append(humidity)
                 l = l + 1
 
-    #读取温度廓线文件TPC
+    # 读取温度廓线文件TPC
     def ReadTPC(self, filepath):
         filepath = self.fileRootPath + filepath
         height = []

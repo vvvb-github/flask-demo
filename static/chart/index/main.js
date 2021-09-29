@@ -22,7 +22,7 @@ function count(o){
 }
 
 // 所有信息
-var chart_data = {}
+// var chart_data = {}
 
 // 蒸发波导信息，时间、波导高度
 // time

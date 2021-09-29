@@ -2,14 +2,14 @@
 # -*- coding:utf-8 -*-
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from threading import Thread, RLock
-from FileHelper import FileHelper
-from Evapduct import evap_duct
-from Evapduct_SST import evap_duct_SST
-from xb_M import xuankong, biaomian
-from Utils import Interplot, generate_data
+from algorithm.FileHelper import FileHelper
+from algorithm.Evapduct import evap_duct
+from algorithm.Evapduct_SST import evap_duct_SST
+from algorithm.xb_M import xuankong, biaomian
+from algorithm.Utils import Interplot, generate_data
 
-class Algorithm():
+
+class Algorithm:
     def __init__(self, fileRoot="", max_workers=4, max_num=299, interplot_kind="cubic"):
         self.fileHelper = FileHelper(fileRoot)
         self.executor = ThreadPoolExecutor(max_workers=max_workers)
@@ -31,6 +31,7 @@ class Algorithm():
         end = dataset[len(dataset) - 1][0]
         data = Interplot(dataset, start, end, self.max_num, self.interplot_kind)
         ref, h = generate_data(data)
+
         def calcu_duct(etype):
             # 类型为蒸发波导
             if etype == "Z":
@@ -46,6 +47,7 @@ class Algorithm():
             else:
                 val = biaomian(ref, h)
             return val
+
         task1 = self.executor.submit(calcu_duct, "Z")
         task2 = self.executor.submit(calcu_duct, "X")
         task3 = self.executor.submit(calcu_duct, "B")
@@ -64,6 +66,3 @@ class Algorithm():
             else:
                 altitude[2] = res[0]
         return bottom, altitude
-
-if __name__ == "__main__":
-    print("123")

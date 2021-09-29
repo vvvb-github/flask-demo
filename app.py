@@ -1,11 +1,7 @@
-import random
-import datetime
 from flask import Flask, request, url_for, flash, session, send_file
 from flask_cors import *
 from sqlalchemy import or_
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.utils import secure_filename
-
 from config import *
 from datetime import *
 from algorithm import api
@@ -17,7 +13,9 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, validators, SubmitField
 from wtforms.validators import DataRequired, EqualTo, InputRequired, Email
 import time
-import json
+from algorithm.Algorithm import Algorithm
+from algorithm.readdb3 import readdb3
+from algorithm.generation import is_number, ReadHPC, ReadTPC
 
 app = Flask(__name__)
 
@@ -46,6 +44,9 @@ socket_io = SocketIO(app, cors_allowed_origins='*')
 app.config['AVATAR_FOLDER'] = '/static/assets/img/profiles'
 # 数据上传文件夹
 app.config['UPLOAD_FOLDER'] = '/upload'
+
+# 创建算法对象
+algorithm = Algorithm()
 
 
 # --------------------------------------------------- Entities ---------------------------------------------------------
@@ -368,7 +369,7 @@ def load_user(user_account):
 @app.route('/')
 @login_required
 def direct_index():
-    return redirect(url_for('index'))
+    return redirect(url_for('index_default'))
 
 
 # 默认主页逻辑(page)
@@ -396,6 +397,7 @@ def index_default():
 @login_required
 def index(filename):
     user = get_current_user()
+    basedir = os.path.abspath(os.path.dirname(__file__))
     # 声明主页图像所需要的数据Json
     chart_data = {
         # hpc 湿度廓线图
@@ -443,34 +445,24 @@ def index(filename):
     }
     if current_file is not None:
         # 读取不同类型的文件
-        pass
+        current_path = basedir + os.path.join(app.config['UPLOAD_FOLDER'], current_file['filename'])
+        if current_file['filetype'] == 'csv':
+            chart_data['line_data']['time'], chart_data['line_data']['altitude'] = algorithm.getSCV2Line(current_path)
+        if current_file['filetype'] == 'tpu':
+            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'] = algorithm.getTPU2Bar(current_path)
+        if current_file['filetype'] == 'db3':
+            chart_data['line_data']['time'], chart_data['line_data']['altitude'] = readdb3(current_path)
+        if current_file['filetype'] == 'hpc':
+            chart_data['hpc_data']['altitude'], chart_data['hpc_data']['humidity'], chart_data['hpc_data'][
+                'time'] = ReadHPC(current_file)
+        if current_file['filetype'] == 'tpc':
+            chart_data['tpc_data']['altitude'], chart_data['tpc_data']['temperature'], chart_data['tpc_data'][
+                'time'] = ReadTPC(current_file)
+        if is_number(current_file['filetype']):
+            pass
     else:
         return "没有该文件，请返回重试"
     return render_template('index.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
-
-
-# 表面波导与悬空波导界面（page）
-# 需重写 现在还是随机数
-@app.route('/surfaceevaporation')
-@login_required
-def surface_page():
-    user = get_current_user()
-    MeteoData = {
-        "tem": random.random(),
-        "hum": random.random(),
-        "wind": random.random(),
-        "press": random.random()
-    }
-    print("update")
-    return render_template('surfaceevaporation.html', MeteoData=MeteoData, Refraction=[[1, random.random()],
-                                                                                       [3, random.random()],
-                                                                                       [5, random.random()],
-                                                                                       [7, random.random()],
-                                                                                       [9, random.random()]],
-                           SD=[1, 3, 3],
-                           ED=[2, 4, 8],
-                           user=user,
-                           word="update" + str(time.asctime(time.localtime(time.time()))))
 
 
 # 个人资料界面（page）
@@ -662,7 +654,7 @@ def login():
                 temp_user.status = 1
                 login_user(temp_user)
                 print(current_user)
-                return redirect(url_for('index'))
+                return redirect(url_for('index_default'))
             else:
                 message = "密码错误"
         else:
@@ -843,9 +835,6 @@ def add_user():
         db.session.add(User(account, name, "", "", department, password, 0, level,
                             0, date, remark))
         db.session.commit()
-        # def __init__(self, account, name, phone_number, email_address, department, password, permission,
-        #              authority_level,
-        #              status, date, remark):
         flash("新增用户成功！")
         return redirect(url_for('user_management_page'))
 
@@ -1035,15 +1024,6 @@ def send_state_information():
     emit('send_state', infos)
 
 
-# socket事件：客户端切换页面至"表面波导与悬空波导诊断(surface-evaporation)"
-# socket响应：发送最新的一则主表数据至客户端，并同时发送表面波导与悬空波导的历史数据至客户端
-# 参数：历史数据量 historical_sfe_data_count
-# 对应DB表格：DW与SW
-@socket_io.on('surface_evaporation')
-def surface_evp_init():
-    historical_sfe_data_count = 50
-
-
 # socket事件：客户端请求新"表面波导与悬空波导诊断"数据
 # socket响应：发送最新的一条表面波导数据至客户端，同时附带有最新的Page表数据，至于是否更新视图，交给客户端判断
 # 对应DB表格:DW与SW
@@ -1066,4 +1046,4 @@ def default_error_handler(e):
 if __name__ == '__main__':
     api.rootPath(app)
     # 服务器地址可能更变
-    socket_io.run(app, debug=True, host='0.0.0.0', port=8086)
+    socket_io.run(app, debug=True, host=server_host, port=server_port)
