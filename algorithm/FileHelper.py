@@ -1,7 +1,8 @@
 #!/usr/bin/env python 
 # -*- coding:utf-8 -*-
 import csv
-
+import sqlite3
+from Utils import is_number
 
 class FileHelper():
 
@@ -152,3 +153,85 @@ class FileHelper():
                         temperature.append(float(temp[i]))
                     temperature_re.append(temperature)
                 l = l + 1
+
+    # 读取DDB3文件，获取其中的时间和气温、海温、相对湿度、风速、压强
+    def ReadDDB3(self, filepath):
+        conn = sqlite3.connect(filepath)
+        c = conn.cursor()
+        c.execute("SELECT Time,Temperature1,Humidity1,TemperatureSeaIR,Pressure,WinspeedR1 from 实时数据")
+        result = c.fetchall()
+        times = []
+        dataset = []
+        for i in range(len(result)):
+            if (result[i][0] != None and result[i][1] != None and result[i][2] != None and result[i][3] != None and
+                    result[i][4] != None and result[i][5] != None):
+                times.append(result[i][0])
+                dataset.append([result[i][1], result[i][3], result[i][2], result[i][5], result[i][4]])
+        return times, dataset
+
+    # 返回的是[高度，温度，压强，湿度，风速，风向]
+    def ReadGaokong1(self, filepath, limit=3000):
+        dataset = []
+        l = 0
+        with open(filepath, "r", encoding='ANSI') as f:
+            for line in f.readlines():
+                line = line.strip('\n')
+                if (l >= 2):
+                    temp = line.split()
+                    temperature = float(temp[2])
+                    press = float(temp[3])
+                    humidity = float(temp[4])
+                    altitude = float(temp[7])
+                    direction = float(temp[5])
+                    wind = float(temp[6])
+                    if altitude > limit:
+                        break
+                    dataset.append([altitude, temperature, press, humidity, wind, direction])
+                l = l + 1
+        return dataset
+
+    # 返回的是[高度，温度，压强，湿度，风速，风向]
+    def ReadGaokong2(self, filepath, limit=3000):
+        dataset = []
+        l = 0
+        with open(filepath, "r", encoding='utf-8') as f:
+            for line in f.readlines():
+                line = line.strip('\n')
+                if (l >= 14):
+                    temp = line.split()
+                    temperature = float(temp[1])
+                    press = float(temp[2])
+                    humidity = float(temp[3])
+                    altitude = float(temp[4])
+                    direction = float(temp[7])
+                    wind = float(temp[8])
+                    if altitude > limit:
+                        break
+                    dataset.append([altitude, temperature, press, humidity, wind, direction])
+                l = l + 1
+        return dataset
+
+    # 返回的是[高度，温度，压强，湿度]
+    def ReadGaokong3(self, filepath, limit=3000):
+        dataset = []
+        l = 0
+        with open(filepath, "r", encoding='utf-8') as f:
+            for line in f.readlines():
+                line = line.strip('\n')
+
+                if (l >= 3):
+                    temp = line.split()
+                    if (is_number(temp[1]) and is_number(temp[2]) and is_number(temp[3]) and is_number(temp[5])):
+                        temperature = float(temp[1])
+                        press = float(temp[3])
+                        humidity = float(temp[2])
+                        altitude = float(temp[5])
+                        # print(temperature)
+                        # print(press)
+                        # print(humidity)
+                        # print(altitude)
+                        if altitude > limit:
+                            break
+                        dataset.append([altitude, temperature, press, humidity])
+                l = l + 1
+        return dataset
