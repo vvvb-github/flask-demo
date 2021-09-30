@@ -4,6 +4,7 @@ import csv
 import sqlite3
 from Utils import is_number
 
+# 该类专门负责解析气象数据文件
 class FileHelper():
 
     def __init__(self, fileRoot=""):
