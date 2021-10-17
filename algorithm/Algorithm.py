@@ -96,3 +96,6 @@ class Algorithm:
             else:
                 altitude[2] = res[0]
         return bottom, altitude, loss
+
+
+
