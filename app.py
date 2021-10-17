@@ -14,8 +14,7 @@ from wtforms import StringField, PasswordField, validators, SubmitField
 from wtforms.validators import DataRequired, EqualTo, InputRequired, Email
 import time
 from algorithm.Algorithm import Algorithm
-from algorithm.readdb3 import readdb3
-from algorithm.generation import is_number, ReadHPC, ReadTPC
+from algorithm.FileHelper import FileHelper
 
 app = Flask(__name__)
 
@@ -444,22 +443,23 @@ def index(filename):
         'owner': temp_file.owner
     }
     if current_file is not None:
+        pass
         # 读取不同类型的文件
-        current_path = basedir + os.path.join(app.config['UPLOAD_FOLDER'], current_file['filename'])
-        if current_file['filetype'] == 'csv':
-            chart_data['line_data']['time'], chart_data['line_data']['altitude'] = algorithm.getSCV2Line(current_path)
-        if current_file['filetype'] == 'tpu':
-            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'] = algorithm.getTPU2Bar(current_path)
-        if current_file['filetype'] == 'db3':
-            chart_data['line_data']['time'], chart_data['line_data']['altitude'] = readdb3(current_path)
-        if current_file['filetype'] == 'hpc':
-            chart_data['hpc_data']['altitude'], chart_data['hpc_data']['humidity'], chart_data['hpc_data'][
-                'time'] = ReadHPC(current_file)
-        if current_file['filetype'] == 'tpc':
-            chart_data['tpc_data']['altitude'], chart_data['tpc_data']['temperature'], chart_data['tpc_data'][
-                'time'] = ReadTPC(current_file)
-        if is_number(current_file['filetype']):
-            pass
+        # current_path = basedir + os.path.join(app.config['UPLOAD_FOLDER'], current_file['filename'])
+        # if current_file['filetype'] == 'csv':
+        #     chart_data['line_data']['time'], chart_data['line_data']['altitude'] = algorithm.getSCV2Line(current_path)
+        # if current_file['filetype'] == 'tpu':
+        #     chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'] = algorithm.getTPU2Bar(current_path)
+        # if current_file['filetype'] == 'db3':
+        #     chart_data['line_data']['time'], chart_data['line_data']['altitude'] = readdb3(current_path)
+        # if current_file['filetype'] == 'hpc':
+        #     chart_data['hpc_data']['altitude'], chart_data['hpc_data']['humidity'], chart_data['hpc_data'][
+        #         'time'] = ReadHPC(current_file)
+        # if current_file['filetype'] == 'tpc':
+        #     chart_data['tpc_data']['altitude'], chart_data['tpc_data']['temperature'], chart_data['tpc_data'][
+        #         'time'] = ReadTPC(current_file)
+        # if is_number(current_file['filetype']):
+        #     pass
     else:
         return "没有该文件，请返回重试"
     return render_template('index.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
