@@ -193,8 +193,3 @@ class FileHelper:
                 times.append(result[i][0])
                 dataset.append([result[i][1], result[i][3], result[i][2], result[i][5], result[i][4]])
         return times, dataset
-
-
-if __name__ == "__main__":
-    filehelper = FileHelper()
-    print(filehelper.ReadTKData('C:\\Users\\seu-wxy\\Desktop\\爵密2021\\A1234520180503.19'))

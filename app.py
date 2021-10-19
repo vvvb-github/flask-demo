@@ -65,9 +65,10 @@ class User(db.Model):
     status = db.Column(db.Integer)
     date = db.Column(db.DateTime)
     remark = db.Column(db.String(255))
+    chosenFile = db.Column(db.String(255))
 
     def __init__(self, account, name, phone_number, email_address, department, password, permission, authority_level,
-                 status, date, remark):
+                 status, date, remark, chonse_file):
         self.account = account
         self.name = name
         self.phoneNumber = phone_number
@@ -79,11 +80,12 @@ class User(db.Model):
         self.status = status
         self.date = date
         self.remark = remark
+        self.chosenFile = chonse_file
 
     def __repr__(self):
-        return '<User %r %r %r %r %r %r %r %r %r %r>' % \
+        return '<User %r %r %r %r %r %r %r %r %r %r %r>' % \
                (self.account, self.name, self.phoneNumber, self.emailAddress, self.department, self.password,
-                self.permission, self.authorityLevel, self.status, self.remark)
+                self.permission, self.authorityLevel, self.status, self.remark, self.chosenFile)
 
     # flask-login 需要的方法，获得用户的主键
     def get_id(self):
@@ -304,7 +306,8 @@ def get_current_user():
         "emailAddress": current_user.emailAddress,
         "phoneNumber": current_user.phoneNumber,
         "department": current_user.department,
-        "level": current_user.authorityLevel
+        "level": current_user.authorityLevel,
+        "chosenFile": current_user.chosenFile
     }
     return user
 
@@ -375,28 +378,6 @@ def direct_index():
 @app.route('/index')
 @login_required
 def index_default():
-    all_files = Files.query.order_by(Files.date.desc()).all()
-    files = []
-    for i in all_files:
-        j = {
-            'filename': i.filename,
-            'filetype': i.filetype,
-            'date': i.date.strftime("%Y-%m-%d %H:%M:%S"),
-            'subject': i.subject,
-            'owner': i.owner
-        }
-        files.append(j)
-    user = get_current_user()
-    print(files)
-    return render_template('index.html', user=user, files=files, chart_data=None, current_file=None)
-
-
-# 主页逻辑(page)
-@app.route('/<filename>')
-@login_required
-def index(filename):
-    user = get_current_user()
-    basedir = os.path.abspath(os.path.dirname(__file__))
     # 声明主页图像所需要的数据Json
     chart_data = {
         # hpc 湿度廓线图
@@ -422,6 +403,7 @@ def index(filename):
             'altitude': None,
         }
     }
+
     all_files = Files.query.order_by(Files.date.desc()).all()
     files = []
     for i in all_files:
@@ -433,8 +415,16 @@ def index(filename):
             'owner': i.owner
         }
         files.append(j)
-
-    temp_file = Files.query.filter_by(filename=filename).first()
+    # 获得当前用户
+    user = get_current_user()
+    # 获得用户选择的文件
+    current_file_name = current_user.chosenFile
+    if current_file_name is not None:
+        temp_file = Files.query.filter_by(filename=current_file_name).first()
+    else:
+        temp_file = Files.query.order_by(Files.date.desc()).first()
+    if temp_file is None:
+        temp_file = Files.query.order_by(Files.date.desc()).first()
     current_file = {
         'filename': temp_file.filename,
         'filetype': temp_file.filetype,
@@ -459,10 +449,50 @@ def index(filename):
         #     chart_data['tpc_data']['altitude'], chart_data['tpc_data']['temperature'], chart_data['tpc_data'][
         #         'time'] = ReadTPC(current_file)
         # if is_number(current_file['filetype']):
-        #     pass
-    else:
-        return "没有该文件，请返回重试"
+
+
+
     return render_template('index.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
+
+
+# 主页逻辑(page)
+@app.route('/<filename>')
+@login_required
+def index(filename):
+    temp_file = Files.query.filter_by(filename=filename).first()
+    current_file = {
+        'filename': temp_file.filename,
+        'filetype': temp_file.filetype,
+        'date': temp_file.date.strftime("%Y-%m-%d %H:%M:%S"),
+        'subject': temp_file.subject,
+        'owner': temp_file.owner
+    }
+    if current_file is not None:
+        temp_user = User.query.filter_by(account=current_user.account).first()
+        temp_user.chosenFile = temp_file.filename
+        db.session.commit()
+    return redirect(url_for('index_default'))
+
+
+
+
+# @app.route('/radar-elt', methods=['POST', 'GET'])
+# @login_required
+# def radar_elt_page():
+#     user = get_current_user()
+#     all_files = Files.query.order_by(Files.date.desc()).all()
+#     files = []
+#     for i in all_files:
+#         j = {
+#             'filename': i.filename,
+#             'filetype': i.filetype,
+#             'date': i.date.strftime("%Y-%m-%d %H:%M:%S"),
+#             'subject': i.subject,
+#             'owner': i.owner
+#         }
+#         files.append(j)
+#     user = get_current_user()
+#     return render_template('radar-elt.html', user=user, files=files, chart_data=None, current_file=None)
 
 
 # 个人资料界面（page）
