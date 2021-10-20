@@ -45,7 +45,6 @@
 
 <script>
   $(document).ready(function() {
-  
 	var nice = $("html").niceScroll();  // The document page (body)
 	
 	$("#div1").html($("#div1").html()+' '+nice.version);
@@ -164,9 +163,6 @@
                             <li style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;">
 								<a href="index"> <span><font color="#293c55">大气波导分析</font></span> </a>
 							</li>
-							<li >
-								<a href="index"><font color="#CCCCCC">雷达与电磁波损耗计算</font></a>
-							</li>
 							<li>
 								<a href="file-management"><font color="#CCCCCC">文件管理</font> </a>
 							</li>
@@ -195,7 +191,7 @@
 							<div class="col-sm-12">
 								<h3 class="page-title">欢迎来到大气波导分析页面!</h3>
 								<ul class="breadcrumb">
-									<li class="breadcrumb-item active">当前所在地理位置：31.65°N, 122.27°E </li>
+									<li class="breadcrumb-item active">当前所选的文件名称为：{{ current_file.filename }}  </li>
 								</ul>
 							</div>
 						</div>
@@ -220,20 +216,14 @@
                         </div>
                     </div>
 
-
-					<div class="row">
-
-					</div>
 					<div class="row" >
 						<div class="col-md-12 col-lg-6" >
-						
 							<!-- Sales Chart -->
 							<div class="card card-chart" >
 								<div class="card-header" >
 									<h4 class="card-title">波导折线图</h4>
 								</div>
 								<div class="card-body" id='echarts'>
-
 								</div>
 							</div>
 						</div>
@@ -252,7 +242,6 @@
 					</div>
 					<div class="row" >
 						<div class="col-md-12 col-lg-6" >
-						
 							<!-- Sales Chart -->
 							<div class="card card-chart" >
 								<div class="card-header" >
@@ -264,7 +253,6 @@
 							</div>
 						</div>
 						<div class="col-md-12 col-lg-6" >
-						
 							<!-- Sales Chart -->
 							<div class="card card-chart" >
 								<div class="card-header" >
@@ -275,8 +263,32 @@
 								</div>
 							</div>
 						</div>
-					</div>	
-				</div>			
+					</div>
+                    <div class="row" >
+						<div class="col-md-12 col-lg-6" >
+							<!-- Sales Chart -->
+							<div class="card card-chart" >
+								<div class="card-header" >
+									<h4 class="card-title">电磁波损耗图</h4>
+								</div>
+								<div class="card-body" id='echarts5'>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-12 col-lg-6" >
+
+							<!-- Sales Chart -->
+							<div class="card card-chart" >
+								<div class="card-header" >
+									<h4 class="card-title">雷达损耗图</h4>
+								</div>
+								<div class="card-body" id='echarts6'>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 			<!-- /Page Wrapper -->
 		

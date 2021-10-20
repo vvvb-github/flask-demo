@@ -133,32 +133,28 @@
 		<!-- /Header -->
 		
 		<!-- Sidebar -->
-            <div class="sidebar" id="sidebar">
-                <div class="sidebar-inner slimscroll">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
 						<ul>
-							<li >
-								<a href="{{ url_for('index') }}"><font color="#CCCCCC">首页</font></a>
-							</li>
-							<li >
-								<a href="{{ url_for('profile_page') }}"> <span><font color="#CCCCCC">个人资料</font></span> </a>
+                            <li >
+								<a href="{{ url_for('index_default') }}"><font color="#CCCCCC">大气波导分析</font> </a>
 							</li>
 							<li>
-								<a href="{{ url_for('profile_page') }}"><font color="#CCCCCC">修改密码</font> </a>
-							</li>
-                            <li>
 								<a href="{{ url_for('file_management_page') }}"><font color="#CCCCCC">文件管理</font> </a>
 							</li>
-                            <li>
-								<a href="{{ url_for('user_management_page') }}"><font color="#CCCCCC">用户管理</font> </a>
-							</li>
-                            <li>
-								<a href="{{ url_for('report_page') }}"><font color="#CCCCCC">个人信息报表</font> </a>
+							<li class="submenu">
+								<a href="#"><font color="#CCCCCC">权限管理与设置</font> </a>
+								<ul style="display: none;">
+									<li><a href="{{ url_for('profile_page') }}"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+									<li><a href="{{ url_for('user_management_page') }}"><font color="#CCCCCC"> 用户管理 </font></a></li>
+									<li><a href="{{ url_for('report_page') }}"><font color="#CCCCCC"> 信息报表管理 </font></a></li>
+								</ul>
 							</li>
 						</ul>
 					</div>
-                </div>
             </div>
+        </div>
 		<!-- /Sidebar -->
 			<!-- Page Wrapper -->
         <div class="page-wrapper">
