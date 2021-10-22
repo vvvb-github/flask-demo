@@ -153,7 +153,10 @@
 								<a href="#"><font color="#CCCCCC">权限管理与设置</font> </a>
 								<ul style="display: none;">
 									<li><a href="{{ url_for('profile_page') }}"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+                                    {% set level = user.level | int %}
+                                    {% if level > 0 %}
 									<li><a href="{{ url_for('user_management_page') }}"><font color="#CCCCCC"> 用户管理 </font></a></li>
+                                    {% endif %}
 									<li><a href="{{ url_for('report_page') }}"><font color="#CCCCCC"> 信息报表管理 </font></a></li>
 								</ul>
 							</li>

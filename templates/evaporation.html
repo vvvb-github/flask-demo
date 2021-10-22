@@ -176,7 +176,10 @@
 								<a href="#"><font color="#CCCCCC">权限管理与设置</font> </a>
 								<ul style="display: none;">
 									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+                                    {% set level = user.level | int %}
+                                    {% if level > 0 %}
 									<li><a href="user-management"><font color="#CCCCCC"> 用户管理 </font></a></li>
+                                    {% endif %}
 									<li><a href="report"><font color="#CCCCCC"> 信息报表管理 </font></a></li>
 								</ul>
 							</li>
@@ -229,7 +232,7 @@
 								<div class="card-header" >
 									<h4 class="card-title">波导折线图</h4>
 								</div>
-								<div class="card-body" id='echarts'>
+								<div class="card-body" id='echarts-line'>
 								</div>
 							</div>
 						</div>
@@ -240,56 +243,7 @@
 								<div class="card-header" >
 									<h4 class="card-title">波导柱形图</h4>
 								</div>
-								<div class="card-body" id='echarts2'>
-									
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row" >
-						<div class="col-md-12 col-lg-6" >
-							<!-- Sales Chart -->
-							<div class="card card-chart" >
-								<div class="card-header" >
-									<h4 class="card-title">湿度廓线</h4>
-								</div>
-								<div class="card-body" id='echarts3'>
-									
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 col-lg-6" >
-							<!-- Sales Chart -->
-							<div class="card card-chart" >
-								<div class="card-header" >
-									<h4 class="card-title">温度廓线</h4>
-								</div>
-								<div class="card-body" id='echarts4'>
-									
-								</div>
-							</div>
-						</div>
-					</div>
-                    <div class="row" >
-						<div class="col-md-12 col-lg-6" >
-							<!-- Sales Chart -->
-							<div class="card card-chart" >
-								<div class="card-header" >
-									<h4 class="card-title">雷达损耗图</h4>
-								</div>
-								<div class="card-body" id='echarts5'>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 col-lg-6" >
-
-							<!-- Sales Chart -->
-							<div class="card card-chart" >
-								<div class="card-header" >
-									<h4 class="card-title">电磁波损耗图</h4>
-								</div>
-								<div class="card-body" id='echarts6'>
-
+								<div class="card-body" id='echarts-bar'>
 								</div>
 							</div>
 						</div>
@@ -323,7 +277,7 @@
 		<!-- Custom JS -->
 		<script  src="static/assets/js/script.js"></script>
 				
-		<script type="text/javascript" src="static/chart/index/main.js"></script>
+		<script type="text/javascript" src="static/chart/evaporation-chart.js"></script>
 		
     </body>
 </html>

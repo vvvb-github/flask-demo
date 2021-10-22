@@ -159,7 +159,10 @@
 								<a href="#"><font color="#CCCCCC">权限管理与设置</font> </a>
 								<ul style="display: none;">
 									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+                                    {% set level = user.level | int %}
+                                    {% if level > 0 %}
 									<li><a href="user-management"><font color="#CCCCCC"> 用户管理 </font></a></li>
+                                    {% endif %}
 									<li><a href="report"><font color="#CCCCCC"> 信息报表管理 </font></a></li>
 								</ul>
 							</li>

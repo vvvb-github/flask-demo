@@ -28,7 +28,7 @@ class FileHelper:
     # filepath: 文件路径
     # limit: 高度限制
     # headSpace：跳过文件头行
-    def ReadTPU(self, filepath, limit=10000, headSpace=4):
+    def ReadTPU(self, filepath, limit=3000, headSpace=4):
         filepath = self.fileRootPath + filepath
         flag = headSpace
         dataset = []

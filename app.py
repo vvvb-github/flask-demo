@@ -1,5 +1,5 @@
 import re
-
+import shutil
 from flask import Flask, request, url_for, flash, session, send_file
 from flask_cors import *
 from sqlalchemy import or_
@@ -48,6 +48,7 @@ app.config['UPLOAD_FOLDER'] = '/upload'
 
 # 创建算法对象
 algorithm = Algorithm()
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 # --------------------------------------------------- Entities ---------------------------------------------------------
@@ -399,13 +400,9 @@ def index_default():
             'altitude': None,
         },
         # 雷达损耗图
-        'radar_data': {
-            'test': None
-        },
+        'radar_data': None,
         # 电磁波损耗图
-        'ele_data': {
-            'test': None
-        }
+        'ele_data': None
     }
     all_files = Files.query.filter_by(filetype='default').all()
     files = []
@@ -438,9 +435,14 @@ def index_default():
         'owner': temp_file.owner
     }
     if current_file['filetype'] is not None:
-        pass
-        # 读取默认类型文件
-        # current_path = basedir + os.path.join(app.config['UPLOAD_FOLDER'], current_file['filename'])
+        real_type = current_file['filename'].split('.')[-1]
+        if real_type == 'tpu' or real_type == 'TPU':
+            real_path = basedir + os.path.join(app.config['UPLOAD_FOLDER'], current_file['filename'])
+            real_path = real_path.replace('\\', '/')
+            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'], chart_data['ele_data'] \
+                = algorithm.getTPU2Bar(real_path)
+       
+
     return render_template('index.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
 
 
@@ -654,7 +656,6 @@ def profile_page():
 
     if avatar_form.validate_on_submit():
         filename = current_user.account + ".jpg"
-        basedir = os.path.abspath(os.path.dirname(__file__))
         file_path = os.path.join(app.config['AVATAR_FOLDER'], filename)
         file_path = basedir + file_path
         file_path = file_path.replace('\\', '/')
@@ -833,7 +834,6 @@ def upload_files():
     if realType == 'unKnow':
         return "文件格式上传有误，请上传规定格式文件"
 
-    basedir = os.path.abspath(os.path.dirname(__file__))
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], fileData.filename)
     file_path = basedir + file_path
     file_path = file_path.replace('\\', '/')
@@ -849,7 +849,6 @@ def upload_files():
 @app.route('/download/<filename>', methods=["GET"])
 @login_required
 def download_file(filename):
-    basedir = os.path.abspath(os.path.dirname(__file__))
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file_path = basedir + file_path
     file_path = file_path.replace('\\', '/')
@@ -866,7 +865,6 @@ def download_file(filename):
 @app.route('/delete_file/<filename>', methods=["GET"])
 @login_required
 def delete_file(filename):
-    basedir = os.path.abspath(os.path.dirname(__file__))
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file_path = basedir + file_path
     file_path = file_path.replace('\\', '/')
@@ -974,8 +972,15 @@ def add_user():
         elif current_user.authorityLevel == 1:
             department = current_user.department
         db.session.add(User(account, name, "", "", department, password, 0, level,
-                            0, date, remark))
+                            0, date, remark, None, None, None))
         db.session.commit()
+        default_file_path = os.path.join(app.config['AVATAR_FOLDER'], 'default.jpg')
+        new_avatar = os.path.join(app.config['AVATAR_FOLDER'], account + '.jpg')
+        default_file_path = basedir + default_file_path
+        default_file_path = default_file_path.replace('\\', '/')
+        new_avatar = basedir + new_avatar
+        new_avatar = new_avatar.replace('\\', '/')
+        shutil.copy(default_file_path, new_avatar)
         flash("新增用户成功！")
         return redirect(url_for('user_management_page'))
 

@@ -81,11 +81,3 @@ def evap_duct(ref, h):
         return res[1]
     else:
         return []
-
-if __name__ == "__main__":
-    data = np.load("..\\data\\gaokong.npy")
-    data = Interplot(data)
-    ref, h = generate_data(data)
-    print(ref.shape)
-    res = evap_duct(ref, h)
-    print(res)

@@ -35,7 +35,8 @@ class Algorithm:
     # 从TPU文件中获取各类波导高度信息
 
     def getTPU2Bar(self, filePath):
-        dataset = self.fileHelper.ReadTPU(filePath, 10000)
+        dataset = self.fileHelper.ReadTPU(filePath, 3000)
+        print(dataset)
         return self.calInformation(dataset)
 
     # 从数字文件(kind)获取悬空波导高度或表面波导高度
@@ -52,8 +53,8 @@ class Algorithm:
     def calInformation(self, dataset):
         start = dataset[0][0]
         end = dataset[len(dataset) - 1][0]
-        data = Interplot(dataset, start, end, self.max_num, self.interplot_kind)
-        ref, h = generate_data(data)
+        # data = Interplot(dataset, start, end, self.max_num, self.interplot_kind)
+        ref, h = generate_data(dataset)
 
         def calcu_duct(etype):
             # 类型为蒸发波导
