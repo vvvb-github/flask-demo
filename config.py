@@ -2,7 +2,7 @@
 
 
 # 数据库主机
-mysql_host = '127.0.0.1'
+mysql_host = '10.201.113.132'
 
 # 数据库端口，mysql默认均为3306
 mysql_port = 3306

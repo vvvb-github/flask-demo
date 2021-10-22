@@ -1,3 +1,5 @@
+import re
+
 from flask import Flask, request, url_for, flash, session, send_file
 from flask_cors import *
 from sqlalchemy import or_
@@ -66,9 +68,11 @@ class User(db.Model):
     date = db.Column(db.DateTime)
     remark = db.Column(db.String(255))
     chosenFile = db.Column(db.String(255))
+    chosenASWFile = db.Column(db.String(255))
+    chosenCSVFile = db.Column(db.String(255))
 
     def __init__(self, account, name, phone_number, email_address, department, password, permission, authority_level,
-                 status, date, remark, chonse_file):
+                 status, date, remark, chonse_file, chosen_asw_file, chosen_csv_file):
         self.account = account
         self.name = name
         self.phoneNumber = phone_number
@@ -81,11 +85,14 @@ class User(db.Model):
         self.date = date
         self.remark = remark
         self.chosenFile = chonse_file
+        self.chosenASWFile = chosen_asw_file
+        self.chosenCSVFile = chosen_csv_file
 
     def __repr__(self):
-        return '<User %r %r %r %r %r %r %r %r %r %r %r>' % \
+        return '<User %r %r %r %r %r %r %r %r %r %r %r %r %r>' % \
                (self.account, self.name, self.phoneNumber, self.emailAddress, self.department, self.password,
-                self.permission, self.authorityLevel, self.status, self.remark, self.chosenFile)
+                self.permission, self.authorityLevel, self.status, self.remark, self.chosenFile, self.chosenASWFile,
+                self.chosenCSVFile)
 
     # flask-login 需要的方法，获得用户的主键
     def get_id(self):
@@ -375,23 +382,12 @@ def direct_index():
 
 
 # 默认主页逻辑(page)
+# 此页面图片包含 大气波导分析图 雷达与电磁波传播损耗图
 @app.route('/index')
 @login_required
 def index_default():
     # 声明主页图像所需要的数据Json
     chart_data = {
-        # hpc 湿度廓线图
-        'hpc_data': {
-            'altitude': None,
-            'humidity': None,
-            'time': None,
-        },
-        # tpc 温度廓线图
-        'tpc_data': {
-            'altitude': None,
-            'temperature': None,
-            'time': None,
-        },
         # 波导折线图
         'line_data': {
             'altitude': None,
@@ -401,10 +397,17 @@ def index_default():
         'bar_data': {
             'bottom': None,
             'altitude': None,
+        },
+        # 雷达损耗图
+        'radar_data': {
+            'test': None
+        },
+        # 电磁波损耗图
+        'ele_data': {
+            'test': None
         }
     }
-
-    all_files = Files.query.order_by(Files.date.desc()).all()
+    all_files = Files.query.filter_by(filetype='default').all()
     files = []
     for i in all_files:
         j = {
@@ -422,9 +425,11 @@ def index_default():
     if current_file_name is not None:
         temp_file = Files.query.filter_by(filename=current_file_name).first()
     else:
-        temp_file = Files.query.order_by(Files.date.desc()).first()
+        temp_file = Files.query.filter_by(filetype='default').first()
     if temp_file is None:
-        temp_file = Files.query.order_by(Files.date.desc()).first()
+        temp_file = Files.query.filter_by(filetype='default').first()
+    if temp_file is None:
+        temp_file = Files('无文件，请上传文件！', '', datetime.now(), '', '')
     current_file = {
         'filename': temp_file.filename,
         'filetype': temp_file.filetype,
@@ -432,33 +437,17 @@ def index_default():
         'subject': temp_file.subject,
         'owner': temp_file.owner
     }
-    if current_file is not None:
+    if current_file['filetype'] is not None:
         pass
-        # 读取不同类型的文件
+        # 读取默认类型文件
         # current_path = basedir + os.path.join(app.config['UPLOAD_FOLDER'], current_file['filename'])
-        # if current_file['filetype'] == 'csv':
-        #     chart_data['line_data']['time'], chart_data['line_data']['altitude'] = algorithm.getSCV2Line(current_path)
-        # if current_file['filetype'] == 'tpu':
-        #     chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'] = algorithm.getTPU2Bar(current_path)
-        # if current_file['filetype'] == 'db3':
-        #     chart_data['line_data']['time'], chart_data['line_data']['altitude'] = readdb3(current_path)
-        # if current_file['filetype'] == 'hpc':
-        #     chart_data['hpc_data']['altitude'], chart_data['hpc_data']['humidity'], chart_data['hpc_data'][
-        #         'time'] = ReadHPC(current_file)
-        # if current_file['filetype'] == 'tpc':
-        #     chart_data['tpc_data']['altitude'], chart_data['tpc_data']['temperature'], chart_data['tpc_data'][
-        #         'time'] = ReadTPC(current_file)
-        # if is_number(current_file['filetype']):
-
-
-
     return render_template('index.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
 
 
-# 主页逻辑(page)
-@app.route('/<filename>')
+# 主页更改文件逻辑(function)
+@app.route('/INDEX/<filename>')
 @login_required
-def index(filename):
+def change_file(filename):
     temp_file = Files.query.filter_by(filename=filename).first()
     current_file = {
         'filename': temp_file.filename,
@@ -467,32 +456,153 @@ def index(filename):
         'subject': temp_file.subject,
         'owner': temp_file.owner
     }
-    if current_file is not None:
+    if temp_file is not None and current_file['filetype'] == 'default':
         temp_user = User.query.filter_by(account=current_user.account).first()
         temp_user.chosenFile = temp_file.filename
         db.session.commit()
     return redirect(url_for('index_default'))
 
 
+@app.route('/ASW/<filename>')
+@login_required
+def change_asw_file(filename):
+    temp_file = Files.query.filter_by(filename=filename).first()
+    if temp_file is None:
+        return "文件不存在！请返回重试"
+    current_file = {
+        'filename': temp_file.filename,
+        'filetype': temp_file.filetype,
+        'date': temp_file.date.strftime("%Y-%m-%d %H:%M:%S"),
+        'subject': temp_file.subject,
+        'owner': temp_file.owner
+    }
+    if temp_file is not None and current_file['filetype'] == 'asw':
+        temp_user = User.query.filter_by(account=current_user.account).first()
+        if temp_user is not None:
+            temp_user.chosenASWFile = temp_file.filename
+            db.session.commit()
+    return redirect(url_for('tem_hum_page'))
 
 
-# @app.route('/radar-elt', methods=['POST', 'GET'])
-# @login_required
-# def radar_elt_page():
-#     user = get_current_user()
-#     all_files = Files.query.order_by(Files.date.desc()).all()
-#     files = []
-#     for i in all_files:
-#         j = {
-#             'filename': i.filename,
-#             'filetype': i.filetype,
-#             'date': i.date.strftime("%Y-%m-%d %H:%M:%S"),
-#             'subject': i.subject,
-#             'owner': i.owner
-#         }
-#         files.append(j)
-#     user = get_current_user()
-#     return render_template('radar-elt.html', user=user, files=files, chart_data=None, current_file=None)
+@app.route('/CSV/<filename>')
+@login_required
+def change_ele_file(filename):
+    temp_file = Files.query.filter_by(filename=filename).first()
+    if temp_file is None:
+        return "文件不存在！请返回重试"
+    current_file = {
+        'filename': temp_file.filename,
+        'filetype': temp_file.filetype,
+        'date': temp_file.date.strftime("%Y-%m-%d %H:%M:%S"),
+        'subject': temp_file.subject,
+        'owner': temp_file.owner
+    }
+    if temp_file is not None and current_file['filetype'] == 'csv':
+        temp_user = User.query.filter_by(account=current_user.account).first()
+        if temp_user is not None:
+            temp_user.chosenCSVFile = temp_file.filename
+            db.session.commit()
+    return redirect(url_for('evaporation_page'))
+
+
+# 蒸发波导高度页面
+# 此页面包含图像：蒸发波导高度图（对应csv文件格式）
+@app.route('/evaporation', methods=['POST', 'GET'])
+@login_required
+def evaporation_page():
+    # 声明主页图像所需要的数据Json
+    chart_data = {
+        # 蒸发波导高度数据
+        'hpc_data': {
+            'altitude': None,
+            'humidity': None,
+            'time': None,
+        },
+    }
+    all_files = Files.query.filter_by(filetype='csv').all()
+    files = []
+    for i in all_files:
+        j = {
+            'filename': i.filename,
+            'filetype': i.filetype,
+            'date': i.date.strftime("%Y-%m-%d %H:%M:%S"),
+            'subject': i.subject,
+            'owner': i.owner
+        }
+        files.append(j)
+    # 获得当前用户
+    user = get_current_user()
+    # 获得用户选择的文件
+    current_file_name = current_user.chosenCSVFile
+    if current_file_name is not None:
+        temp_file = Files.query.filter_by(filename=current_file_name).first()
+    else:
+        temp_file = Files.query.filter_by(filetype='csv').first()
+    if temp_file is None:
+        temp_file = Files.query.filter_by(filetype='csv').first()
+    if temp_file is None:
+        temp_file = Files('无文件，请上传文件！', '', datetime.now(), '', '')
+    current_file = {
+        'filename': temp_file.filename,
+        'filetype': temp_file.filetype,
+        'date': temp_file.date.strftime("%Y-%m-%d %H:%M:%S"),
+        'subject': temp_file.subject,
+        'owner': temp_file.owner
+    }
+    return render_template('evaporation.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
+
+
+# 温度与湿度廓线界面
+# 此页面包含图像：温度廓线或湿度廓线(对应文件格式HPC.ASW或TPC.ASW)
+@app.route('/tem-hum', methods=['POST', 'GET'])
+@login_required
+def tem_hum_page():
+    # 声明主页图像所需要的数据Json
+    chart_data = {
+        # hpc 湿度廓线图
+        'hpc_data': {
+            'altitude': None,
+            'humidity': None,
+            'time': None,
+        },
+        # tpc 温度廓线图
+        'tpc_data': {
+            'altitude': None,
+            'temperature': None,
+            'time': None,
+        }
+    }
+    all_files = Files.query.filter_by(filetype='asw').all()
+    files = []
+    for i in all_files:
+        j = {
+            'filename': i.filename,
+            'filetype': i.filetype,
+            'date': i.date.strftime("%Y-%m-%d %H:%M:%S"),
+            'subject': i.subject,
+            'owner': i.owner
+        }
+        files.append(j)
+    # 获得当前用户
+    user = get_current_user()
+    # 获得用户选择的文件
+    current_file_name = current_user.chosenASWFile
+    if current_file_name is not None:
+        temp_file = Files.query.filter_by(filename=current_file_name).first()
+    else:
+        temp_file = Files.query.filter_by(filetype='asw').first()
+    if temp_file is None:
+        temp_file = Files.query.filter_by(filetype='asw').first()
+    if temp_file is None:
+        temp_file = Files('无文件，请上传文件！', '', datetime.now(), '', '')
+    current_file = {
+        'filename': temp_file.filename,
+        'filetype': temp_file.filetype,
+        'date': temp_file.date.strftime("%Y-%m-%d %H:%M:%S"),
+        'subject': temp_file.subject,
+        'owner': temp_file.owner
+    }
+    return render_template('tem-hum.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
 
 
 # 个人资料界面（page）
@@ -520,13 +630,11 @@ def profile_page():
         temp.emailAddress = profile_form.emailAddress.data
         temp.phoneNumber = profile_form.phoneNumber.data
         db.session.commit()
-        print(User.query.filter_by(account=current_user.account).first())
         flash("修改成功")
         return redirect(url_for('profile_page'))
     else:
         if (bool(profile_form.errors)) and (len(profile_form.errors) != 3):
             flash("修改失败，请检查输入信息（如邮箱）格式后重试")
-        print(profile_form.errors)
 
     if password_form.validate_on_submit():
         if current_user.verify_password(password_form.old_password.data) is True:
@@ -534,7 +642,6 @@ def profile_page():
             temp = User.query.filter_by(account=current_user.account).first()
             temp.password = password_form.new_password.data
             db.session.commit()
-            print(User.query.filter_by(account=current_user.account).first())
             logout_user()
             return redirect(url_for('login', message="请重新登录"))
         else:
@@ -544,7 +651,6 @@ def profile_page():
     else:
         if (bool(password_form.errors)) and (len(password_form.errors) != 2):
             flash("请检查重复输入的两次密码是否一致")
-        print(password_form.errors)
 
     if avatar_form.validate_on_submit():
         filename = current_user.account + ".jpg"
@@ -552,7 +658,6 @@ def profile_page():
         file_path = os.path.join(app.config['AVATAR_FOLDER'], filename)
         file_path = basedir + file_path
         file_path = file_path.replace('\\', '/')
-        print(file_path)
         avatar_form.avatar.data.save(file_path)
         return redirect(url_for('profile_page'))
     else:
@@ -662,9 +767,6 @@ def report_page():
             count += 1
         infos.append(j)
     user = get_current_user()
-    print(infos)
-    print(count)
-    print(user)
     return render_template('report.html', Infor=infos, count=count, user=user)
 
 
@@ -683,7 +785,6 @@ def login():
             if temp_user.verify_password(pass_word) is True:
                 temp_user.status = 1
                 login_user(temp_user)
-                print(current_user)
                 return redirect(url_for('index_default'))
             else:
                 message = "密码错误"
@@ -713,9 +814,24 @@ def upload_files():
     fileData = request.files['file-data']
 
     tempType = fileData.filename.split(".")[-1]
+    realType = None
+    re_pattern = re.compile("[0-9]+")
+    if tempType == 'txt' or tempType == 'TXT' or tempType == 'TPU' or tempType == 'tpu':
+        realType = 'default'
+    elif re_pattern.fullmatch(tempType) is not None:
+        realType = 'default'
+    elif tempType == 'csv' or tempType == 'CSV':
+        realType = 'csv'
+    elif tempType == 'ASW' or tempType == 'asw':
+        realType = 'asw'
+    else:
+        realType = 'unKnow'
+
     temp_file = Files.query.filter_by(filename=fileData.filename).first()
-    if temp_file is not None and temp_file.filetype == tempType:
+    if temp_file is not None and temp_file.filetype == realType:
         return "文件名与文件类型重复，上传失败"
+    if realType == 'unKnow':
+        return "文件格式上传有误，请上传规定格式文件"
 
     basedir = os.path.abspath(os.path.dirname(__file__))
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], fileData.filename)
@@ -723,7 +839,7 @@ def upload_files():
     file_path = file_path.replace('\\', '/')
     fileData.save(file_path)
 
-    db.session.add(Files(fileData.filename, tempType, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), dataSubject,
+    db.session.add(Files(fileData.filename, realType, time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), dataSubject,
                          current_user.account))
     db.session.commit()
     return "上传成功"
@@ -757,6 +873,8 @@ def delete_file(filename):
     if os.path.isfile(file_path):
         os.remove(file_path)
     temp_file = Files.query.filter_by(filename=filename).first()
+    if temp_file is None:
+        return redirect(url_for('file_management_page'))
     db.session.delete(temp_file)
     db.session.commit()
     return redirect(url_for('file_management_page'))
@@ -834,12 +952,6 @@ def add_user():
     level = request.form['level']
     date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     remark = request.form['remark']
-    print(account)
-    print(name)
-    print(password)
-    print(date)
-    print(remark)
-    print(level)
     temp_user = User.query.filter_by(account=account).first()
     if temp_user is not None:
         flash("\"" + account + "\"：用户名已存在")
@@ -861,7 +973,6 @@ def add_user():
             department = "暂定"
         elif current_user.authorityLevel == 1:
             department = current_user.department
-        print(department)
         db.session.add(User(account, name, "", "", department, password, 0, level,
                             0, date, remark))
         db.session.commit()
@@ -882,10 +993,6 @@ def send_report():
     content = request.form['messages']
     subject = request.form['title']
     url_info = request.form['url_info']
-    print(sender_account)
-    print(receiver_account)
-    print(content)
-    print(subject)
 
     temp_user = User.query.filter_by(account=receiver_account).first()
 
@@ -897,7 +1004,6 @@ def send_report():
     if temp_user is None:
         return render_template('valid.html', Report_Info=report_info, user=user)
     else:
-        print("receiver level:", temp_user.authorityLevel)
         if temp_user.authorityLevel < current_user.authorityLevel:
             report_info["message"] = "该用户无权限审批！"
             return render_template('valid.html', Report_Info=report_info, user=user)
@@ -911,7 +1017,6 @@ def send_report():
             report_info["message"] = "内容不能为空！"
             return render_template('valid.html', Report_Info=report_info, user=user)
         num = Info.query.count()
-        print("Infor:", num)
         Key_id = '#' + str(num)
         date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         db.session.add(Info(Key_id, sender_account, receiver_account, date, 0, content, subject, ""))
@@ -926,7 +1031,6 @@ def send_report():
 @login_required
 def pass_report(reportID):
     reportID = "#" + reportID
-    print(reportID)
     current_report = Info.query.filter_by(keyID=reportID).first()
     if current_report is None:
         flash("请求对象不存在，请刷新后重试！")
@@ -941,7 +1045,6 @@ def pass_report(reportID):
 @login_required
 def reject_report():
     rejectID = request.form['reportID']
-    print(rejectID)
     rejectReason = request.form['rejectReason']
     current_report = Info.query.filter_by(keyID=rejectID).first()
     if current_report is None:

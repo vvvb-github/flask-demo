@@ -575,151 +575,188 @@ Chart_tri.setOption(option3)
 Chart_for.setOption(option3)
 
 option5 = {
-  legend: {
-    data: ['Altitude (km) vs. temperature (°C)']
-  },
-  tooltip: {
-    trigger: 'axis',
-    formatter: 'Temperature : <br/>{b}km : {c}°C'
-  },
-  grid: {
-    left: '3%',
-    right: '4%',
-    bottom: '3%',
-    containLabel: true
-  },
-  xAxis: {
-    type: 'value',
-    axisLabel: {
-      formatter: '{value} °C'
-    }
-  },
-  yAxis: {
-    type: 'category',
-    axisLine: { onZero: false },
-    axisLabel: {
-      formatter: '{value} km'
+    dataZoom:[
+        {
+            show: true,
+            realtime: true,
+            height:13,
+            type: 'slider',
+            xAxisIndex:0,
+            handleStyle: {
+            color: '#8A2BE2',
+        }
+        },
+        {
+            show: true,
+            realtime: true,
+            width:13,
+            type: 'slider',
+            yAxisIndex:0,
+            left:'3%',
+            handleStyle: {
+            color: '#8A2BE2',
+        }
+        },
+        {
+            type: 'inside',
+            xAxisIndex:0,
+        },
+        {
+            type: 'inside',
+            yAxisIndex:0,
+        }
+    ],
+    tooltip: {},
+    toolbox:{
+        show:true,
+        itemSize:16,
+        //showTitle:True,
+        feature:{
+            dataView:{},
+            restore: {},
+            saveAsImage: {},
+            dataZoom: {},
+        },
+        left:'center'
     },
-    boundaryGap: false,
-    data: ['0', '10', '20', '30', '40', '50', '60', '70', '80']
-  },
-  series: [
-    {
-      name: 'Altitude (km) vs. temperature (°C)',
-      type: 'line',
-      symbolSize: 10,
-      symbol: 'circle',
-      smooth: true,
-      lineStyle: {
-        width: 3,
-        shadowColor: 'rgba(0,0,0,0.3)',
-        shadowBlur: 10,
-        shadowOffsetY: 8
-      },
-      data: [15, -50, -56.5, -46.5, -22.1, -2.5, -27.7, -55.7, -76.5]
+    xAxis: {
+        type: 'category',
+        //data: xData,
+        name:'距离/km',
+        nameLocation:'center',
+        nameTextStyle:{
+            padding:10,
+            fontSize:16,
+        }
+    },
+    yAxis: {
+        type: 'category',
+        //data: yData,
+        name:'高度/m',
+        nameLocation:'center',
+        nameTextStyle:{
+            padding:20,
+            fontSize:16,
+        }
+    },
+    visualMap: {
+        min: 0,
+        max: 200,
+        calculable: true,
+        realtime: false,
+		right:'2%',
+        bottom:'3%',
+        inRange: {
+            color: ['#1C1C1C', '#363636', '#4F4F4F', '#696969', '#828282', '#9C9C9C', '#B5B5B5', '#CFCFCF', '#E8E8E8']
+        }
+    },
+    series: {
+        name: '雷达传输增益',
+        type: 'heatmap',
+        data: radar_data,
+        emphasis: {
+            itemStyle: {
+                borderColor: '#333',
+                borderWidth: 1
+            }
+        },
+        progressive: 1000,
+        animation: false
     }
-  ]
 };
 
 Chart_five.setOption(option5)
 console.log(Chart_five)
 
-const colors = ['#5470C6', '#EE6666'];
 option6 = {
-  color: colors,
-  tooltip: {
-    trigger: 'none',
-    axisPointer: {
-      type: 'cross'
-    }
-  },
-  legend: {},
-  grid: {
-    top: 70,
-    bottom: 50
-  },
-  xAxis: [
-    {
-      type: 'category',
-      axisTick: {
-        alignWithLabel: true
-      },
-      axisLine: {
-        onZero: false,
-        lineStyle: {
-          color: colors[1]
+    dataZoom:[
+        {
+            show: true,
+            realtime: true,
+            height:13,
+            type: 'slider',
+            xAxisIndex:0,
+            handleStyle: {
+            color: '#8A2BE2',
         }
-      },
-      axisPointer: {
-        label: {
-          formatter: function (params) {
-            return (
-              'Precipitation  ' +
-              params.value +
-              (params.seriesData.length ? '：' + params.seriesData[0].data : '')
-            );
-          }
+        },
+        {
+            show: true,
+            realtime: true,
+            width:13,
+            type: 'slider',
+            yAxisIndex:0,
+            left:'3%',
+            handleStyle: {
+            color: '#8A2BE2',
         }
-      },
-      // prettier-ignore
-      data: ['2016-1', '2016-2', '2016-3', '2016-4', '2016-5', '2016-6', '2016-7', '2016-8', '2016-9', '2016-10', '2016-11', '2016-12']
+        },
+        {
+            type: 'inside',
+            xAxisIndex:0,
+        },
+        {
+            type: 'inside',
+            yAxisIndex:0,
+        }
+    ],
+    tooltip: {},
+    toolbox:{
+        show:true,
+        itemSize:16,
+        //showTitle:True,
+        feature:{
+            dataView:{},
+            restore: {},
+            saveAsImage: {},
+            dataZoom: {},
+        },
+        left:'center'
     },
-    {
-      type: 'category',
-      axisTick: {
-        alignWithLabel: true
-      },
-      axisLine: {
-        onZero: false,
-        lineStyle: {
-          color: colors[0]
+    xAxis: {
+        type: 'category',
+        //data: xData,
+        name:'距离/km',
+        nameLocation:'center',
+        nameTextStyle:{
+            padding:10,
+            fontSize:16,
         }
-      },
-      axisPointer: {
-        label: {
-          formatter: function (params) {
-            return (
-              'Precipitation  ' +
-              params.value +
-              (params.seriesData.length ? '：' + params.seriesData[0].data : '')
-            );
-          }
-        }
-      },
-      // prettier-ignore
-      data: ['2015-1', '2015-2', '2015-3', '2015-4', '2015-5', '2015-6', '2015-7', '2015-8', '2015-9', '2015-10', '2015-11', '2015-12']
-    }
-  ],
-  yAxis: [
-    {
-      type: 'value'
-    }
-  ],
-  series: [
-    {
-      name: 'Precipitation(2015)',
-      type: 'line',
-      xAxisIndex: 1,
-      smooth: true,
-      emphasis: {
-        focus: 'series'
-      },
-      data: [
-        2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3
-      ]
     },
-    {
-      name: 'Precipitation(2016)',
-      type: 'line',
-      smooth: true,
-      emphasis: {
-        focus: 'series'
-      },
-      data: [
-        3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7
-      ]
+    yAxis: {
+        type: 'category',
+        //data: yData,
+        name:'高度/m',
+        nameLocation:'center',
+        nameTextStyle:{
+            padding:20,
+            fontSize:16,
+        }
+    },
+    visualMap: {
+        // min: 0,
+        // max: 200,
+        calculable: true,
+        realtime: false,
+		right:'2%',
+        bottom:'3%',
+        inRange: {
+            color: ['#1C1C1C', '#363636', '#4F4F4F', '#696969', '#828282', '#9C9C9C', '#B5B5B5', '#CFCFCF', '#E8E8E8']
+        }
+    },
+    series: {
+        name: '电磁波损失',
+        type: 'heatmap',
+        data: elec_data,
+        emphasis: {
+            itemStyle: {
+                borderColor: '#333',
+                borderWidth: 1
+            }
+        },
+        progressive: 1000,
+        animation: false
     }
-  ]
 };
 Chart_six.setOption(option6)
 

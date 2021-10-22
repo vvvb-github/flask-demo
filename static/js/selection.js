@@ -10,6 +10,17 @@ if(current_file != null){
     main_select.value = current_file.filename
 }
 let select_button = document.getElementById('confirmSelect')
+
+let path_url = window.location.pathname;
 select_button.addEventListener("click",function (){
-    window.location.href=main_select.options[main_select.selectedIndex].value
+    if(path_url === '/index'){
+        window.location.href='INDEX' + '/' + main_select.options[main_select.selectedIndex].value
+    }
+    if(path_url === '/evaporation'){
+        window.location.href='CSV' + '/' + main_select.options[main_select.selectedIndex].value
+    }
+    if(path_url === '/tem-hum'){
+        window.location.href='ASW' + '/' + main_select.options[main_select.selectedIndex].value
+    }
+
 })
