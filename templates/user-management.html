@@ -9,7 +9,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
 		
 		<!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://www.jq22.com/jquery/bootstrap-4.2.1.css">
+        <link rel="stylesheet" href="static/assets/css/bootstrap-4.2.1.css">
 		
 		<!-- Fontawesome CSS -->
         <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
@@ -27,7 +27,7 @@
 		<link rel="stylesheet" href="static/assets/css/style.css">
 		<script src="static/js/management/information(searched).js"></script>
 		<script src="static/js/management/table.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+        <script src="static/js/socket.io.dev.js"></script>
         <!--socket io get information -->
         <script src="static/js/notification.js"></script>
         <script src="static/js/socketio.js"></script>
@@ -104,7 +104,7 @@
 					<!-- Write -->
 					<!-- download-->
 					<li >
-						<a data-toggle="modal" href="#text_download" title="数据导出">
+						<a href="file-management" title="数据下载">
 							<i class="fe fe-download"></i>
 						</a>
 					</li>
@@ -144,23 +144,25 @@
                 <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
 						<ul>
-							<li >
-								<a href="index"><font color="#CCCCCC">首页</font></a>
-							</li>
-							<li>
-								<a href="surfaceevaporation"><font color="#CCCCCC">表面波导与悬空波导诊断</font></a>
-							</li>
-							<li>
-								<a href="profile"> <font color="#CCCCCC">个人资料</font> </a>
-							</li>
-							<li>
-								<a href="profile"><font color="#CCCCCC">修改密码</font> </a>
-							</li>
-                            <li style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;">
-								<a href="user-management"><span><font color="#293c55">用户管理</font></span></a>
+                            <li >
+								<a href="index"><font color="#CCCCCC">大气波导分析</font></span> </a>
 							</li>
                             <li>
-								<a href="report"><font color="#CCCCCC">个人信息报表</font> </a>
+								<a href="evaporation"><font color="#CCCCCC">蒸发波导高度计算</font></a>
+							</li>
+                            <li>
+								<a href="tem-hum"><font color="#CCCCCC">温湿廓线分析计算</font></a>
+							</li>
+							<li>
+								<a href="file-management"><font color="#CCCCCC">文件管理</font> </a>
+							</li>
+							<li class="submenu" >
+								<a href="#" style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;"><span><font color="#CCCCCC">● 权限管理与设置</font> </a>
+								<ul style="display: block">
+									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+									<li><a href="user-management"><font color="#1e88e5"> 用户管理 </font></a></li>
+									<li><a href="report"><font color="#CCCCCC"> 信息报表管理 </font></a></li>
+								</ul>
 							</li>
 						</ul>
 					</div>
@@ -182,11 +184,11 @@
 					<!-- /Page Header -->
 					<div class="card">
 						<div class="card-header">
-							<h4 class="card-title" id='detail_number' style="float:left; width:50%">用户查询</h4>		
+							<h4 class="card-title" id='detail_number' style="float:left; width:50%">用户查询</h4>
 						</div>
 						<div class="card-body" style="padding-bottom: 0%;">
 							<form action="#">
-								
+
 								<div class="form-group" style="width: 90%;">
 									<div style="border-left: 1px solid #eaeaea;margin-bottom: 1%;padding-bottom: 1%;border-bottom: 1px solid #eaeaea;border-right: 1px solid #eaeaea;width: 40%;float:left;">
 										<div class="btn-group" style="width: 100%;">
@@ -211,13 +213,13 @@
 															<button class="btn btn-primary" type="button" onclick="search_section()" style="float:right;background-color: #0794f3ab;border: 1px solid  #0794f3ab;">搜索用户</button>
 														</div>
 													</div>
-													
+
 												</div>
 											</div>
 										</div>
-										
+
 									</div>
-									
+
 								</div>
 							</form>
 						</div>
@@ -380,7 +382,6 @@
 						</div>
 						
 					</div>
-					message_infor()
 			<!-- /Page Wrapper -->
 			
         
@@ -494,7 +495,7 @@
 		<!-- /Delete Modal -->
 		<script src="static/js/management/operation.js"></script>
 		<!-- jQuery -->
-        <script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+        <script src="static/assets/js/jquery-1.10.2.js"></script>
 		
 		<!-- Bootstrap Core JS -->
         <script src="static/assets/js/popper.min.js"></script>

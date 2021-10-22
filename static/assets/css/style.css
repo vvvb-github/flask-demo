@@ -2386,7 +2386,7 @@ html.menu-opened body {
 .add-btn {
     border: 1px solid transparent;
     border-radius: 20px;
-    color: #fff
+    color: #fff;
     background-color:#1e88e5;
     display: inline-block;
     padding: .375rem .75rem;
@@ -5045,17 +5045,23 @@ table.table-inbox tbody tr.checked {
 	overflow: auto;
 }
 
-#echarts{
+#echarts-line{
 	height: 500px;
 }
 
-#echarts2{
+#echarts-bar{
 	height: 500px;
 }
 
-#echarts3{
+#echarts-hum{
 	height: 500px;
 }
-#echarts4{
+#echarts-tem{
+	height: 500px;
+}
+#echarts-radar{
+	height: 500px;
+}
+#echarts-ele{
 	height: 500px;
 }

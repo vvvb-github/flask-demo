@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>Doccure - Invoice Report Page</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="static/assets/css/bootstrap-4.2.1.css">
+		
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
+		
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="static/assets/css/feathericon.min.css">
+		
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" href="static/assets/plugins/datatables/datatables.min.css">
+		
+		<!-- Select2 CSS -->
+		<link rel="stylesheet" href="static/assets/css/select2.min.css">
+		
+		<!-- Main CSS -->
+		<link rel="stylesheet" href="static/assets/css/style.css">
+		<script src="static/js/file-management/table.js"></script>
+        <script src="static/js/socket.io.dev.js"></script>
+        <!--socket io get information -->
+        <script src="static/js/notification.js"></script>
+        <script src="static/js/socketio.js"></script>
+        <script type="text/javascript">
+            let files = {{ files|tojson }}
+        </script>
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+    </head>
+    <body>
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			<!-- Header -->
+            <div class="header">
+            
+            	<!-- Logo -->
+                <div class="header-left">
+                    <a href="index" class="logo">
+            			<img src="static/assets/img/logo.png" alt="Logo">
+            		</a>
+            		<a href="index" class="logo logo-small">
+            			<img src="static/assets/img/logo-small.png" alt="Logo" width="30" height="30">
+            		</a>
+                </div>
+            	<!-- /Logo -->
+            	
+            	<a href="javascript:void(0);" id="toggle_btn">
+            		<i class="fe fe-text-align-left"></i>
+            	</a>
+            	
+            	<div class="top-nav-search">
+            
+            	</div>
+            	
+            	<!-- Mobile Menu Toggle -->
+            	<a class="mobile_btn" id="mobile_btn">
+            		<i class="fa fa-bars"></i>
+            	</a>
+            	<!-- /Mobile Menu Toggle -->
+            	
+            	<!-- Header Right Menu -->
+			    <ul class="nav user-menu">
+
+					<!-- Notifications -->
+					<li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
+						</a>
+						<div class="dropdown-menu notifications">
+							<div class="topnav-dropdown-header">
+								<span class="notification-title">消息提醒</span>
+								<a href="javascript:void(0)" class="clear-noti"> 隐藏 </a>
+							</div>
+							<div class="noti-content">
+								<ul class="notification-list">
+								</ul>
+							</div>
+							<div class="topnav-dropdown-footer">
+								<a href="report">查看所有报告信息</a>
+							</div>
+						</div>
+					</li>
+					<!-- Notifications -->
+					<!-- Write -->
+					<li >
+						<a data-toggle="modal" href="#text_inputs" title="信息上报">
+							<i class="fe fe-file"></i>
+						</a>
+					</li>
+					<!-- Write -->
+					<!-- download-->
+					<li >
+						<a href="file-management" title="数据下载">
+							<i class="fe fe-download"></i>
+						</a>
+					</li>
+					<li >
+						<a data-toggle="modal" href="#text_upload" title="数据上传">
+							<i class="fe fe-upload"></i>
+						</a>
+					</li>
+
+					<li class="nav-item dropdown has-arrow">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
+						</a>
+						<div class="dropdown-menu">
+							<div class="user-header">
+								<div class="avatar avatar-sm">
+									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
+								</div>
+								<div class="user-text">
+									<h6>{{ user.name }}</h6>
+									<p class="text-muted mb-0">Administrator</p>
+								</div>
+							</div>
+							<a class="dropdown-item" href="profile">配置文件</a>
+							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
+						</div>
+					</li>
+					<!-- /User Menu -->
+				</ul>
+				<!-- /Header Right Menu -->
+            	
+            </div>
+            <!-- /Header -->
+			
+			<!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
+						<ul>
+                            <li >
+								<a href="index"><font color="#CCCCCC">大气波导分析</font></span> </a>
+
+                            <li>
+								<a href="evaporation"><font color="#CCCCCC">蒸发波导高度计算</font></a>
+							</li>
+                            <li>
+								<a href="tem-hum"><font color="#CCCCCC">温湿廓线分析计算</font></a>
+							</li>
+							<li style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;">
+								<a href="file-management"><span><font color="#293c55">● 文件管理</font> </a>
+							</li>
+							<li class="submenu">
+								<a href="#"><font color="#CCCCCC">权限管理与设置</font> </a>
+								<ul style="display: none;">
+									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+                                    {% set level = user.level | int %}
+                                    {% if level > 0 %}
+									<li><a href="user-management"><font color="#CCCCCC"> 用户管理 </font></a></li>
+                                    {% endif %}
+									<li><a href="report"><font color="#CCCCCC"> 信息报表管理 </font></a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+                </div>
+            </div>
+			<!-- /Sidebar -->
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">文件项目管理</h3>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+
+					<div id="all_members" class="row">
+						<div class="col-sm-12">
+							<div class="card">
+								<div class="card-header">
+									<h4 class="card-title" style="float:left; width:50%">所有文件</h4>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="datatable table table-hover table-center mb-0">
+											<thead>
+												<tr>
+													<th>文件名</th>
+													<th>数据类型</th>
+													<th>上传日期</th>
+													<th>上传用户</th>
+													<th>备注</th>
+													<th class="text-center">操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												<script>
+													showtable()
+												</script>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							{% with messages = get_flashed_messages() %}
+							{% if messages %}
+							{% for message in messages %}
+							{% if message != "新增用户成功！"%}
+							<div class="card" style="height: 36px;color: #ce0c0c;background-color: #f393a5a8;font-size: x-large;">
+								<div style="background: url(static/assets/img/error.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+									<span style="padding-left: 2%;font-size: x-large;font-family: 'Mada';color: #CD3333;">
+										{{message}}
+									</span>
+								</div>
+							</div>
+							{% else %}
+							<div class="card" style="height: 36px;background-color: #b7f3b7db;color: #06ab06;font-size: x-large;">
+								<div style="background: url(static/assets/img/right.png);background-size: contain;width: auto;background-repeat: no-repeat;height: inherit;margin-left: 1%;">
+									<span style="padding-left: 2%;font-size: x-large;font-family: 'Mada';color: #06ab06;">
+										{{message}}
+									</span>
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+							{% endif %}
+							{% endwith %}
+						</div>
+
+					</div>
+
+<!--                    {% with messages = get_flashed_messages() %}-->
+<!--                        {% if messages %}-->
+<!--                            <ul class=flashes>-->
+<!--                            {% for message in messages %}-->
+<!--                                    <li>{{ message }}</li>-->
+<!--                            {% endfor %}-->
+<!--                            </ul>-->
+<!--                        {% endif %}-->
+<!--                    {% endwith %}-->
+						
+					</div>
+			<!-- /Page Wrapper -->
+
+		<!-- /Edit Details Modal -->
+		<!--错误提示-->
+
+		<!-- Delete Modal -->
+		<div class="modal fade" id="delete_modal" aria-hidden="true" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document" >
+				<div class="modal-content">
+				<!--	<div class="modal-header">
+						<h5 class="modal-title">Delete</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>-->
+					<div class="modal-body">
+						<div class="form-content p-2">
+							<h4 class="modal-title">删除文件</h4>
+							<p class="mb-4" id='del_infor'></p>
+							<button type="button" class="btn btn-primary" onclick="location.href='delete_file/'+document.getElementById('del_infor').innerHTML.split('：')[1].split('?')[0]">确认</button>
+							<button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<script>
+			function message_infor(){
+				message = document.getElementById("flash")
+				if(message!=""){
+					alert(message)
+				}
+			}
+		</script>
+		<!-- /Delete Modal -->
+		<script src="static/js/file-management/file-operation.js"></script>
+		<!-- jQuery -->
+        <script src="static/assets/js/jquery-1.10.2.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="static/assets/js/popper.min.js"></script>
+        <script src="static/assets/js/bootstrap.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+        <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+		
+		<!-- Datatables JS -->
+		<script src="static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="static/assets/plugins/datatables/datatables.min.js"></script>
+
+		<!-- Select2 JS -->
+		<script src="static/assets/js/select2.min.js"></script>
+		
+		<!-- Custom JS -->
+		<script src="static/assets/js/script.js"></script>
+
+		<script src="static/js/dialog.js"></script>
+		<script src="static/js/download.js"></script>
+		<script src="static/js/upload.js"></script>
+
+		
+    </body>
+</html>

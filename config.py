@@ -2,7 +2,7 @@
 
 
 # 数据库主机
-mysql_host = '10.201.169.70'
+mysql_host = '10.201.113.132'
 
 # 数据库端口，mysql默认均为3306
 mysql_port = 3306
@@ -11,10 +11,10 @@ mysql_port = 3306
 mysql_user = 'root'
 
 # 数据库密码
-mysql_pass = 'SEU'
+mysql_pass = '123698745'
 
 # 数据库名
-mysql_name = 'serverDatabase'
+mysql_name = 'server'
 
 # 服务器主机
 server_host = '0.0.0.0'

@@ -160,14 +160,14 @@
                 <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
 						<ul>
-                            <li style="background:#9ca8b8;">
-								<a href="index"> <span><font color="#293c55">● 大气波导分析计算</font></span> </a>
+                            <li>
+								<a href="index"><font color="#CCCCCC">大气波导分析计算</font></a>
 							</li>
                             <li>
 								<a href="evaporation"><font color="#CCCCCC">蒸发波导高度计算</font></a>
 							</li>
-                            <li>
-								<a href="tem-hum"><font color="#CCCCCC">温湿廓线分析计算</font></a>
+                            <li style="background:#9ca8b8;">
+								<a href="tem-hum"><span><font color="#293c55">● 温湿廓线分析计算</font></span></a>
 							</li>
 							<li>
 								<a href="file-management"><font color="#CCCCCC">文件管理</font> </a>
@@ -198,7 +198,7 @@
 					<div class="page-header">
 						<div class="row">
 							<div class="col-sm-12">
-								<h3 class="page-title">欢迎来到大气波导分析页面!</h3>
+								<h3 class="page-title">欢迎来到温湿廓线计算页面!</h3>
 								<ul class="breadcrumb">
 									<li class="breadcrumb-item active">当前所选的文件名称为：{{ current_file.filename }}  </li>
 								</ul>
@@ -224,51 +224,26 @@
                             </div>
                         </div>
                     </div>
-
 					<div class="row" >
 						<div class="col-md-12 col-lg-6" >
 							<!-- Sales Chart -->
 							<div class="card card-chart" >
 								<div class="card-header" >
-									<h4 class="card-title">波导折线图</h4>
+									<h4 class="card-title">湿度廓线</h4>
 								</div>
-								<div class="card-body" id='echarts-line'>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 col-lg-6" >
-						
-							<!-- Sales Chart -->
-							<div class="card card-chart" >
-								<div class="card-header" >
-									<h4 class="card-title">波导柱形图</h4>
-								</div>
-								<div class="card-body" id='echarts-bar'>
+								<div class="card-body" id='echarts-hum'>
 									
 								</div>
 							</div>
 						</div>
-					</div>
-                    <div class="row" >
 						<div class="col-md-12 col-lg-6" >
 							<!-- Sales Chart -->
 							<div class="card card-chart" >
 								<div class="card-header" >
-									<h4 class="card-title">雷达损耗图</h4>
+									<h4 class="card-title">温度廓线</h4>
 								</div>
-								<div class="card-body" id='echarts-radar'>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-12 col-lg-6" >
-
-							<!-- Sales Chart -->
-							<div class="card card-chart" >
-								<div class="card-header" >
-									<h4 class="card-title">电磁波损耗图</h4>
-								</div>
-								<div class="card-body" id='echarts-ele'>
-
+								<div class="card-body" id='echarts-tem'>
+									
 								</div>
 							</div>
 						</div>
@@ -302,7 +277,7 @@
 		<!-- Custom JS -->
 		<script  src="static/assets/js/script.js"></script>
 				
-		<script type="text/javascript" src="static/chart/index/main.js"></script>
+		<script type="text/javascript" src="static/chart/tem-hum-chart.js"></script>
 		
     </body>
 </html>

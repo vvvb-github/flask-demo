@@ -1,4 +1,3 @@
-
 function showtable(){
     var obj = eval(Infor_User)
     infor_length = Infor_User.length
@@ -40,6 +39,8 @@ function showtable(){
         document.writeln("</tr>")
     }
 }
+
+
 
 													
 													
