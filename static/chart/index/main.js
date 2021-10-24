@@ -367,5 +367,5 @@ option1 = {
     }
   ]
 };
-// Chart_line.setOption(option)
+
 Chart_bar.setOption(option1)
