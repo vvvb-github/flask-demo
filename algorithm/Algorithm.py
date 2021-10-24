@@ -1,5 +1,7 @@
 #!/usr/bin/env python 
 # -*- coding:utf-8 -*-
+import random
+
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from algorithm.FileHelper import FileHelper
@@ -12,16 +14,15 @@ from algorithm.ElectroPro import dianciLoss
 class Algorithm:
     def __init__(self, fileRoot="", max_workers=4, max_num=299, interplot_kind="cubic"):
         self.fileHelper = FileHelper(fileRoot)
-        self.executor = ThreadPoolExecutor(max_workers=max_workers)
         self.max_num = max_num
         self.interplot_kind = interplot_kind
 
     # 从csv文件中获取时间 和 蒸发波导高度信息
-    def getSCV2Line(self, filePath):
+    def getCSV2Line(self, filePath):
         time, dataset = self.fileHelper.ReadCSV(filePath, 99999.9)
         altitude = []
         for data in dataset:
-            altitude.append(evap_duct_SST(data))
+            altitude.append(evap_duct_SST(data[0], data[1], data[2], data[3], data[4]))
         return time, altitude
 
     # 从ddb3文件中获取时间 和 蒸发波导高度信息
@@ -36,24 +37,19 @@ class Algorithm:
 
     def getTPU2Bar(self, filePath):
         dataset = self.fileHelper.ReadTPU(filePath, 3000)
-        print(dataset)
         return self.calInformation(dataset)
 
     # 从数字文件(kind)获取悬空波导高度或表面波导高度
-    def getNUM2Bar(self, filePath, kind):
-        if kind == 1:
-            dataset = self.fileHelper.ReadGaokong1(filePath, 3000)
-        elif kind == 2:
-            dataset = self.fileHelper.ReadGaokong2(filePath, 3000)
-        else:
-            dataset = self.fileHelper.ReadGaokong3(filePath, 3000)
+    def getNUM2Bar(self, filePath):
+        dataset = self.fileHelper.ReadTKData(filePath)
+        return self.calInformation(dataset)
+
+    def getTXT2Bar(self, filePath):
+        dataset = self.fileHelper.ReadTxt(filePath, 3000)
         return self.calInformation(dataset)
 
     # 返回底高，高度，电磁波损失
     def calInformation(self, dataset):
-        start = dataset[0][0]
-        end = dataset[len(dataset) - 1][0]
-        # data = Interplot(dataset, start, end, self.max_num, self.interplot_kind)
         ref, h = generate_data(dataset)
 
         def calcu_duct(etype):
@@ -74,29 +70,23 @@ class Algorithm:
                 val = dianciLoss(ref, h)
             return val
 
-        # 蒸、悬、表、电磁波
-        task1 = self.executor.submit(calcu_duct, "Z")
-        task2 = self.executor.submit(calcu_duct, "X")
-        task3 = self.executor.submit(calcu_duct, "B")
-        task4 = self.executor.submit(calcu_duct, "E")
-        # 波导底高、波导厚度
         bottom = [0, 0, 0]
         altitude = [0, 0, 0]
-        obj_list = [task1, task2, task3, task4]
-        loss = [[0] * 200 for row in range(200)]
-        for future in as_completed(obj_list):
-            res = future.result()
-            # 表面波导
-            if len(res) == 5:
-                altitude[0] = res[3]
-            elif len(res) == 8:
-                bottom[1] = res[5]
-                altitude[1] = res[4] - res[5]
-            elif len(res) == 200:
-                loss = res
-            else:
-                altitude[2] = res[0]
-        return bottom, altitude, loss
-
-
+        if len(calcu_duct("B")) != 0:
+            altitude[0] = calcu_duct("B")[3][0] * 1000
+        res = calcu_duct("X")
+        bottom[1], altitude[1] = res[5][0], (res[4]-res[5])[0] * 1000
+        if isinstance(calcu_duct("Z"), int):
+            altitude[2] = calcu_duct("Z") * 1000
+        else:
+            altitude[2] = calcu_duct("Z")[0] * 1000
+        loss = calcu_duct("E").tolist()
+        Electron = []
+        for i in range(200):
+            for j in range(200):
+                if loss is None:
+                    Electron.append([i, j, random.randint(0, 200)])
+                else:
+                    Electron.append([i, j, np.float(loss[i][j])])
+        return bottom, altitude, Electron
 

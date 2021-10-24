@@ -1,7 +1,7 @@
 #!/usr/bin/env python 
 # -*- coding:utf-8 -*-
 import numpy as np
-# from data import SP
+from algorithm import SP
 
 def generate_data_diancichuanbo(ref, h):
     pre_data = np.zeros((5, ref.shape[1]))
@@ -135,6 +135,7 @@ def generate_data_diancichuanbo(ref, h):
                 #发生表面波导2
                 q=0
                 c1=0
+                zb=0
                 for k in range(0, tidu2.shape[0]):
                     if (tidu2[k][i] != 0):
                         m = tidu2[k][i]
@@ -156,10 +157,7 @@ def generate_data_diancichuanbo(ref, h):
     return pre_data
 
 def dianciLoss(ref, h):
-    # if engine is None:
-    #     engine = matlab.engine.start_matlab()
     pre_data = generate_data_diancichuanbo(ref, h)
-    SP = None
     loss = SP.spe(pre_data[0][0], pre_data[1][0], pre_data[2][0], pre_data[3][0], pre_data[4][0])
     # SP.spe(0.137, 100.0, -0.043, 300, 0, loss)
     loss = np.array(loss)

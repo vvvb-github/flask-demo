@@ -6,11 +6,12 @@ from scipy.interpolate import interp1d
 
 
 # p气压 t温度，shidu相对湿度，z高度,计算得到某一高度的大气折射率
-def zheshelv(t, p, shidu, z):
-    # e为饱和水汽压
-    e = 6.112 * exp(17.67 * t / (t + 243.5))
-    e = e * shidu
-    M = 77.6 * p / t + 3.73 * pow(10, 5) * e / (t * t) + 0.157 * z
+def zheshelv(t,p,shidu,z):
+    #e为饱和水汽压
+    e=6.112*exp(17.67*t/(t+243.5))
+    e=e*shidu/100
+    T = t+273.15
+    M=77.6*(p+4810*e/T)/T+157*z
     return M.real
 
 

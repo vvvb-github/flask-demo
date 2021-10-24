@@ -38,7 +38,7 @@ class FileHelper:
                 if flag > 0:
                     flag -= 1
                     continue
-                alt = float(line[5])
+                alt = float(line[5])/1000
                 if alt > limit:
                     break
                 tem = float(line[1])
@@ -65,10 +65,10 @@ class FileHelper:
                 temperature = float(temp[1])
                 press = float(temp[2])
                 humidity = float(temp[3])
-                altitude = float(temp[4])
+                altitude = float(temp[4])/1000
                 direction = float(temp[7])
                 wind = float(temp[8])
-                dataset.append([temperature, press, humidity, altitude, direction, wind])
+                dataset.append([altitude, temperature, press, humidity])
         return dataset
 
     # 更正：直接使用正则表达式来剔除字符串中的空字符
@@ -84,7 +84,7 @@ class FileHelper:
                     flag -= 1
                     continue
                 temp = re.split(r"\s+", line)
-                altitude = float(temp[7])
+                altitude = float(temp[7])/1000
                 if altitude > limit:
                     break
                 press = float(temp[3])
@@ -92,7 +92,7 @@ class FileHelper:
                 humidity = float(temp[4])
                 wind = float(temp[6])
                 direction = float(temp[5])
-                dataset.append([altitude, temperature, press, wind, humidity, direction])
+                dataset.append([altitude, temperature, press, humidity])
         return dataset
 
     # 读取csv文件 csv文件是以逗号作为分隔的
@@ -142,7 +142,6 @@ class FileHelper:
         maximum_value = None # 最大值
         sample_count = None # 文件中的样本数量（以时间作为基准）
         altitude = [] # 每一组样本中包含的海拔高度
-        time = [] # 样本时间
         hum_tem = [] # 样本数据（内部每个元素为一个list,代表了随着海拔变化高度/湿度的变化
         l = 0
         with open(filepath, "r", encoding='utf-8') as f:
@@ -170,14 +169,13 @@ class FileHelper:
                     minute = int(temp[4])
                     second = int(temp[5])
                     temp_date = datetime(year, month, day, hour, minute, second)
-                    time.append(temp_date)
-                    temp_list = []
+                    date_count = l-8
                     for i in range(7, altitude_count):
                         # 需要相对湿度还是绝对湿度？
-                        temp_list.append(float(temp[i]))
-                    hum_tem.append(temp_list)
+                        temp_list = [date_count, altitude[i - 7], float(temp[i])]
+                        hum_tem.append(temp_list)
                 l = l + 1
-        return time, altitude, hum_tem
+        return hum_tem, maximum_value, minimum_value, sample_count, altitude[-1]
 
     # 读取DDB3文件，获取其中的时间和气温、海温、相对湿度、风速、压强
     def ReadDDB3(self, filepath):

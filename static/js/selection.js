@@ -20,7 +20,7 @@ select_button.addEventListener("click",function (){
         window.location.href='CSV' + '/' + main_select.options[main_select.selectedIndex].value
     }
     if(path_url === '/tem-hum'){
-        window.location.href='ASW' + '/' + main_select.options[main_select.selectedIndex].value
+        window.location.href='ASC' + '/' + main_select.options[main_select.selectedIndex].value
     }
 
 })

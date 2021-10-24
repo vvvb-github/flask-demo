@@ -48,6 +48,7 @@ app.config['UPLOAD_FOLDER'] = '/upload'
 
 # 创建算法对象
 algorithm = Algorithm()
+file_helper = FileHelper()
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -69,11 +70,11 @@ class User(db.Model):
     date = db.Column(db.DateTime)
     remark = db.Column(db.String(255))
     chosenFile = db.Column(db.String(255))
-    chosenASWFile = db.Column(db.String(255))
+    chosenASCFile = db.Column(db.String(255))
     chosenCSVFile = db.Column(db.String(255))
 
     def __init__(self, account, name, phone_number, email_address, department, password, permission, authority_level,
-                 status, date, remark, chonse_file, chosen_asw_file, chosen_csv_file):
+                 status, date, remark, chonse_file, chosen_asc_file, chosen_csv_file):
         self.account = account
         self.name = name
         self.phoneNumber = phone_number
@@ -86,13 +87,13 @@ class User(db.Model):
         self.date = date
         self.remark = remark
         self.chosenFile = chonse_file
-        self.chosenASWFile = chosen_asw_file
+        self.chosenASCFile = chosen_asc_file
         self.chosenCSVFile = chosen_csv_file
 
     def __repr__(self):
         return '<User %r %r %r %r %r %r %r %r %r %r %r %r %r>' % \
                (self.account, self.name, self.phoneNumber, self.emailAddress, self.department, self.password,
-                self.permission, self.authorityLevel, self.status, self.remark, self.chosenFile, self.chosenASWFile,
+                self.permission, self.authorityLevel, self.status, self.remark, self.chosenFile, self.chosenASCFile,
                 self.chosenCSVFile)
 
     # flask-login 需要的方法，获得用户的主键
@@ -426,7 +427,7 @@ def index_default():
     if temp_file is None:
         temp_file = Files.query.filter_by(filetype='default').first()
     if temp_file is None:
-        temp_file = Files('无文件，请上传文件！', '', datetime.now(), '', '')
+        temp_file = Files('无文件，请上传文件！', None, datetime.now(), '', '')
     current_file = {
         'filename': temp_file.filename,
         'filetype': temp_file.filetype,
@@ -436,12 +437,18 @@ def index_default():
     }
     if current_file['filetype'] is not None:
         real_type = current_file['filename'].split('.')[-1]
+        real_path = basedir + os.path.join(app.config['UPLOAD_FOLDER'], current_file['filename'])
+        real_path = real_path.replace('\\', '/')
+        print(real_type)
         if real_type == 'tpu' or real_type == 'TPU':
-            real_path = basedir + os.path.join(app.config['UPLOAD_FOLDER'], current_file['filename'])
-            real_path = real_path.replace('\\', '/')
             chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'], chart_data['ele_data'] \
                 = algorithm.getTPU2Bar(real_path)
-       
+        elif real_type == 'txt' or real_type == 'TXT':
+            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'], chart_data['ele_data'] \
+                = algorithm.getTXT2Bar(real_path)
+        else:
+            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'], chart_data['ele_data'] \
+                = algorithm.getNUM2Bar(real_path)
 
     return render_template('index.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
 
@@ -465,9 +472,9 @@ def change_file(filename):
     return redirect(url_for('index_default'))
 
 
-@app.route('/ASW/<filename>')
+@app.route('/ASC/<filename>')
 @login_required
-def change_asw_file(filename):
+def change_asc_file(filename):
     temp_file = Files.query.filter_by(filename=filename).first()
     if temp_file is None:
         return "文件不存在！请返回重试"
@@ -478,10 +485,10 @@ def change_asw_file(filename):
         'subject': temp_file.subject,
         'owner': temp_file.owner
     }
-    if temp_file is not None and current_file['filetype'] == 'asw':
+    if temp_file is not None and current_file['filetype'] == 'asc':
         temp_user = User.query.filter_by(account=current_user.account).first()
         if temp_user is not None:
-            temp_user.chosenASWFile = temp_file.filename
+            temp_user.chosenASCFile = temp_file.filename
             db.session.commit()
     return redirect(url_for('tem_hum_page'))
 
@@ -515,10 +522,9 @@ def evaporation_page():
     # 声明主页图像所需要的数据Json
     chart_data = {
         # 蒸发波导高度数据
-        'hpc_data': {
-            'altitude': None,
-            'humidity': None,
+        'line_data': {
             'time': None,
+            'altitude': None
         },
     }
     all_files = Files.query.filter_by(filetype='csv').all()
@@ -543,7 +549,7 @@ def evaporation_page():
     if temp_file is None:
         temp_file = Files.query.filter_by(filetype='csv').first()
     if temp_file is None:
-        temp_file = Files('无文件，请上传文件！', '', datetime.now(), '', '')
+        temp_file = Files('无文件，请上传文件！', None, datetime.now(), '', '')
     current_file = {
         'filename': temp_file.filename,
         'filetype': temp_file.filetype,
@@ -551,30 +557,30 @@ def evaporation_page():
         'subject': temp_file.subject,
         'owner': temp_file.owner
     }
+    if current_file['filetype'] is not None:
+        real_type = current_file['filename'].split('.')[-1]
+        real_path = basedir + os.path.join(app.config['UPLOAD_FOLDER'], current_file['filename'])
+        real_path = real_path.replace('\\', '/')
+        print(real_type)
+        if real_type == 'csv' or real_type == 'CSV':
+            chart_data['line_data']['time'], chart_data['line_data']['altitude'] \
+                = algorithm.getCSV2Line(real_path)
     return render_template('evaporation.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
 
 
 # 温度与湿度廓线界面
-# 此页面包含图像：温度廓线或湿度廓线(对应文件格式HPC.ASW或TPC.ASW)
+# 此页面包含图像：温度廓线或湿度廓线(对应文件格式HPC.ASC或TPC.ASC)
 @app.route('/tem-hum', methods=['POST', 'GET'])
 @login_required
 def tem_hum_page():
     # 声明主页图像所需要的数据Json
     chart_data = {
-        # hpc 湿度廓线图
-        'hpc_data': {
-            'altitude': None,
-            'humidity': None,
-            'time': None,
-        },
-        # tpc 温度廓线图
-        'tpc_data': {
-            'altitude': None,
-            'temperature': None,
-            'time': None,
-        }
+        'flag': None,
+        'dataset': None,
+        'max': None,
+        'min': None
     }
-    all_files = Files.query.filter_by(filetype='asw').all()
+    all_files = Files.query.filter_by(filetype='asc').all()
     files = []
     for i in all_files:
         j = {
@@ -588,15 +594,15 @@ def tem_hum_page():
     # 获得当前用户
     user = get_current_user()
     # 获得用户选择的文件
-    current_file_name = current_user.chosenASWFile
+    current_file_name = current_user.chosenASCFile
     if current_file_name is not None:
         temp_file = Files.query.filter_by(filename=current_file_name).first()
     else:
-        temp_file = Files.query.filter_by(filetype='asw').first()
+        temp_file = Files.query.filter_by(filetype='asc').first()
     if temp_file is None:
-        temp_file = Files.query.filter_by(filetype='asw').first()
+        temp_file = Files.query.filter_by(filetype='asc').first()
     if temp_file is None:
-        temp_file = Files('无文件，请上传文件！', '', datetime.now(), '', '')
+        temp_file = Files('无文件，请上传文件！', None, datetime.now(), '', '')
     current_file = {
         'filename': temp_file.filename,
         'filetype': temp_file.filetype,
@@ -604,6 +610,17 @@ def tem_hum_page():
         'subject': temp_file.subject,
         'owner': temp_file.owner
     }
+    if current_file['filetype'] is not None:
+        real_type = current_file['filename'].split('.')[-1]
+        real_path = basedir + os.path.join(app.config['UPLOAD_FOLDER'], current_file['filename'])
+        real_path = real_path.replace('\\', '/')
+        hum_tem_type = current_file['filename'].split('.')[-2]
+        if real_type == 'asc' or real_type == 'ASC':
+            if hum_tem_type == 'tpc' or hum_tem_type == 'TPC':
+                chart_data['flag'] = 'TPC'
+            if hum_tem_type == 'hpc' or hum_tem_type == 'HPC':
+                chart_data['flag'] = 'HPC'
+            chart_data['dataset'], chart_data['max'], chart_data['min'] = file_helper.ReadHPC_TPC(real_path)
     return render_template('tem-hum.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
 
 
@@ -823,8 +840,8 @@ def upload_files():
         realType = 'default'
     elif tempType == 'csv' or tempType == 'CSV':
         realType = 'csv'
-    elif tempType == 'ASW' or tempType == 'asw':
-        realType = 'asw'
+    elif tempType == 'ASC' or tempType == 'asc':
+        realType = 'asc'
     else:
         realType = 'unKnow'
 

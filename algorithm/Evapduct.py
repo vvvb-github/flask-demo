@@ -80,4 +80,4 @@ def evap_duct(ref, h):
     if(count!=0):
         return res[1]
     else:
-        return []
+        return 0

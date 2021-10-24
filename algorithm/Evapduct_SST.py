@@ -410,6 +410,12 @@ def evap_duct_SST(t,ts,RH,u,P):
                 # print(region 16")
                 ZL=Rib*Lom**2/Loh*sum(bet3*coefficients3[7,:])
 
+        zphistarm = 0
+        zphistarh = 0
+        zpsim = 0
+        zpsim0 = 0
+        zpsih = 0
+        zpsih0 = 0
         if ZL < 0:
             zxx = (1.0 - cgammam * ZL) ** calpham
             zyy = (1.0 - cgammah * ZL) ** calphah

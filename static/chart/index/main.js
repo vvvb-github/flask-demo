@@ -1,6 +1,4 @@
 
-// 蒸发波导折线图 line_data
-let Chart_line = echarts.init(document.getElementById('echarts-line'));
 // 波导高度柱形图 bar_data
 let Chart_bar = echarts.init(document.getElementById('echarts-bar'));
 // 电磁波损耗计算图
@@ -230,79 +228,79 @@ option6 = {
 };
 Chart_ele.setOption(option6)
 
-option = {
-    tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-            animation: false
-        }
-    },
-    legend: {
-        data: ['蒸发波导高度'],
-        left: 10
-    },
-    toolbox: {
-        feature: {
-            dataZoom: {
-                yAxisIndex: 'none'
-            },
-            dataView: {readOnly: true},
-            magicType: {type: ['line', 'bar']},
-            restore: {},
-            saveAsImage: {}
-        }
-    },
-    axisPointer: {
-        link: {xAxisIndex: 'all'}
-    },
-    dataZoom: [
-        {
-            show: true,
-            realtime: true,
-            start: 80,
-            end: 100
-        }
-    ],
-    xAxis: [
-        {
-            type: 'category',
-            boundaryGap: false,
-            axisLine: {onZero: true},
-            data: chart_data.line_data.time
-        }
-    ],
-    yAxis: [
-        {
-            name: '高度(m)',
-            type: 'value'
-        }
-    ],
-    series: [
-        {
-            name: '蒸发波导高度',
-            type: 'line',
-            symbolSize: 8,
-			itemStyle: {
-            	normal:{
-            		 color: '#FF8247'
-            	}
-            },
-			markPoint: {
-			    data: [
-			        {type: 'max', name: '最大值'},
-			        {type: 'min', name: '最小值'}
-			    ]
-			},
-			markLine: {
-			    data: [
-			        {type: 'average', name: '平均值'}
-			    ]
-			},
-            hoverAnimation: false,
-            data: chart_data.line_data.altitude
-        }
-    ]
-};
+// option = {
+//     tooltip: {
+//         trigger: 'axis',
+//         axisPointer: {
+//             animation: false
+//         }
+//     },
+//     legend: {
+//         data: ['蒸发波导高度'],
+//         left: 10
+//     },
+//     toolbox: {
+//         feature: {
+//             dataZoom: {
+//                 yAxisIndex: 'none'
+//             },
+//             dataView: {readOnly: true},
+//             magicType: {type: ['line', 'bar']},
+//             restore: {},
+//             saveAsImage: {}
+//         }
+//     },
+//     axisPointer: {
+//         link: {xAxisIndex: 'all'}
+//     },
+//     dataZoom: [
+//         {
+//             show: true,
+//             realtime: true,
+//             start: 80,
+//             end: 100
+//         }
+//     ],
+//     xAxis: [
+//         {
+//             type: 'category',
+//             boundaryGap: false,
+//             axisLine: {onZero: true},
+//             data: chart_data.line_data.time
+//         }
+//     ],
+//     yAxis: [
+//         {
+//             name: '高度(m)',
+//             type: 'value'
+//         }
+//     ],
+//     series: [
+//         {
+//             name: '蒸发波导高度',
+//             type: 'line',
+//             symbolSize: 8,
+// 			itemStyle: {
+//             	normal:{
+//             		 color: '#FF8247'
+//             	}
+//             },
+// 			markPoint: {
+// 			    data: [
+// 			        {type: 'max', name: '最大值'},
+// 			        {type: 'min', name: '最小值'}
+// 			    ]
+// 			},
+// 			markLine: {
+// 			    data: [
+// 			        {type: 'average', name: '平均值'}
+// 			    ]
+// 			},
+//             hoverAnimation: false,
+//             data: chart_data.line_data.altitude
+//         }
+//     ]
+// };
 
 option1 = {
   title: {
@@ -369,5 +367,5 @@ option1 = {
     }
   ]
 };
-Chart_line.setOption(option)
+// Chart_line.setOption(option)
 Chart_bar.setOption(option1)
