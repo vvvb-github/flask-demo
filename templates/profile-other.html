@@ -25,10 +25,8 @@
 			<script src="{{ url_for('static', filename="assets/js/html5shiv.min.js") }}"></script>
 			<script src="{{ url_for('static', filename="assets/js/respond.min.js") }}"></script>
 		<![endif]-->
-        <script src="{{ url_for('static', filename="js/socket.io.dev.js") }}"></script>
         <!--socket io get information -->
         <script src="{{ url_for('static', filename="js/notification.js") }}"></script>
-        <script src="{{ url_for('static', filename="js/socketio.js") }}"></script>
     </head>
     <body>
 	
@@ -39,10 +37,10 @@
 			
 			<!-- Logo -->
 			<div class="header-left">
-				<a href="index" class="logo">
+				<a href="{{ url_for('index_default') }}" class="logo">
 					<img src="{{ url_for('static', filename="assets/img/logo.png") }}" alt="Logo">
 				</a>
-				<a href="index" class="logo logo-small">
+				<a href="{{ url_for('index_default') }}" class="logo logo-small">
 					<img src="{{ url_for('static', filename="assets/img/logo-small.png") }}" alt="Logo" width="30" height="30">
 				</a>
 			</div>
@@ -83,7 +81,7 @@
 								</ul>
 							</div>
 							<div class="topnav-dropdown-footer">
-								<a href="report">查看所有报告信息</a>
+								<a href="{{ url_for('report_page') }}">查看所有报告信息</a>
 							</div>
 						</div>
 					</li>
@@ -121,8 +119,8 @@
 									<p class="text-muted mb-0">Administrator</p>
 								</div>
 							</div>
-							<a class="dropdown-item" href="profile">配置文件</a>
-							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
+							<a class="dropdown-item" href="{{ url_for('profile_page') }}">配置文件</a>
+							<a class="dropdown-item" href="{{ url_for('logout') }}"><font color="#E63C3C">退出</font></a>
 						</div>
 					</li>
 					<!-- /User Menu -->

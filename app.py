@@ -582,7 +582,9 @@ def tem_hum_page():
         'flag': None,
         'dataset': None,
         'max': None,
-        'min': None
+        'min': None,
+        'date_max': None,
+        'alt_max': None
     }
     all_files = Files.query.filter_by(filetype='asc').all()
     files = []
@@ -624,7 +626,8 @@ def tem_hum_page():
                 chart_data['flag'] = 'TPC'
             if hum_tem_type == 'hpc' or hum_tem_type == 'HPC':
                 chart_data['flag'] = 'HPC'
-            chart_data['dataset'], chart_data['max'], chart_data['min'] = file_helper.ReadHPC_TPC(real_path)
+            chart_data['dataset'], chart_data['max'], chart_data['min'], chart_data['date_max'], chart_data['alt_max'] \
+                = file_helper.ReadHPC_TPC(real_path)
     return render_template('tem-hum.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
 
 
@@ -1115,88 +1118,6 @@ def clearDB():
         'message': '成功清空数据库！'
     }
     return json
-
-
-# 接收新的客户端连接
-@socket_io.on('connect')
-def connect():
-    global client_num
-    client_num += 1
-    print('新的连接：' + str(client_num))
-
-
-# 客户端断开连接
-@socket_io.on('disconnect')
-def disconnect():
-    global client_num
-    client_num -= 1
-    current_user.status = 0
-    temp_user = User.query.filter_by(account=current_user.account).first()
-    if temp_user is None:
-        logout_user()
-    else:
-        temp_user.status = 0
-        db.session.commit()
-    print('断开连接：' + str(client_num))
-
-
-# 客户端用户通告自己在线
-# socket事件：客户端通告在线，并请求报表信息
-# socket响应：获取当前于用户信息，并更新用户状态，并发送报表信息
-@socket_io.on('online_info')
-def user_status_update():
-    current_user.status = 1
-    temp_user = User.query.filter_by(account=current_user.account).first()
-    if temp_user is None:
-        logout_user()
-    else:
-        temp_user.status = 1
-        db.session.commit()
-
-
-# 客户端请求状态栏信息
-# socket事件：用户切换页面，请求状态栏信息
-# socket响应：获取当前用户信息，发送状态栏信息
-@socket_io.on('state')
-def send_state_information():
-    report = Info.query.filter(
-        or_(Info.receiverID == current_user.account, Info.senderID == current_user.account)).order_by(
-        Info.sendDate.desc())
-    infos = []
-    infos_count = 4
-    i = 1
-    for r in report:
-        temp = {
-            'keyID': r.keyID,
-            'senderID': r.senderID,
-            'receiverID': r.receiverID,
-            'sendDate': r.sendDate.strftime("%Y/%m/%d %H:%M:%S"),
-            'result': r.result,
-            'content': r.content,
-            'subject': r.subject,
-            'remark': r.remark
-        }
-        infos.append(temp)
-        if i == infos_count:
-            break
-        i += 1
-    emit('send_state', infos)
-
-
-# socket事件：客户端请求新"表面波导与悬空波导诊断"数据
-# socket响应：发送最新的一条表面波导数据至客户端，同时附带有最新的Page表数据，至于是否更新视图，交给客户端判断
-# 对应DB表格:DW与SW
-@socket_io.on('request_sfe_data')
-def send_new_sfe_data():
-    # 填充
-    a = 20
-
-
-# socket异常处理
-@socket_io.on_error_default
-def default_error_handler(e):
-    print(request.event['message'])
-    print(request.event['args'])
 
 
 # ----------------------------------------------------------------------------------------------------------------------
