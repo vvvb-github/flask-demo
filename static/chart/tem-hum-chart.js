@@ -72,7 +72,7 @@ option_hum = {
       {
         name: '大气湿度',
         type: 'scatter',
-        symbolSize: 5,
+        symbolSize: 12,
         data: chart_data.dataset
       }
     ]
@@ -149,7 +149,7 @@ option_tmp = {
       {
         name: '大气温度',
         type: 'scatter',
-        symbolSize: 5,
+        symbolSize: 12,
         data: chart_data.dataset
       }
     ]

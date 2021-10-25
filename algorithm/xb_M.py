@@ -87,8 +87,6 @@ def xuankong(array,H):
                     break
             break
     xuankong=xuankong.reshape((-1, 1))
-    if xuankong[0] != 0:
-        return xuankong
     return xuankong
 
 #判断表面波导
@@ -108,9 +106,7 @@ def biaomian(array,H):
                     break
             break
     biaomian=biaomian.reshape((-1, 1))
-    if biaomian[0] != 0:
-        return biaomian
-    return []
+    return biaomian
 
 if __name__ == "__main__":
     data = np.load("../data/gaokong.npy")

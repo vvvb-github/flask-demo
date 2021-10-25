@@ -14,14 +14,14 @@ from algorithm import api
 from flask_socketio import *
 from flask import render_template, redirect, abort
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, Form
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from wtforms import StringField, PasswordField, validators, SubmitField
 from wtforms.validators import DataRequired, EqualTo, InputRequired, Email
 import time
 from algorithm.Algorithm import Algorithm
 from algorithm.FileHelper import FileHelper
-
+from algorithm.Radar import Radar_Coe
 app = Flask(__name__)
 
 # 解决跨域问题
@@ -39,6 +39,10 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=1)
 # 创建数据库对象
 db = SQLAlchemy(app=app)
 db.create_all()
+
+# 创建雷达参数
+R = Radar_Coe()
+print("雷达参数结束")
 
 # 初始化socketIO
 app.config['SECRET_KEY'] = 'secret!'
@@ -366,6 +370,31 @@ class ManageSearchForm(FlaskForm):
     attribution = StringField('属性')
     content = StringField('内容')
 
+class Radar_information(Form):
+    # 雷达频率
+    RF = StringField('RF')
+    # 雷达峰值频率
+    RT = StringField('RT')
+    # 天线高度
+    AH = StringField('AH')
+    # 天线增益
+    AG = StringField('AG')
+    # 波束宽度
+    BW = StringField('BW')
+    # 发射仰角
+    LE = StringField('LE')
+    # 最小信噪比
+    MN = StringField('MN')
+    # 接收机带宽
+    RW = StringField('RW')
+    # 系统综合损耗
+    SL = StringField('SL')
+    # 接收机噪声系数
+    NC = StringField('NC')
+    # 目标高度
+    TH = StringField('TH')
+    # 目标散射截面
+    RR = StringField('RR')
 
 # 对登录管理对象的实例化
 login_manager = LoginManager()
@@ -393,6 +422,7 @@ def direct_index():
 @login_required
 def index_default():
     # 声明主页图像所需要的数据Json
+    radar_data = R.Lossflag
     chart_data = {
         # 波导折线图
         'line_data': {
@@ -407,7 +437,11 @@ def index_default():
         # 雷达损耗图
         'radar_data': None,
         # 电磁波损耗图
-        'ele_data': None
+        'ele_data': None,
+        # 陷获频率
+        'trap_freq': None,
+        # 截至波长
+        'cutoff_len': None
     }
     all_files = Files.query.filter_by(filetype='default').all()
     files = []
@@ -445,16 +479,16 @@ def index_default():
         real_path = real_path.replace('\\', '/')
         print(real_type)
         if real_type == 'tpu' or real_type == 'TPU':
-            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'], chart_data['ele_data'] \
+            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'], chart_data['ele_data'], chart_data['trap_freq'], chart_data['cutoff_len'] \
                 = algorithm.getTPU2Bar(real_path)
         elif real_type == 'txt' or real_type == 'TXT':
-            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'], chart_data['ele_data'] \
+            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'], chart_data['ele_data'], chart_data['trap_freq'], chart_data['cutoff_len'] \
                 = algorithm.getTXT2Bar(real_path)
         else:
-            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'], chart_data['ele_data'] \
+            chart_data['bar_data']['bottom'], chart_data['bar_data']['altitude'], chart_data['ele_data'], chart_data['trap_freq'], chart_data['cutoff_len'] \
                 = algorithm.getNUM2Bar(real_path)
 
-    return render_template('index.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
+    return render_template('index.html', user=user, files=files, chart_data=chart_data, current_file=current_file, radar_data=radar_data)
 
 
 # 主页更改文件逻辑(function)
@@ -578,6 +612,7 @@ def evaporation_page():
 @login_required
 def tem_hum_page():
     # 声明主页图像所需要的数据Json
+    radar_data = R.Lossflag
     chart_data = {
         'flag': None,
         'dataset': None,
@@ -628,7 +663,8 @@ def tem_hum_page():
                 chart_data['flag'] = 'HPC'
             chart_data['dataset'], chart_data['max'], chart_data['min'], chart_data['date_max'], chart_data['alt_max'] \
                 = file_helper.ReadHPC_TPC(real_path)
-    return render_template('tem-hum.html', user=user, files=files, chart_data=chart_data, current_file=current_file)
+    return render_template('tem-hum.html', user=user, files=files, chart_data=chart_data, current_file=current_file, radar_data=radar_data)
+
 
 
 # 个人资料界面（page）
@@ -901,6 +937,41 @@ def delete_file(filename):
     db.session.commit()
     return redirect(url_for('file_management_page'))
 
+# 修改雷达参数
+@app.route('/radar_update', methods=['POST', 'GET'])
+def update_radar():
+    form = Radar_information()
+    # 判断是否验证提交
+    if form.validate_on_submit():
+        # 雷达频率(MHz)
+        print("electro validate!")
+        RF = form.RF.data
+        # 雷达峰值功率(KW)
+        RT = form.RT.data
+        # 天线高度(m)
+        AH = form.AH.data
+        # 天线增益(dB)
+        AG = form.AG.data
+        # 波束宽度
+        BW = form.BW.data
+        # 发射仰角
+        LE = form.LE.data
+        # 最小信噪比
+        MN = form.MN.data
+        # 接收机带宽
+        RW = form.RW.data
+        # 系统综合损耗
+        SL = form.SL.data
+        # 接收机噪声系数
+        NC = form.NC.data
+        # 目标高度
+        TH = form.TH.data
+        # 目标散射截面
+        RR = form.RR.data
+        R.updata(RF, RT, AH, AG, BW, LE, MN, RW, SL, NC, TH, RR)
+    UpData = R.get()
+    user = get_current_user()
+    return render_template('radar-infor.html', form=form, radar_infor=UpData, radar_data=R.Lossflag, user=user)
 
 # 删除用户(func)
 @app.route('/user/delete/<userID>')

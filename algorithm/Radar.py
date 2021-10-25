@@ -31,33 +31,32 @@ class Radar_Coe():
     # 当前更新的时间
     this_time = ""
     # 保存LossFlag值
-    LossFlag = 0
+    LossFlag = None
     # 当前值是否可以用于计算雷达传播
     def __init__(self):
         radar_his = []
-       #  with open("radar_infor.txt", "r") as f:
-       #      for line in f.readlines():
-       #          radar_his = line.strip("\n")
-       #          radar_his = radar_his.split()
-       #      f.close()
-       # # print(radar_his)
-       #  if len(radar_his) != 0:
-       #      self.radar_fre = float(radar_his[0])
-       #      self.radar_top = float(radar_his[1])
-       #      self.antenna_high = float(radar_his[2])
-       #      self.antenna_gain = float(radar_his[3])
-       #      self.beam_width = float(radar_his[4])
-       #      self.launch_ele = float(radar_his[5])
-       #      self.min_noise = float(radar_his[6])
-       #      self.rec_width = float(radar_his[7])
-       #      self.sys_loss = float(radar_his[8])
-       #      self.noise_coe = float(radar_his[9])
-       #      self.target_high = float(radar_his[10])
-       #      self.rcs_radar = float(radar_his[11])
-       #      self.this_time = radar_his[12]
-        self.FLAG = True
-        # 保存LossFlag值
-        self.loss_cal()
+        with open("radar_infor.txt", "r") as f:
+            for line in f.readlines():
+                radar_his = line.strip("\n")
+                radar_his = radar_his.split()
+            f.close()
+        if len(radar_his) != 0:
+            self.radar_fre = float(radar_his[0])
+            self.radar_top = float(radar_his[1])
+            self.antenna_high = float(radar_his[2])
+            self.antenna_gain = float(radar_his[3])
+            self.beam_width = float(radar_his[4])
+            self.launch_ele = float(radar_his[5])
+            self.min_noise = float(radar_his[6])
+            self.rec_width = float(radar_his[7])
+            self.sys_loss = float(radar_his[8])
+            self.noise_coe = float(radar_his[9])
+            self.target_high = float(radar_his[10])
+            self.rcs_radar = float(radar_his[11])
+            self.this_time = radar_his[12]
+            self.FLAG = True
+            # 保存LossFlag值
+            self.loss_cal()
     def updata(self, RF="", RT="", AH="", AG="", BW="", LE="",
                MN="", RW="", SL="", NC="", TH="", RR=""):
         if RF != "":
@@ -118,10 +117,9 @@ class Radar_Coe():
             self.antenna_gain) - float(self.sys_loss) - float(self.noise_coe) - 10 * math.log10(float(self.min_noise))
             self.Lossflag = Lossflag * 0.5
         else:
-            self.LossFlag = 0
+            self.LossFlag = None
 
 
 if __name__ == "__main__":
     R = Radar_Coe()
-    # R.updata()
     print(R.Lossflag)

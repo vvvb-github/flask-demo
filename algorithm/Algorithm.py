@@ -10,7 +10,7 @@ from algorithm.Evapduct_SST import evap_duct_SST
 from algorithm.xb_M import xuankong, biaomian
 from algorithm.Utils import Interplot, generate_data
 from algorithm.ElectroPro import dianciLoss
-
+from algorithm.trapFrequency import getTrap
 class Algorithm:
     def __init__(self, fileRoot="", max_workers=4, max_num=299, interplot_kind="cubic"):
         self.fileHelper = FileHelper(fileRoot)
@@ -69,13 +69,13 @@ class Algorithm:
             else:
                 val = dianciLoss(ref, h)
             return val
-
         bottom = [0, 0, 0]
         altitude = [0, 0, 0]
-        if len(calcu_duct("B")) != 0:
-            altitude[0] = calcu_duct("B")[3][0] * 1000
-        res = calcu_duct("X")
-        bottom[1], altitude[1] = res[5][0], (res[4]-res[5])[0] * 1000
+        resB = calcu_duct("B")
+        resX = calcu_duct("X")
+        trapFreq, cutOff = getTrap(resX, resB)
+        altitude[0] = resB[3][0] * 1000
+        bottom[1], altitude[1] = resX[5][0], (resX[4]-resX[5])[0] * 1000
         if isinstance(calcu_duct("Z"), int):
             altitude[2] = calcu_duct("Z") * 1000
         else:
@@ -88,5 +88,5 @@ class Algorithm:
                     Electron.append([i, j, random.randint(0, 200)])
                 else:
                     Electron.append([i, j, np.float(loss[i][j])])
-        return bottom, altitude, Electron
+        return bottom, altitude, Electron, trapFreq, cutOff
 
