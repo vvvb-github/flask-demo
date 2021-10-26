@@ -6,19 +6,36 @@ let Chart_radar = echarts.init(document.getElementById('echarts-radar'));
 // 雷达损耗计算图
 let Chart_ele = echarts.init(document.getElementById('echarts-ele'))
 
-function count(o){
-	var t = typeof o;
-	if(t == 'string'){
-		return o.length;
-	}else if(t == 'object'){
-		var n = 0;
-		for(var i in o){
-			n++;
+let radar_data = [];
+let elec_min = 0;
+let elec_max = 200;
+
+function initial_radar() {
+    if (chart_data.ele_data == null) return;
+    elec_min = chart_data.ele_data[0][2];
+    elec_max = chart_data.ele_data[0][2];
+	if(radar_cost>0){
+		for(i=0;i<200;i++){
+			for(j=0;j<200;j++){
+			    if (elec_min > chart_data.ele_data[i*200+j][2]) elec_min = chart_data.ele_data[i*200+j][2];
+			    if (elec_max < chart_data.ele_data[i*200+j][2]) elec_max = chart_data.ele_data[i*200+j][2];
+			    radar_data.push([chart_data.ele_data[i*200+j][0], chart_data.ele_data[i*200+j][1], chart_data.ele_data[i*200+j][2]]);
+				if(chart_data.ele_data[i*200+j][2] > radar_cost) radar_data[i*200+j][2] = 1;
+				else radar_data[i*200+j][2] = 0;
+			}
 		}
-		return n;
 	}
-	return false;
+	else{
+		for(i=0;i<200;i++){
+			for(j=0;j<200;j++){
+			    radar_data.push([elec_data[i*200+j][0], elec_data[i*200+j][1], elec_data[i*200+j][2]]);
+				radar_data[i*200+j][2] = 0;
+			}
+		}
+	}
 }
+
+initial_radar();
 
 
 // 蒸发波导信息，时间、波导高度
@@ -109,7 +126,7 @@ option5 = {
     },
     visualMap: {
         min: 0,
-        max: 200,
+        max: 1,
         calculable: true,
         realtime: false,
 		right:'2%',
@@ -121,7 +138,7 @@ option5 = {
     series: {
         name: '雷达传输增益',
         type: 'heatmap',
-        data: chart_data.radar_data,
+        data: radar_data,
         emphasis: {
             itemStyle: {
                 borderColor: '#333',
@@ -202,14 +219,16 @@ option6 = {
         }
     },
     visualMap: {
-        // min: 0,
-        // max: 200,
+        min: elec_min,
+        max: elec_max,
         calculable: true,
         realtime: false,
 		right:'2%',
         bottom:'3%',
         inRange: {
-            color: ['#1C1C1C', '#363636', '#4F4F4F', '#696969', '#828282', '#9C9C9C', '#B5B5B5', '#CFCFCF', '#E8E8E8']
+            color: ['#ad3cff', '#0000ff', '#00b2d3',
+                '#ccfff1', '#ffe9a4', '#ffbe3f',
+                '#ffa742', '#cf512c', '#980603']
         }
     },
     series: {
@@ -227,80 +246,6 @@ option6 = {
     }
 };
 Chart_ele.setOption(option6)
-
-// option = {
-//     tooltip: {
-//         trigger: 'axis',
-//         axisPointer: {
-//             animation: false
-//         }
-//     },
-//     legend: {
-//         data: ['蒸发波导高度'],
-//         left: 10
-//     },
-//     toolbox: {
-//         feature: {
-//             dataZoom: {
-//                 yAxisIndex: 'none'
-//             },
-//             dataView: {readOnly: true},
-//             magicType: {type: ['line', 'bar']},
-//             restore: {},
-//             saveAsImage: {}
-//         }
-//     },
-//     axisPointer: {
-//         link: {xAxisIndex: 'all'}
-//     },
-//     dataZoom: [
-//         {
-//             show: true,
-//             realtime: true,
-//             start: 80,
-//             end: 100
-//         }
-//     ],
-//     xAxis: [
-//         {
-//             type: 'category',
-//             boundaryGap: false,
-//             axisLine: {onZero: true},
-//             data: chart_data.line_data.time
-//         }
-//     ],
-//     yAxis: [
-//         {
-//             name: '高度(m)',
-//             type: 'value'
-//         }
-//     ],
-//     series: [
-//         {
-//             name: '蒸发波导高度',
-//             type: 'line',
-//             symbolSize: 8,
-// 			itemStyle: {
-//             	normal:{
-//             		 color: '#FF8247'
-//             	}
-//             },
-// 			markPoint: {
-// 			    data: [
-// 			        {type: 'max', name: '最大值'},
-// 			        {type: 'min', name: '最小值'}
-// 			    ]
-// 			},
-// 			markLine: {
-// 			    data: [
-// 			        {type: 'average', name: '平均值'}
-// 			    ]
-// 			},
-//             hoverAnimation: false,
-//             data: chart_data.line_data.altitude
-//         }
-//     ]
-// };
 
 option1 = {
   title: {

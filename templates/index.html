@@ -37,11 +37,10 @@
         <script type="text/javascript">
             let files = {{ files|tojson }};
             let chart_data = {{ chart_data|tojson }};
-            let current_file = {{ current_file|tojson }}
+            let current_file = {{ current_file|tojson }};
+            let radar_cost = {{ radar_data|tojson }};
         </script>
         <script src="static/js/loading.js"></script>
-
-
 
 <script>
   $(document).ready(function() {
@@ -129,7 +128,11 @@
 							<i class="fe fe-upload"></i>
 						</a>
 					</li>
-
+                    <li >
+						<a href="radar_update" title="雷达数据更新">
+							<i class="fe fe-info"></i>
+						</a>
+					</li>
 					<li class="nav-item dropdown has-arrow">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
@@ -181,6 +184,7 @@
 									<li><a href="user-management"><font color="#CCCCCC"> 用户管理 </font></a></li>
                                     {% endif %}
 									<li><a href="report"><font color="#CCCCCC"> 信息报表管理 </font></a></li>
+                                    <li><a href="radar-infor"><font color="#CCCCCC"> 雷达信息设置 </font></a></li>
 								</ul>
 							</li>
 						</ul>
@@ -206,6 +210,119 @@
 						</div>
 					</div>
 					<!-- /Page Header -->
+                    <div class="row">
+						<div class="col-sm-4 col-12">
+							<div class="card" style="background-color: #425daf;" onclick="descriptionRow()" title="
+							因客观气象条件而形成的大气波导能否将电磁波捕获在其内形成波导传播与电磁波的波长有关。一般来说，波长越短的电磁波，越容易被波导捕获。能被波导捕获的最大波长称为截止波长，与截止波长相对应的最低电波频率成为最低陷获频率。
+由最大波长的计算公式可知：
+(1)大气波导厚度远大于电磁波波长时，才能捕获电磁波形成波导传播；
+(2)大气波导的厚度愈厚，可形成波导传播的电磁波波长范围的上限愈长；
+(3)大气波导的强度愈强，可形成波导传播的电磁波波长范围的上限愈长。
+							">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-primary border-primary">
+											<i class="fa fe-check"></i>
+										</span>
+										<div class="dash-count">
+											<h3 id="cutoff-len" style="color: ghostwhite;">暂无</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										<h6 class="text-muted">截止波长</h6>
+										<div class="progress progress-sm">
+											<div class="progress-bar bg-primary"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4 col-12">
+							<div class="card" style="background-color: darkgray;" onclick="descriptionRow()" title="
+							因客观气象条件而形成的大气波导能否将电磁波捕获在其内形成波导传播与电磁波的波长有关。一般来说，波长越短的电磁波，越容易被波导捕获。能被波导捕获的最大波长称为截止波长，与截止波长相对应的最低电波频率成为最低陷获频率。
+由最大波长的计算公式可知：
+(1)大气波导厚度远大于电磁波波长时，才能捕获电磁波形成波导传播；
+(2)大气波导的厚度愈厚，可形成波导传播的电磁波波长范围的上限愈长；
+(3)大气波导的强度愈强，可形成波导传播的电磁波波长范围的上限愈长。
+							">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-success">
+											<i class="fa fe-bookmark"></i>
+										</span>
+										<div class="dash-count">
+											<h3 id="trap-freq" style="color: ghostwhite;">暂无</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										<h6 class="text-muted">陷获频率</h6>
+										<div class="progress progress-sm">
+											<div class="progress-bar bg-success" style="background-color: #FDC839 !important;"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+                        <div class="col-sm-4 col-12">
+							<div class="card" style="background-color: black;" onclick="descriptionRow()" title="
+							因客观气象条件而形成的大气波导能否将电磁波捕获在其内形成波导传播与电磁波的波长有关。一般来说，波长越短的电磁波，越容易被波导捕获。能被波导捕获的最大波长称为截止波长，与截止波长相对应的最低电波频率成为最低陷获频率。
+由最大波长的计算公式可知：
+(1)大气波导厚度远大于电磁波波长时，才能捕获电磁波形成波导传播；
+(2)大气波导的厚度愈厚，可形成波导传播的电磁波波长范围的上限愈长；
+(3)大气波导的强度愈强，可形成波导传播的电磁波波长范围的上限愈长。
+							">
+								<div class="card-body">
+									<div class="dash-widget-header">
+										<span class="dash-widget-icon text-success">
+											<i class="fa fe-eye"></i>
+										</span>
+										<div class="dash-count">
+											<h3 id="radar-cost" style="color: ghostwhite;">暂无</h3>
+										</div>
+									</div>
+									<div class="dash-widget-info">
+										<h6 class="text-muted">雷达损耗</h6>
+										<div class="progress progress-sm">
+											<div class="progress-bar bg-success" style="background-color: #FDC839 !important;"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+                    <div class="row" id="description-row" style="display: none">
+						<div class="col-lg-12">
+							<div class="card">
+								<div class="card-header" style="font-size: larger;color: black;">
+									陷获频率与截至波长的相关描述
+									<a data-toggle="modal" href="#picture-refraction" class="btn btn-sm bg-success-light" style="float: right">
+										<i class="fe fe-camera"></i> 大气折射现象图示
+									</a>
+								</div>
+								<div class="card-body">
+									<h6>
+										因客观气象条件而形成的大气波导能否将电磁波捕获在其内形成波导传播与电磁波的波长有关。一般来说，波长越短的电磁波，越容易被波导捕获。能被波导捕获的最大波长称为截止波长，与截止波长相对应的最低电波频率成为最低陷获频率。
+									</h6>
+									<ul>
+										由最大波长的计算公式可知：
+										<li>
+											大气波导厚度远大于电磁波波长时，才能捕获电磁波形成波导传播；
+										</li>
+										<li>
+											大气波导的厚度愈厚，可形成波导传播的电磁波波长范围的上限愈长；
+										</li>
+										<li>
+											大气波导的强度愈强，可形成波导传播的电磁波波长范围的上限愈长。
+										</li>
+									</ul>
+									<p>
+										在通常情况下对于蒸发波导和常见的表面波导，最容易受波导影响而形成波导传播的是<span style="font-weight: bold">分米波</span>(波长100～10 cm ，频率0.3～3 GHz)和<span style="font-weight: bold">厘米波</span>(波长10～1 cm ，频率3～30 GHz)，特别是厘米波。
+										常见的<span style="font-weight: bold">X波段</span>、<span style="font-weight: bold">C波段</span>、<span style="font-weight: bold">S波段</span>雷达发射和接收的电磁波是很容易受大气波导影响而形成波导传播的。
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
                     <div>
                         <div class="card">
                             <div class="col-md-10 col-lg-6" >
@@ -267,10 +384,32 @@
 			<!-- /Page Wrapper -->
 		
 		</div>
+
+        <div class="modal fade" id="radar_update" role="dialog" style="display: none;" aria-hidden="true">
+			<div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">探测雷达基本信息情况
+                    <button class="btn btn-secondary btn-lg" id="detail-button" onclick="radar_detail()" style="float: right;">隐藏</button>
+                    </h4>
+                    <p>本次更新时间：<span id="update-time" style="margin-bottom:0;color:#009efb;"></span></p>
+                </div>
+            </div>
+		</div>
+
+        <script type="text/javascript">
+            if (chart_data.trap_freq != null) {
+                document.getElementById("cutoff-len").innerHTML = chart_data.cutoff_len.toFixed(2);
+                document.getElementById("trap-freq").innerHTML = chart_data.trap_freq.toFixed(2);
+            }
+            if (radar_cost != null) {
+                document.getElementById("radar-cost").innerHTML = radar_cost.toFixed(2);
+            }
+        </script>
         <script src="static/js/selection.js"></script>
 		<script src="static/js/dialog.js"></script>
 		<script src="static/js/download.js"></script>
 		<script src="static/js/upload.js"></script>
+        <script src="static/js/ductInfor.js"></script>
 
 		<!-- /Main Wrapper -->
 		

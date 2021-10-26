@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <title>大气波导分析软件（联机版）</title>
+
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="static/assets/img/favicon.png">
+
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="static/assets/css/bootstrap-4.2.1.css">
+
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="static/assets/css/font-awesome.min.css">
+
+		<!-- Feathericon CSS -->
+        <link rel="stylesheet" href="static/assets/css/feathericon.min.css">
+
+		<!-- Datatables CSS -->
+		<link rel="stylesheet" href="static/assets/plugins/datatables/datatables.min.css">
+
+		<!-- Select2 CSS -->
+		<link rel="stylesheet" href="static/assets/css/select2.min.css">
+
+		<!-- Main CSS -->
+		<link rel="stylesheet" href="static/assets/css/style.css">
+		<script src="static/js/file-management/table.js"></script>
+        <!--socket io get information -->
+        <script src="static/js/notification.js"></script>
+        <script type="text/javascript">
+        </script>
+		<!--[if lt IE 9]>
+			<script src="assets/js/html5shiv.min.js"></script>
+			<script src="assets/js/respond.min.js"></script>
+		<![endif]-->
+    </head>
+    <body>
+
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+
+			<!-- Header -->
+            <div class="header">
+
+            	<!-- Logo -->
+                <div class="header-left">
+                    <a href="index" class="logo">
+            			<img src="static/assets/img/logo.png" alt="Logo">
+            		</a>
+            		<a href="index" class="logo logo-small">
+            			<img src="static/assets/img/logo-small.png" alt="Logo" width="30" height="30">
+            		</a>
+                </div>
+            	<!-- /Logo -->
+
+            	<a href="javascript:void(0);" id="toggle_btn">
+            		<i class="fe fe-text-align-left"></i>
+            	</a>
+
+            	<div class="top-nav-search">
+
+            	</div>
+
+            	<!-- Mobile Menu Toggle -->
+            	<a class="mobile_btn" id="mobile_btn">
+            		<i class="fa fa-bars"></i>
+            	</a>
+            	<!-- /Mobile Menu Toggle -->
+
+            	<!-- Header Right Menu -->
+			    <ul class="nav user-menu">
+
+					<!-- Notifications -->
+					<li class="nav-item dropdown noti-dropdown">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<i class="fe fe-bell"></i> <span class="badge badge-pill" id="infor_count"></span>
+						</a>
+						<div class="dropdown-menu notifications">
+							<div class="topnav-dropdown-header">
+								<span class="notification-title">消息提醒</span>
+								<a href="javascript:void(0)" class="clear-noti"> 隐藏 </a>
+							</div>
+							<div class="noti-content">
+								<ul class="notification-list">
+								</ul>
+							</div>
+							<div class="topnav-dropdown-footer">
+								<a href="report">查看所有报告信息</a>
+							</div>
+						</div>
+					</li>
+					<!-- Notifications -->
+					<!-- Write -->
+					<li >
+						<a data-toggle="modal" href="#text_inputs" title="信息上报">
+							<i class="fe fe-file"></i>
+						</a>
+					</li>
+					<!-- Write -->
+					<!-- download-->
+					<li >
+						<a href="file-management" title="数据下载">
+							<i class="fe fe-download"></i>
+						</a>
+					</li>
+					<li >
+						<a data-toggle="modal" href="#text_upload" title="数据上传">
+							<i class="fe fe-upload"></i>
+						</a>
+					</li>
+
+					<li class="nav-item dropdown has-arrow">
+						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
+							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
+						</a>
+						<div class="dropdown-menu">
+							<div class="user-header">
+								<div class="avatar avatar-sm">
+									<img src="static/assets/img/profiles/{{ user.account }}.jpg" alt="User Image" class="avatar-img rounded-circle">
+								</div>
+								<div class="user-text">
+									<h6>{{ user.name }}</h6>
+									<p class="text-muted mb-0">Administrator</p>
+								</div>
+							</div>
+							<a class="dropdown-item" href="profile">配置文件</a>
+							<a class="dropdown-item" href="logout"><font color="#E63C3C">退出</font></a>
+						</div>
+					</li>
+					<!-- /User Menu -->
+				</ul>
+				<!-- /Header Right Menu -->
+
+            </div>
+            <!-- /Header -->
+
+			<!-- Sidebar -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-inner slimscroll">
+					<div id="sidebar-menu" class="sidebar-menu" style="background: #293c55;">
+						<ul>
+                            <li >
+								<a href="index"><font color="#CCCCCC">大气波导分析</font></span> </a>
+
+                            <li>
+								<a href="evaporation"><font color="#CCCCCC">蒸发波导高度计算</font></a>
+							</li>
+                            <li>
+								<a href="tem-hum"><font color="#CCCCCC">温湿廓线分析计算</font></a>
+							</li>
+							<li>
+								<a href="file-management"><font color="#CCCCCC">文件管理</font> </a>
+							</li>
+							<li class="submenu">
+								<a href="#" style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;"><font color="#293c55">权限管理与设置</font> </a>
+								<ul style="display: block;">
+									<li><a href="profile"><font color="#CCCCCC"> 个人信息设置 </font></a></li>
+                                    {% set level = user.level | int %}
+                                    {% if level > 0 %}
+									<li><a href="user-management"><font color="#CCCCCC"> 用户管理 </font></a></li>
+                                    {% endif %}
+									<li><a href="report"><font color="#CCCCCC"> 信息报表管理 </font></a></li>
+                                    <li><a href="radar-infor"><font color="#1e88e5"> ● 雷达信息设置 </font></a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+                </div>
+            </div>
+			<!-- /Sidebar -->
+
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h4 class="card-title">探测雷达基本信息情况</h4>
+                                <p>本次更新时间：<span id="update-time" style="margin-bottom:0;color:#009efb;"></span></p>
+							</div>
+						</div>
+                        <div class="row" style="background-color: whitesmoke;border-radius: 20px;box-shadow: 2px 2px 5px #888888;border: 1px solid #888888;">
+                            <div class="card-body" id="radar-infor">
+									<form id="history_form" method="POST" omsubmit='return radar_infor()'>
+										{{form.csrf_token}}
+										<div class="row">
+											<div class="col-xl-6">
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">雷达频率</label>
+													<div class="col-lg-9">
+														{{form.RF(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="radar-fre")}}
+														{%for e in form.RF.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">雷达峰值频率</label>
+													<div class="col-lg-9">
+														{{form.RT(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="radar-top")}}
+														{%for e in form.RT.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">天线高度</label>
+													<div class="col-lg-9">
+														{{form.AH(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="antenna-high")}}
+														{%for e in form.AH.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">天线增益</label>
+													<div class="col-lg-9">
+														{{form.AG(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="antenna-gain")}}
+														{%for e in form.AG.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">波束宽度</label>
+													<div class="col-lg-9">
+														{{form.BW(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="beam-width")}}
+														{%for e in form.BW.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">发射仰角</label>
+													<div class="col-lg-9">
+														{{form.LE(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="launch-ele")}}
+														{%for e in form.LE.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+											</div>
+											<div class="col-xl-6">
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">最小信噪比</label>
+													<div class="col-lg-9">
+														{{form.MN(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="min-noise")}}
+														{%for e in form.MN.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">接收机带宽</label>
+													<div class="col-lg-9">
+														{{form.RW(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="rec-width")}}
+														{%for e in form.RW.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">系统综合损耗</label>
+													<div class="col-lg-9">
+														{{form.SL(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="sys-loss")}}
+														{%for e in form.SL.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">接收机噪声系数</label>
+													<div class="col-lg-9">
+														{{form.NC(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="noise-coe")}}
+														{%for e in form.NC.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">目标高度</label>
+													<div class="col-lg-9">
+														{{form.TH(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="target-high")}}
+														{%for e in form.TH.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+												<div class="form-group row">
+													<label class="col-lg-3 clo-form-label">目标散射截面</label>
+													<div class="col-lg-9">
+														{{form.RR(class_="form-control", oninput="value=value.match(/-?[0-9]*\.?[0-9]*/)", id="rcs-radar")}}
+														{%for e in form.RR.errors%}
+											                <span style="color: red">*{{e}}</span>
+														{%endfor%}
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="text-right">
+											<button type="submit" class="btn btn-primary" onclick="radar_infor()">更新</button>
+										</div>
+									</form>
+								</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+			<!-- /Page Wrapper -->
+
+		<!-- /Edit Details Modal -->
+		<!--错误提示-->
+
+		<!-- Delete Modal -->
+		<!-- /Delete Modal -->
+		<!-- jQuery -->
+        </div>
+        <script>
+            let radar_data = {{ radar_data|tojson }};
+            let radar_infor = {{ radar_infor|tojson }};
+            document.getElementById("radar-fre").value = radar_infor.RF;
+		    document.getElementById("radar-top").value = radar_infor.RT;
+            document.getElementById("antenna-high").value = radar_infor.AH;
+            document.getElementById("antenna-gain").value = radar_infor.AG;
+            document.getElementById("beam-width").value = radar_infor.BW;
+            document.getElementById("launch-ele").value = radar_infor.LE;
+            document.getElementById("min-noise").value = radar_infor.MN;
+            document.getElementById("rec-width").value = radar_infor.RW;
+            document.getElementById("sys-loss").value = radar_infor.SL;
+            document.getElementById("noise-coe").value = radar_infor.NC;
+            document.getElementById("target-high").value = radar_infor.TH;
+            document.getElementById("rcs-radar").value = radar_infor.RR;
+            document.getElementById("update-time").innerHTML = radar_infor.TT;
+        </script>
+        <script src="static/assets/js/jquery-1.10.2.js"></script>
+
+		<!-- Bootstrap Core JS -->
+        <script src="static/assets/js/popper.min.js"></script>
+        <script src="static/assets/js/bootstrap.min.js"></script>
+
+		<!-- Slimscroll JS -->
+        <script src="static/assets/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+		<!-- Datatables JS -->
+		<script src="static/assets/plugins/datatables/jquery.dataTables.min.js"></script>
+		<script src="static/assets/plugins/datatables/datatables.min.js"></script>
+
+		<!-- Select2 JS -->
+		<script src="static/assets/js/select2.min.js"></script>
+
+		<!-- Custom JS -->
+		<script src="static/assets/js/script.js"></script>
+        <script src="static/assets/js/radarInfor.js"></script>
+		<script src="static/js/dialog.js"></script>
+		<script src="static/js/download.js"></script>
+		<script src="static/js/upload.js"></script>
+    </body>
+</html>

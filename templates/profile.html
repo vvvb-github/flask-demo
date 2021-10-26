@@ -145,14 +145,15 @@
 								<a href="file-management"><font color="#CCCCCC">文件管理</font> </a>
 							</li>
 							<li class="submenu" >
-								<a href="#" style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;"><span><font color="#CCCCCC">● 权限管理与设置</font></span></a>
+								<a href="#" style="background:#9ca8b8;border-bottom-left-radius: 30px;border-top-left-radius: 30px;"><span><font color="#293c55">权限管理与设置</font></span></a>
 								<ul style="display: block">
-									<li><a href="profile"><font color="#1e88e5"> 个人信息设置 </font></a></li>
+									<li><a href="profile"><font color="#1e88e5"> ● 个人信息设置 </font></a></li>
                                     {% set level = user.level | int %}
                                     {% if level > 0 %}
 									<li><a href="user-management"><font color="#CCCCCC"> 用户管理 </font></a></li>
                                     {% endif %}
 									<li><a href="report"><font color="#CCCCCC"> 信息报表管理 </font></a></li>
+                                    <li><a href="radar-infor"><font color="#CCCCCC"> 雷达信息设置 </font></a></li>
 								</ul>
 							</li>
 						</ul>
