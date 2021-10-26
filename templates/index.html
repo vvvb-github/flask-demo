@@ -39,6 +39,7 @@
             let chart_data = {{ chart_data|tojson }};
             let current_file = {{ current_file|tojson }}
         </script>
+        <script src="static/js/loading.js"></script>
 
 
 
@@ -163,7 +164,7 @@
 								<a href="index"> <span><font color="#293c55">● 大气波导分析计算</font></span> </a>
 							</li>
                             <li>
-								<a href="evaporation"><font color="#CCCCCC">蒸发波导高度计算</font></a>
+								<a data-toggle="modal" href="#loadingPage" onclick="pageLoading()" ><font color="#CCCCCC">蒸发波导高度计算</font></a>
 							</li>
                             <li>
 								<a href="tem-hum"><font color="#CCCCCC">温湿廓线分析计算</font></a>

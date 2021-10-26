@@ -28,11 +28,11 @@ class FileHelper:
     # filepath: 文件路径
     # limit: 高度限制
     # headSpace：跳过文件头行
-    def ReadTPU(self, filepath, limit=3000, headSpace=4):
+    def ReadTPU(self, filepath, limit=3000, headSpace=4, encoding='gbk'):
         filepath = self.fileRootPath + filepath
         flag = headSpace
         dataset = []
-        with open(filepath, "r") as f:
+        with open(filepath, "r", encoding=encoding) as f:
             for line in f.readlines():
                 line = line.strip('\n').split()
                 if flag > 0:
@@ -50,7 +50,7 @@ class FileHelper:
     # 读取数字后缀的探空数据
     # 文件格式A****.[0-9] 内部格式为[时间 温度 气压 湿度 高度 经度 纬度 风向 风速]
     # 读取时要注意文件的编码格式是ANSI还是utf-8
-    def ReadTKData(self, filepath, headSpace=14, encoding='ANSI'):
+    def ReadTKData(self, filepath, headSpace=14, encoding='gbk'):
         filepath = self.fileRootPath + filepath
         flag = headSpace
         dataset = []
@@ -73,11 +73,11 @@ class FileHelper:
 
     # 更正：直接使用正则表达式来剔除字符串中的空字符
     # 返回组合为[高度、气温、压强、风速、湿度、风向]
-    def ReadTxt(self, filepath, limit=3000, headSpace=2):
+    def ReadTxt(self, filepath, limit=3000, headSpace=2, encoding='gbk'):
         filepath = self.fileRootPath + filepath
         flag = headSpace
         dataset = []
-        with open(filepath, "r") as f:
+        with open(filepath, "r", encoding=encoding) as f:
             for line in f.readlines():
                 line = line.strip('\n')
                 if flag > 0:
@@ -99,14 +99,14 @@ class FileHelper:
     # exceptVal有什么用？是为了防止出现无效数据吗？但是在给出的csv文件中并没有出现无效数据？如果是无效数据那后面的代码是什么意思？
     # 数据中哪些数据是有效的？海温 红外海温 测量的温压风湿均有三个不同的数据，应该怎么选取？
     # 返回两个list：时间， 数据[温度、海温、湿度、风速、气压]
-    def ReadCSV(self, filepath, exceptVal=9999.9):
+    def ReadCSV(self, filepath, exceptVal=9999.9, encoding='gbk'):
         filepath = self.fileRootPath + filepath
         # 数据时间
         times = []
         # 温度1（2、3）、海面温度（红外海温）、湿度1（2、3）、真实风速1（2、3）、大气压力
         dataset = []
         rowNum = 0
-        with open(filepath, 'r') as f:
+        with open(filepath, 'r', encoding=encoding) as f:
             reader = csv.reader(f)
             for row in reader:
                 if rowNum == 0:
@@ -136,7 +136,7 @@ class FileHelper:
         return times, dataset
 
     # 读取HPC与TPC文件函数
-    def ReadHPC_TPC(self, filepath, headSpace=9):
+    def ReadHPC_TPC(self, filepath, headSpace=9, encoding='utf-8'):
         filepath = self.fileRootPath + filepath
         minimum_value = None # 最小值
         maximum_value = None # 最大值
@@ -144,7 +144,7 @@ class FileHelper:
         altitude = [] # 每一组样本中包含的海拔高度
         hum_tem = [] # 样本数据（内部每个元素为一个list,代表了随着海拔变化高度/湿度的变化
         l = 0
-        with open(filepath, "r", encoding='utf-8') as f:
+        with open(filepath, "r", encoding=encoding) as f:
             for line in f.readlines():
                 line = line.strip('\n')
                 if l == 1:

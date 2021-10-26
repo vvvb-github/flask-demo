@@ -51,7 +51,8 @@
 			  $("#boxscroll2").niceScroll("#contentscroll2",{cursorcolor:"#F00",cursoropacitymax:0.7,boxzoom:true,touchbehavior:true});  // Second scrollable DIV
 			  
 			});
-		  </script>
+        </script>
+        <script src="static/js/loading.js"></script>
     </head>
     <body>
 	
@@ -165,7 +166,7 @@
 								<a href="index"><font color="#CCCCCC">大气波导分析</font></span> </a>
 							</li>
                             <li>
-								<a href="evaporation"><font color="#CCCCCC">蒸发波导高度计算</font></a>
+								<a data-toggle="modal" href="#loadingPage" onclick="pageLoading()" ><font color="#CCCCCC">蒸发波导高度计算</font></a>
 							</li>
                             <li>
 								<a href="tem-hum"><font color="#CCCCCC">温湿廓线分析计算</font></a>
