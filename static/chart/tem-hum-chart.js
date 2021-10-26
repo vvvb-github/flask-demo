@@ -52,6 +52,7 @@ option_hum = {
     },
     xAxis: [
       {
+        max: chart_data.date_max,
         name: '时间戳',
         splitLine:{
           show:false
@@ -129,6 +130,7 @@ option_tmp = {
     },
     xAxis: [
       {
+        max: chart_data.date_max,
         name: '时间戳',
         splitLine:{
           show:false

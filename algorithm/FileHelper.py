@@ -170,7 +170,7 @@ class FileHelper:
                     second = int(temp[5])
                     temp_date = datetime(year, month, day, hour, minute, second)
                     date_count = l-8
-                    for i in range(7, altitude_count):
+                    for i in range(7, altitude_count + 7):
                         # 需要相对湿度还是绝对湿度？
                         temp_list = [date_count, altitude[i - 7], float(temp[i])]
                         hum_tem.append(temp_list)
