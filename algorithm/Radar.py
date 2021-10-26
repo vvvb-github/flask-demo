@@ -2,6 +2,12 @@
 # -*- coding:utf-8 -*-
 import time
 import math
+import os
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+radar_path = os.path.join(basedir, os.path.pardir)
+radar_path = os.path.join(radar_path, "radar_infor.txt")
+radar_path.replace('\\', '/')
 
 class Radar_Coe():
     # 雷达频率8000
@@ -35,7 +41,7 @@ class Radar_Coe():
     # 当前值是否可以用于计算雷达传播
     def __init__(self):
         radar_his = []
-        with open("radar_infor.txt", "r") as f:
+        with open(radar_path, "r") as f:
             for line in f.readlines():
                 radar_his = line.strip("\n")
                 radar_his = radar_his.split()
