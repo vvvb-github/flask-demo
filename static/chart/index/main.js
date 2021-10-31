@@ -91,13 +91,46 @@ option5 = {
             yAxisIndex:0,
         }
     ],
-    tooltip: {},
+    tooltip: {
+        formatter: function (params) {
+            let res = function () {
+                if (params.data[2]) return "有";
+                return "无";
+            };
+            return (
+                '高度(m)：'  + params.data[0] +
+                '<br/>距离(km)： ' + params.data[1] +
+                '<br/>有无增益效果：' + res()
+            );
+        }
+    },
     toolbox:{
         show:true,
         itemSize:16,
         //showTitle:True,
         feature:{
-            dataView:{},
+            dataView:{
+                readOnly: true,
+                optionToContent: function(opt) {
+                    var seriesData = opt.series[0].data;
+                    var table = '<table style="width:100%; text-align:center"><tbody><tr>' +
+                                '<td>高度(m)</td><td>距离(km)</td><td>有无增益</td>' +
+                                '</tr>';
+                    for (var i=0, l=seriesData.length; i<l; i++) {
+                        let res = function () {
+                            if (seriesData[i][2]) return "有";
+                            return "无";
+                        };
+                        table += '<tr>' +
+                                 '<td>' + seriesData[i][0] + '</td>' +
+                                 '<td>' + seriesData[i][1] + '</td>' +
+                                 '<td>' + res() + '</td>' +
+                                 '</tr>';
+                    }
+                    table += '</tbody></table>';
+                    return table;
+                }
+            },
             restore: {},
             saveAsImage: {},
             dataZoom: {},
@@ -162,8 +195,8 @@ option6 = {
             type: 'slider',
             xAxisIndex:0,
             handleStyle: {
-            color: '#8A2BE2',
-        }
+                color: '#8A2BE2',
+            }
         },
         {
             show: true,
@@ -185,13 +218,38 @@ option6 = {
             yAxisIndex:0,
         }
     ],
-    tooltip: {},
+    tooltip: {
+        formatter: function (params) {
+            return (
+                '高度(m)：'  + params.data[0] +
+                '<br/>距离(km)： ' + params.data[1] +
+                '<br/>电磁波损失(dB)：' + params.data[2]
+            );
+        }
+    },
     toolbox:{
         show:true,
         itemSize:16,
         //showTitle:True,
         feature:{
-            dataView:{},
+            dataView:{
+                readOnly: true,
+                optionToContent: function(opt) {
+                    let seriesData = opt.series[0].data;
+                    let table = '<table style="width:100%; text-align:center"><tbody><tr>' +
+                                '<td>高度(m)</td><td>距离(km)</td><td>电磁波传播损失(dB)</td>' +
+                                '</tr>';
+                    for (let i=0, l=seriesData.length; i<l; i++) {
+                        table += '<tr>' +
+                                 '<td>' + seriesData[i][0] + '</td>' +
+                                 '<td>' + seriesData[i][1] + '</td>' +
+                                 '<td>' + seriesData[i][2] + '</td>' +
+                                 '</tr>';
+                    }
+                    table += '</tbody></table>';
+                    return table;
+                }
+            },
             restore: {},
             saveAsImage: {},
             dataZoom: {},
@@ -200,7 +258,6 @@ option6 = {
     },
     xAxis: {
         type: 'category',
-        //data: xData,
         name:'距离/km',
         nameLocation:'center',
         nameTextStyle:{
@@ -210,7 +267,6 @@ option6 = {
     },
     yAxis: {
         type: 'category',
-        //data: yData,
         name:'高度/m',
         nameLocation:'center',
         nameTextStyle:{
@@ -245,7 +301,7 @@ option6 = {
         animation: false
     }
 };
-Chart_ele.setOption(option6)
+Chart_ele.setOption(option6);
 
 option1 = {
   title: {

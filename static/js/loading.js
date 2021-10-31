@@ -24,7 +24,7 @@ document.writeln("<div class=\"modal fade\" id=\"loadingPage\" aria-hidden=\"tru
                 "  100% { transform: rotate(360deg); }\n" +
                 "}\n" +
                 "</style>")
-            document.writeln("<h1 style=\"color: white;\" class=\"modal-title\">此页面加载较慢，请稍等</h1>")
+            document.writeln("<h1 style=\"color: white;\" class=\"modal-title\">数据量较大，加载较慢，请稍等</h1>")
             document.writeln("<p>")
             document.writeln("<p>")
             document.writeln("<div class=\"loader\"></div>")

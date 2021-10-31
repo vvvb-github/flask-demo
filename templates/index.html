@@ -396,6 +396,36 @@
             </div>
 		</div>
 
+        <div class="modal fade" id="picture-refraction" role="dialog" style="display: none;" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 720px">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="form-content p-2">
+							<div class="modal-header border-0">
+								<h4 class="modal-title">折射现象图示</h4>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="card">
+								<div class="card-body">
+									<p>
+										根据大气折射指数(或大气修正折射指数)随高度的变化，可以将大气折射分为如图所示的六种类型。<br/>
+										大气波导的形成，主要对应于上述图表中的陷获折射区，即大气折射指数垂直梯度小于-157N/km(或大气修正折射指数垂直梯度小于0M/km)时，
+										电磁波传播路径的曲率将大于地球表面曲率，此时电磁波会部分地被陷获在一定厚度的大气薄层内，就像电磁波在金属波导管中传播一样，
+										这种现象称为大气波导传播，形成波导传播的大气薄层称为大气波导。
+									</p>
+									<div style="">
+										<img src="../static/assets/img/refraction.jpg" style="width: 100%;">
+									</div>
+								</div>
+							</div>
+							<button type="button" class="btn btn-danger" style="float: right" data-dismiss="modal">关闭</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
         <script type="text/javascript">
             if (chart_data.trap_freq != null) {
                 document.getElementById("cutoff-len").innerHTML = chart_data.cutoff_len.toFixed(2);

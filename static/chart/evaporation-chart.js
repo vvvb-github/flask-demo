@@ -54,9 +54,26 @@ option = {
     toolbox: {
         feature: {
             dataZoom: {
-                yAxisIndex: 'none'
+                yAxisIndex: 'none',
             },
-            dataView: {readOnly: true},
+            dataView: {
+                readOnly: true,
+                optionToContent: function(opt) {
+                    let axisData = opt.xAxis[0].data;
+                    let seriesData = opt.series[0].data;
+                    let table = '<table style="width:100%; text-align:center"><tbody><tr>' +
+                                '<td>时间</td><td>蒸发波导高度</td>' +
+                                '</tr>';
+                    for (let i=0, l=axisData.length; i<l; i++) {
+                        table += '<tr>' +
+                                 '<td>' + axisData[i] + '</td>' +
+                                 '<td>' + seriesData[i] + '</td>' +
+                                 '</tr>';
+                    }
+                    table += '</tbody></table>';
+                    return table;
+                }
+            },
             magicType: {type: ['line', 'bar']},
             restore: {},
             saveAsImage: {}

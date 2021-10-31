@@ -112,6 +112,9 @@ class FileHelper:
                 if rowNum == 0:
                     rowNum += 1
                     continue
+                rowNum += 1
+                if rowNum > 10000:
+                    break
                 datas = [exceptVal, exceptVal, exceptVal, exceptVal, exceptVal]
                 times.append(row[0])
                 for i in range(len(row)):
