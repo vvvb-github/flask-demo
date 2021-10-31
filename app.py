@@ -510,6 +510,43 @@ def change_file(filename):
     return redirect(url_for('index_default'))
 
 
+@app.route('/radar-infor', methods=['POST', 'GET'])
+@login_required
+def radar_infor_page():
+    user = get_current_user()
+    form = Radar_information()
+    # 判断是否验证提交
+    if form.validate_on_submit():
+        # 雷达频率(MHz)
+        print("electro validate!")
+        RF = form.RF.data
+        # 雷达峰值功率(KW)
+        RT = form.RT.data
+        # 天线高度(m)
+        AH = form.AH.data
+        # 天线增益(dB)
+        AG = form.AG.data
+        # 波束宽度
+        BW = form.BW.data
+        # 发射仰角
+        LE = form.LE.data
+        # 最小信噪比
+        MN = form.MN.data
+        # 接收机带宽
+        RW = form.RW.data
+        # 系统综合损耗
+        SL = form.SL.data
+        # 接收机噪声系数
+        NC = form.NC.data
+        # 目标高度
+        TH = form.TH.data
+        # 目标散射截面
+        RR = form.RR.data
+        R.updata(RF, RT, AH, AG, BW, LE, MN, RW, SL, NC, TH, RR)
+    UpData = R.get()
+    return render_template('radar-infor.html', form=form, radar_infor=UpData, radar_data=R.Lossflag, user=user)
+
+
 @app.route('/ASC/<filename>')
 @login_required
 def change_asc_file(filename):
@@ -937,41 +974,6 @@ def delete_file(filename):
     db.session.commit()
     return redirect(url_for('file_management_page'))
 
-# 修改雷达参数
-@app.route('/radar_update', methods=['POST', 'GET'])
-def update_radar():
-    form = Radar_information()
-    # 判断是否验证提交
-    if form.validate_on_submit():
-        # 雷达频率(MHz)
-        print("electro validate!")
-        RF = form.RF.data
-        # 雷达峰值功率(KW)
-        RT = form.RT.data
-        # 天线高度(m)
-        AH = form.AH.data
-        # 天线增益(dB)
-        AG = form.AG.data
-        # 波束宽度
-        BW = form.BW.data
-        # 发射仰角
-        LE = form.LE.data
-        # 最小信噪比
-        MN = form.MN.data
-        # 接收机带宽
-        RW = form.RW.data
-        # 系统综合损耗
-        SL = form.SL.data
-        # 接收机噪声系数
-        NC = form.NC.data
-        # 目标高度
-        TH = form.TH.data
-        # 目标散射截面
-        RR = form.RR.data
-        R.updata(RF, RT, AH, AG, BW, LE, MN, RW, SL, NC, TH, RR)
-    UpData = R.get()
-    user = get_current_user()
-    return render_template('radar-infor.html', form=form, radar_infor=UpData, radar_data=R.Lossflag, user=user)
 
 # 删除用户(func)
 @app.route('/user/delete/<userID>')

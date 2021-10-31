@@ -105,7 +105,11 @@
 							<i class="fe fe-upload"></i>
 						</a>
 					</li>
-
+                    <li >
+						<a href="{{ url_for('radar-infor')}}" title="雷达数据更新">
+							<i class="fe fe-info"></i>
+						</a>
+					</li>
 					<li class="nav-item dropdown has-arrow">
 						<a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
 							<span class="user-img"><img class="rounded-circle" src="static/assets/img/profiles/{{ user.account }}.jpg" width="31" alt="Ryan Taylor"></span>
@@ -157,7 +161,7 @@
 									<li><a href="{{ url_for('user_management_page') }}"><font color="#CCCCCC"> 用户管理 </font></a></li>
                                     {% endif %}
 									<li><a href="{{ url_for('report_page') }}"><font color="#CCCCCC"> 信息报表管理 </font></a></li>
-                                    <li><a href="radar-infor"><font color="#CCCCCC"> 雷达信息设置 </font></a></li>
+                                    <li><a href="{{ url_for('radar-infor') }}"><font color="#CCCCCC"> 雷达信息设置 </font></a></li>
 								</ul>
 							</li>
 						</ul>
